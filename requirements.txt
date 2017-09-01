@@ -1,5 +1,5 @@
 Django==1.11
-django-blue-sky-workflow-engine==0.67
+django-blue-sky-workflow-engine>=0.67
 pika==0.10.0
 celery==4.0.2
 amqp==2.1.4
