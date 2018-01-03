@@ -34,12 +34,16 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import patch, mock_open, MagicMock
+from mock import patch, mock_open
 import os
 import logging
 from workflow_engine.workflow_config import WorkflowConfig
 from django.db import transaction
-from workflow_engine.models import Executable, JobQueue, Workflow, WorkflowNode, RunState
+from workflow_engine.models.executable import Executable
+from workflow_engine.models.job_queue import JobQueue
+from workflow_engine.models.workflow import Workflow
+from workflow_engine.models.workflow_node import WorkflowNode
+from workflow_engine.models.run_state import RunState
 try:
     import __builtin__ as builtins  # @UnresolvedImport
 except:

@@ -37,8 +37,7 @@ import pytest
 import os
 import importlib
 from workflow_engine.workflow_config import WorkflowConfig
-from workflow_engine.models import *
-from django.db import transaction
+from workflow_engine.models.task import Task
 
 
 def test_task():

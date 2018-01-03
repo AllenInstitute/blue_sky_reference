@@ -35,7 +35,7 @@
 #
 import pytest
 import os
-from workflow_engine.models import Executable
+from workflow_engine.models.executable import Executable
 from django.db import transaction
 
 @pytest.mark.django_db
