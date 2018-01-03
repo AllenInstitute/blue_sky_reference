@@ -163,6 +163,7 @@ def test_create_workflow(workflow_config,
     # Workflow.start_workflow('em_2d_montage',
     #                         enqueued_object)
 
+
 @pytest.mark.parametrize(
     "yaml_text", [
         (_TEST_CONFIG_YAML_ONE_NODE),
@@ -188,3 +189,8 @@ def test_from_yaml_file(workflow_config,
             if s['workflow']:
                 line.append(' (w)')
             print(''.join(line))
+
+
+@pytest.mark.django_db
+def test_delete_all_workflows():
+    WorkflowConfig.delete_all_workflows()
