@@ -55,14 +55,6 @@ def test_ingest_message(in_strat):
 
 
 @pytest.mark.django_db
-def test_start_workflow(in_strat):
-    message = Mock()
-
-    with patch.object(Workflow, 'start_workflow'):
-        in_strat.start_workflow(message)
-
-
-@pytest.mark.django_db
 def test_ingest_message_no_tags(in_strat):
     message = Mock()
 
@@ -89,13 +81,6 @@ def test_finish_task(in_strat):
     task = Mock()
 
     in_strat.finish_task(task)
-
-
-def test_workflow_ingest_strategy():
-    wf_name = 'test_workflow_name'
-    
-    with patch('workflow_engine.models.workflow.Workflow.objects.get'):
-        IngestStrategy.workflow_ingest_strategy(wf_name)
 
 
 def test_call_ingest_strategy():
