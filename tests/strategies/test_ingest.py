@@ -1,6 +1,7 @@
 import pytest
 from mock import Mock, patch, MagicMock
 from workflow_engine.models.workflow import Workflow
+from workflow_engine.workflow_controller import WorkflowController
 from workflow_engine.strategies.ingest_strategy \
     import IngestStrategy
 
@@ -50,7 +51,7 @@ def test_ingest_message(in_strat):
     message = Mock()
     tags = ['a', 'b']
 
-    with patch.object(Workflow, 'start_workflow'):
+    with patch.object(WorkflowController, 'start_workflow'):
         in_strat.ingest_message(message, tags)
 
 
@@ -58,7 +59,7 @@ def test_ingest_message(in_strat):
 def test_ingest_message_no_tags(in_strat):
     message = Mock()
 
-    with patch.object(Workflow, 'start_workflow'):
+    with patch.object(WorkflowController, 'start_workflow'):
         in_strat.ingest_message(message)
 
 
@@ -67,7 +68,7 @@ def test_ingest_message_no_tags(in_strat):
 def test_ingest_message_HARDCODED(in_strat):
     message = Mock()
 
-    with patch.object(Workflow, 'start_workflow'):
+    with patch.object(WorkflowController, 'start_workflow'):
         in_strat.ingest_message(message, tags='ReferenceSet')
 
 
