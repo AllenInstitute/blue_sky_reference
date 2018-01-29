@@ -12,12 +12,38 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+APP_PACKAGE = 'blue_sky'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_FILE_PATH = '/data/aibstemp/timf/example_data'
 
-BASE_FILE_PATH = 'TODO_SET_BASE_FILE_PATH'
-PBS_FINISH_PATH = 'TODO_SET_PBS_FINISH_PATH'
-MESSAGE_QUEUE_NAME = 'TODO_SET_MESSAGE_QUEUE_NAME'
+PBS_FINISH_PATH = '/data/aibstemp/timf/bswe'
+MESSAGE_QUEUE_NAME = 'blue_sky'
+INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
+CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
+SPARK_MESSAGE_QUEUE_NAME = 'spark_' + MESSAGE_QUEUE_NAME
+PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
+
+PBS_CONDA_HOME='/shared/utils.x86_64/python-2.7'
+PBS_FINISH_MODULE='workflow_client.pbs_execution_finish'
+PBS_PYTHONPATH='/data/aibstemp/timf/bswe'
+PBS_CONDA_ENV='/allen/aibs/pipeline/image_processing/volume_assembly/conda_envs/blue_sky/py36'
+PBS_RESPONSE_CONDA_ENV='/allen/aibs/pipeline/image_processing/volume_assembly/conda_envs/blue_sky/py36'
+
+MESSAGE_QUEUE_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
+MESSAGE_QUEUE_USER = 'blue_sky_user'
+MESSAGE_QUEUE_PASSWORD = 'blue_sky_user'
+MESSAGE_QUEUE_PORT = 9008
+
+CONFIG_DIR = '/blue_sky/config'
+BLUE_SKY_SETTINGS = '/data/aibstemp/timf/bswe/blue_sky_settings.yml'
+WORKFLOW_CONFIG_YAML = CONFIG_DIR + '/workflow_config.yml'
+
+QMASTER_HOST = 'hpc-login.corp.alleninstitute.org'
+QMASTER_PORT = 22
+QMASTER_USERNAME = 'timf'
+QMASTER_PASSWORD = CONFIG_DIR + '/crd'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -36,9 +62,6 @@ MAX_DISPLAYED_PAGE_LINKS = 10
 
 WORKFLOW_VERSION = 0.1
 
-MESSAGE_QUEUE_HOST = 'TODO_SET_MESSAGE_QUEUE_HOST'
-
-
 MILLISECONDS_BETWEEN_REFRESH = 10000
 # MILLISECONDS_BETWEEN_REFRESH = 1000
 
@@ -52,7 +75,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'workflow_engine',
-    'development'
+    'workflow_client',
+    'django_celery_results',
+    'blue_sky'
 ]
 
 MIDDLEWARE = [
@@ -64,7 +89,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'blue_sky.urls'
+ROOT_URLCONF = APP_PACKAGE + '.urls'
 
 TEMPLATES = [
     {
@@ -84,7 +109,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blue_sky.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -94,11 +118,10 @@ DATABASES = {
         'NAME': 'blue_sky',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'TODO_SET_HOST',
-        'PORT': 'TODO_SET_PORT',
+        'HOST': 'ibs-timf-ux1',
+        'PORT': 5432,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -118,7 +141,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -127,7 +149,6 @@ TIME_ZONE = 'US/Pacific'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/

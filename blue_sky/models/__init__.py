@@ -1,0 +1,1 @@
+from blue_sky.models.observation import Observation

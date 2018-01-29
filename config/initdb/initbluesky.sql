@@ -1,0 +1,3 @@
+CREATE DATABASE blue_sky;
+GRANT ALL PRIVILEGES ON DATABASE blue_sky TO postgres;
+

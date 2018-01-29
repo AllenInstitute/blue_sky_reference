@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+app_name = 'blue_sky'
+
 urlpatterns = [
     url(r'^workflow_engine/', include('workflow_engine.urls')),
-    url(r'^development/', include('development.urls')),
+    # url('^%s/' % (app_name), include(app_name + '.urls')),
     url(r'^admin/', admin.site.urls),
 ]

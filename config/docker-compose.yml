@@ -1,0 +1,43 @@
+version: "3"
+services:
+  devdb2:
+    restart: on-failure:3
+    image: postgres:9.4.14
+    volumes:
+    - "./pg_data:/var/lib/postgresl/data"
+    - "./initdb/initbluesky.sql:/docker-entrypoint-initdb.d/01_initbluesky.sql"
+    expose:
+    - "5432"
+    ports:
+    - "5432:5432"
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+  message_queue:
+    restart: on-failure:3
+    image: rabbitmq:3-management
+    environment:
+    - RABBITMQ_DEFAULT_USER=blue_sky_user
+    - RABBITMQ_DEFAULT_PASS=blue_sky_user
+    ports:
+    - "9008:5672"
+    - "9000:15672"
+  blue_sky:
+    image: alleninstitute/at_em_imaging_workflow:timf
+    environment:
+    - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine
+    - DJANGO_SETTINGS_MODULE=blue_sky.settings
+    - BLUE_SKY_SETTINGS=/data/aibstemp/timf/bswe/blue_sky_settings.yml
+    command: bash -c "cd /blue_sky; /bin/bash entry.sh"
+    ports:
+    - "9002:8000"
+    - "9003:5555"
+    depends_on:
+    - devdb2
+    - message_queue
+    volumes:
+    - "/data:/data:shared"
+    - "/allen:/allen:shared"
+    - "./log:/log"
+    - "/local1/git/blue_sky_workflow_engine:/blue_sky_workflow_engine"
+    - "/local1/git/blue_sky:/blue_sky"

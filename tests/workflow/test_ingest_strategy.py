@@ -36,12 +36,7 @@
 import pytest
 from mock import patch, mock_open, Mock, MagicMock
 import os
-from workflow_client.celery_ingest_consumer import ingest_task
-from workflow_client.client_settings import settings_attr_dict
-try:
-    import __builtin__ as builtins  # @UnresolvedImport
-except:
-    import builtins  # @UnresolvedImport
+from pkg_resources import resource_filename  # @UnresolvedImport
 
 
 @pytest.fixture(scope='session')
@@ -50,6 +45,25 @@ def celery_config():
         'broker_url': 'memory://',
         'result_backend': 'rpc'
     }
+
+
+@pytest.fixture(scope='session')
+def blue_sky_settings():
+    os.environ['blue_sky_settings'] = \
+        resource_filename(
+            'blue_sky',
+            os.path.join(
+                '..',
+                'config',
+                'blue_sky_settings.yml'))
+
+    import workflow_client.celery_ingest_consumer as celery_ingest_consumer
+
+    return celery_ingest_consumer
+
+
+from workflow_client.celery_ingest_consumer import ingest_task
+from workflow_client.client_settings import settings_attr_dict
 
 
 # @pytest.fixture(scope='session')
@@ -61,7 +75,24 @@ def celery_config():
 
 def test_ingest_task(celery_session_worker):
     workflow = 'em_2d_montage'
-    message = {'log_level': 'ERROR', 'acquisition_data': {'microscope_type': 'TEMCA', 'microscope': 'temca2', 'camera': {'width': 3840, 'model': 'Ximea CB200MG', 'camera_id': '44500428', 'height': 3840}, 'acquisition_time': '2017-11-09T03:15:54+00:00', 'overlap': 0.15}, 'metafile': '/allen/programs/celltypes/workgroups/em-connectomics/data/WorkFlow_test/000103/0/_metadata_20171108191554_15685_1R_0093_test_01_000103_0_.json', 'reference_set_id': '9972961f-ce70-48d6-8ddd-461ccc84bcb6', 'storage_directory': '/allen/programs/celltypes/workgroups/em-connectomics/data/WorkFlow_test/000103/0/', 'section': {'specimen': '15685_1R', 'z_index': 103, 'sample_holder': '000103'}}
+    message = {'log_level': 'ERROR', 'acquisition_data': {
+        'microscope_type': 'TEMCA', 'microscope': 'temca2', 'camera': {
+            'width': 3840,
+            'model': 'Ximea CB200MG',
+            'camera_id': '44500428',
+            'height': 3840
+        },
+            'acquisition_time': '2017-11-09T03:15:54+00:00',
+            'overlap': 0.15
+        },
+        'metafile': '/allen/programs/celltypes/workgroups/em-connectomics/data/WorkFlow_test/000103/0/_metadata_20171108191554_15685_1R_0093_test_01_000103_0_.json',
+        'reference_set_id': '9972961f-ce70-48d6-8ddd-461ccc84bcb6',
+        'storage_directory': '/allen/programs/celltypes/workgroups/em-connectomics/data/WorkFlow_test/000103/0/',
+        'section': {
+            'specimen': '15685_1R',
+            'z_index': 103,'sample_holder': '000103'
+        }
+    }
     tags = ['ReferenceSetTest']
 
     rv = MagicMock(

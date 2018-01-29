@@ -1,7 +1,0 @@
-MESSAGE_QUEUE_HOST: example.org
-MESSAGE_QUEUE_PORT: 9008
-MESSAGE_QUEUE_USER: blue_sky_user
-MESSAGE_QUEUE_PASSWORD: blue_sky_user
-CELERY_MESSAGE_QUEUE_NAME: celery_at_em_imaging_workflow
-DEFAULT_MESSAGE_QUEUE_NAME: null
-WORKFLOW_CONFIG_YAML: ./workflow_config.yml

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from development.models import *
+from blue_sky.models.observation import Observation
 from django.http import HttpResponse
 from django.template import loader
 import django

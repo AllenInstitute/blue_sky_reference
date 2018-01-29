@@ -27,6 +27,7 @@ MESSAGE_QUEUE_NAME = 'at_em_imaging_workflow'
 INGEST_QUEUE_NAME = 'em_2d_montage_ingest'
 CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
 # CELERY_DEFAULT_QUEUE = 'celery_' + MESSAGE_QUEUE_NAME
+CELERY_RESULT_BACKEND = 'django-db'
 
 MESSAGE_QUEUE_HOST = 'message_queue'
 MESSAGE_QUEUE_USER = 'blue_sky_user'
@@ -115,6 +116,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'workflow_engine',
+    'workflow_client',
+    'django_celery_results',
     'development'
 ]
 
@@ -127,7 +130,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'blue_sky.urls'
+APP_PACKAGE='blue_sky'
+ROOT_URLCONF = APP_PACKAGE + '.urls'
 
 TEMPLATES = [
     {
@@ -159,6 +163,10 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': '',
         'PORT': ''
+    },
+    # Work around locked database table error w/ multiple processes
+    'OPTIONS': {
+        'timeout': 20
     }
 }
 
@@ -223,12 +231,7 @@ LOGGING = {
 #            'level': 'WARN',
 #            'propagate': True,
 #        },
-        'at_em_imaging_workflow': {
-            'handlers': ['file'],
-            'level': 'WARN',
-            'propagate': True,
-        },
-        'development': {
+        'blue_sky': {
             'handlers': ['file'],
             'level': 'WARN',
             'propagate': True,
