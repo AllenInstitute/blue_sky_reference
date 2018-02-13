@@ -49,7 +49,7 @@ class PyTest(TestCommand):
 setup(
     name='blue_sky_test',
     version='%s%s' % (VERSION, RELEASE),
-    packages=prepend_find_packages('blue_sky', 'development'),
+    packages=prepend_find_packages('blue_sky'),
     package_data={'': ['*.conf', '*.cfg', '*.json', '*.env', '*.sh', '*.txt', 'Makefile'] },
     include_package_data=True,
     license='Allen Institute Software License',

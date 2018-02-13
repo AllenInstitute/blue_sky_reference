@@ -18,7 +18,7 @@ PROJECT_ROOT = BASE_DIR
 
 #BASE_FILE_PATH = \
 #    '/allen/programs/celltypes/workgroups/array_tomography/blue_sky/files/'
-BASE_FILE_PATH = '/example_data'
+BASE_FILE_PATH = 'example_data'
 PBS_FINISH_PATH = \
     '/allen/programs/celltypes/workgroups/array_tomography/blue_sky' + \
     '/at_em_imaging_workflow/pbs_execution_finish.py'
@@ -118,7 +118,7 @@ INSTALLED_APPS = [
     'workflow_engine',
     'workflow_client',
     'django_celery_results',
-    'development'
+    'blue_sky'
 ]
 
 MIDDLEWARE = [

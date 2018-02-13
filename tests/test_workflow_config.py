@@ -71,12 +71,12 @@ run_states:
     - "PROCESS_KILLED"
 workflows:
     test_workflow:
-        ingest: "development.strategies.lens_correction_ingest.LensCorrectionIngest"
+        ingest: "blue_sky.strategies.mock_ingest.MockIngest"
 
         states:
             - key: "start"
               label: "Start"
-              class: "development.strategies.start.Start"
+              class: "blue_sky.strategies.mock_analyze.MockAnalyze"
               enqueued_class: "development.models.e_o.EO"
               executable: "mock"
         graph:
