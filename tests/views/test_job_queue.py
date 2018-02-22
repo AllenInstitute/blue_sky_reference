@@ -34,19 +34,55 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
+from mock import patch, mock_open
 import django.test
 from workflow_engine.views import job_queue_view
+from workflow_engine.workflow_config import WorkflowConfig
+from tests.workflow_configurations import TEST_CONFIG_YAML_TWO_NODES
+import simplejson as json
+import os
+from workflow_engine.models.job_queue import JobQueue
 
 
 @pytest.fixture
 def rf():
     return django.test.RequestFactory()
 
+def content_payload_to_dict(r):
+    payload = json.loads(
+        r.content)['payload']
+    del payload['order_length']
+    p2 = {}
+    for elem in payload.values():
+        p2.update(elem)
+
+    return p2
+
+
 @pytest.mark.django_db
 def test_job_queues_show_data(rf):
-    request = rf.get('/workflow_engine/jobs')
+    yaml_text = TEST_CONFIG_YAML_TWO_NODES
+
+    with patch("builtins.open",
+        mock_open(read_data=yaml_text)):
+        WorkflowConfig.create_workflow(
+            os.path.join(os.path.dirname(__file__),
+                         'dev.yml'))
+
+    jq_id = JobQueue.objects.first().id
+
+    request = rf.get(
+        '/workflow_engine/jobs?job_queue_id=%d' %(
+            jq_id))
     response = job_queue_view.get_job_queues_show_data(request)
     assert response.status_code == 200
+
+    payload = content_payload_to_dict(response)
+
+    assert set(payload.keys()) == set([
+        'name', 'executable name', 'job strategy class',
+        'executable path', 'id', 'cpdated at', 'created at',
+        'description', 'enqueued object class'])
 
 
 @pytest.mark.django_db

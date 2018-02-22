@@ -1,6 +1,5 @@
 import pytest
 from mock import Mock, patch, MagicMock
-from workflow_engine.models.workflow import Workflow
 from workflow_engine.workflow_controller import WorkflowController
 from workflow_engine.strategies.ingest_strategy \
     import IngestStrategy
@@ -79,7 +78,7 @@ def test_run_task(in_strat):
 
 
 def test_finish_task(in_strat):
-    task = Mock()
+    task = MagicMock()
 
     in_strat.finish_task(task)
 

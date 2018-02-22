@@ -44,6 +44,8 @@ from workflow_engine.models.job_queue import JobQueue
 from workflow_engine.models.workflow import Workflow
 from workflow_engine.models.workflow_node import WorkflowNode
 from workflow_engine.models.run_state import RunState
+from tests.workflow_configurations import TEST_CONFIG_YAML_ONE_NODE,\
+    TEST_CONFIG_YAML_TWO_NODES
 try:
     import __builtin__ as builtins  # @UnresolvedImport
 except:
@@ -52,72 +54,6 @@ except:
 _log = logging.getLogger('test_output')
 
 
-_TEST_CONFIG_YAML_ONE_NODE = """
-executables:
-    mock:
-        name: 'Mock Executable'
-        path: '/data/aibstemp/timf/example_data/bin/mock_executable'
-        pbs_queue: 'lims2'
-        pbs_processor: 'vmem=128g'
-        pbs_walltime: 'walltime=5:00:00'
-run_states:
-    - "PENDING"
-    - "QUEUED"
-    - "RUNNING"
-    - "FINISHED_EXECUTION"
-    - "FAILED_EXECUTION"
-    - "FAILED"
-    - "SUCCESS"
-    - "PROCESS_KILLED"
-workflows:
-    test_workflow:
-        ingest: "blue_sky.strategies.mock_ingest.MockIngest"
-
-        states:
-            - key: "start"
-              label: "Start"
-              class: "blue_sky.strategies.mock_analyze.MockAnalyze"
-              enqueued_class: "development.models.e_o.EO"
-              executable: "mock"
-        graph:
-            - [ "start", [ ] ]
-"""
-
-_TEST_CONFIG_YAML_TWO_NODES = """
-executables:
-    mock:
-        name: 'Mock Executable'
-        path: '/data/aibstemp/timf/example_data/bin/mock_executable'
-        pbs_queue: 'lims2'
-        pbs_processor: 'vmem=128g'
-        pbs_walltime: 'walltime=5:00:00'
-run_states:
-    - "PENDING"
-    - "QUEUED"
-    - "RUNNING"
-    - "FINISHED_EXECUTION"
-    - "FAILED_EXECUTION"
-    - "FAILED"
-    - "SUCCESS"
-    - "PROCESS_KILLED"
-workflows:
-    test_workflow:
-        ingest: "development.strategies.lens_correction_ingest.LensCorrectionIngest"
-
-        states:
-            - key: "start"
-              label: "Start"
-              class: "development.strategies.start.Start"
-              enqueued_class: "development.models.e_o.EO"
-              executable: "mock"
-            - key: "continue"
-              label: "Continue"
-              class: "development.strategies.continue.Continue"
-              enqueued_class: "development.models.e_o.EO"
-              executable: "mock"
-        graph:
-            - [ "start", [ "continue" ] ]
-"""
 
 @pytest.fixture
 def workflow_config():
@@ -131,8 +67,8 @@ def test_workflow_config(workflow_config):
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "yaml_text", [
-        (_TEST_CONFIG_YAML_ONE_NODE),
-        (_TEST_CONFIG_YAML_TWO_NODES)
+        (TEST_CONFIG_YAML_ONE_NODE),
+        (TEST_CONFIG_YAML_TWO_NODES)
     ])
 def test_create_workflow(workflow_config,
                          yaml_text):
@@ -170,8 +106,8 @@ def test_create_workflow(workflow_config,
 
 @pytest.mark.parametrize(
     "yaml_text", [
-        (_TEST_CONFIG_YAML_ONE_NODE),
-        (_TEST_CONFIG_YAML_TWO_NODES)
+        (TEST_CONFIG_YAML_ONE_NODE),
+        (TEST_CONFIG_YAML_TWO_NODES)
     ])
 def test_from_yaml_file(workflow_config,
                         yaml_text):

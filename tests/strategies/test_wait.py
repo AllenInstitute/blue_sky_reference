@@ -1,5 +1,5 @@
 import pytest
-from mock import Mock
+from mock import Mock, MagicMock
 from workflow_engine.strategies.wait_strategy \
     import WaitStrategy
 
@@ -24,11 +24,12 @@ def test_skip_execution(wait_strat):
 
 def test_run_task(wait_strat):
     task = Mock()
-
+    
     wait_strat.run_task(task)
 
 
+@pytest.mark.django_db
 def test_finish_task(wait_strat):
-    task = Mock()
+    task = MagicMock()
 
     wait_strat.finish_task(task)
