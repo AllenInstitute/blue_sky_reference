@@ -36,6 +36,8 @@
 import pytest
 import django.test
 from workflow_engine.views import workflow_view
+import simplejson as json
+from django.utils.six import BytesIO
 
 
 @pytest.fixture
@@ -47,6 +49,15 @@ def test_workflows(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.workflows(request)
     assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_workflow_run_jobs(rf):
+    request = rf.get('/workflow_engine/workflows/run_jobs')
+    response = workflow_view.run_jobs(request)
+    assert response.status_code == 200
+    json_data = json.load(BytesIO(response.content))
+    assert json_data['success'] is False
 
 
 @pytest.mark.django_db
