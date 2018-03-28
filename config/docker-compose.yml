@@ -27,7 +27,7 @@ services:
     environment:
     - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine
     - DJANGO_SETTINGS_MODULE=blue_sky.settings
-    - BLUE_SKY_SETTINGS=/data/aibstemp/timf/bswe/blue_sky_settings.yml
+    - BLUE_SKY_SETTINGS=/blue_sky/config/blue_sky_settings.yml
     command: bash -c "cd /blue_sky; /bin/bash entry.sh"
     ports:
     - "9002:8000"

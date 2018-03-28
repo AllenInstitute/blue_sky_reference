@@ -34,10 +34,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from tests.celery_helper import *
-from mock import patch, mock_open, Mock, MagicMock
-import os
-from pkg_resources import resource_filename  # @UnresolvedImport
+#from tests.celery_helper import *
+from mock import patch, Mock, MagicMock
+from workflow_client.client_settings import settings_attr_dict
+from workflow_client.celery_ingest_consumer import ingest_task
+from celery.contrib.pytest import celery_app, celery_worker
 
 
 # @pytest.fixture(scope='session')
@@ -47,7 +48,34 @@ from pkg_resources import resource_filename  # @UnresolvedImport
 #     }
 
 
-def test_ingest_task(celery_session_worker):
+@pytest.fixture(scope='session')
+def celery_enable_logging():
+    return True
+
+@pytest.fixture(scope='session')
+def celery_config():
+    return {
+        'broker_url': 'memory://',
+        'result_backend': 'rpc'
+    }
+
+
+@pytest.fixture(scope='session')
+def use_celery_app_trap():
+    return True
+
+
+@pytest.fixture(scope='session')
+def celery_includes():
+    return [
+        'tests.workflow.test_ingest_strategy'
+    ]
+
+
+@pytest.mark.celery(task_cls='workflow_client.celery_ingest_consumer')
+def test_ingest_task(
+        celery_app,
+        celery_worker):
     workflow = 'em_2d_montage'
     message = {'log_level': 'ERROR', 'acquisition_data': {
         'microscope_type': 'TEMCA', 'microscope': 'temca2', 'camera': {
@@ -73,9 +101,6 @@ def test_ingest_task(celery_session_worker):
         return_value=settings_attr_dict({
             'WORKFLOW_CONFIG_YAML': 'test.yml'}))
 
-    wc = settings_attr_dict({
-        'FOO': "BAR"})
-
     ingest_strategies = {
         'em_2d_montage': 'development.strategies.in_strategy.InStrategy'
     }
@@ -90,6 +115,7 @@ def test_ingest_task(celery_session_worker):
         with patch(
             'workflow_client.celery_ingest_consumer.load_ingest_strategy_names',
             Mock(return_value=ingest_strategies)):
+            #Mock(return_value=None)):
             with patch(
                 'workflow_client.celery_ingest_consumer.import_class',
                 Mock(return_value=mock_ingest_strategy)):

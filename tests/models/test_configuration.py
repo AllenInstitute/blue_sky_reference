@@ -35,15 +35,36 @@
 #
 import pytest
 from workflow_engine.models.configuration import Configuration
+from tests.workflow_configurations import TEST_CONFIG_YAML_TWO_NODES
+from mock import patch, mock_open
+import os
+from workflow_engine.workflow_config import WorkflowConfig
+from workflow_engine.models.workflow_node import WorkflowNode
 
 @pytest.mark.django_db
 def test_configuration():
+    yaml_text = TEST_CONFIG_YAML_TWO_NODES
+
+    with patch("builtins.open",
+        mock_open(read_data=yaml_text)):
+        WorkflowConfig.create_workflow(
+            os.path.join(os.path.dirname(__file__),
+                         'dev.yml'))
+
+    node = WorkflowNode.objects.first()
+
     json_dict = {
         'this': 'that'
     }
-    configuration = Configuration(
+
+    config = Configuration(
+        content_object=node,
+        name='Test Configuration',
+        configuration_type='Example Configuration',
         json_object=json_dict)
+    config.save()
 
-    configuration.save()
+    conf = node.configurations.first()
 
-    assert configuration is not None
+    assert conf.name == 'Test Configuration'
+    assert set(conf.json_object.keys()) == { 'this' }

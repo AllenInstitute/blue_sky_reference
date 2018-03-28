@@ -16,7 +16,7 @@ APP_PACKAGE = 'blue_sky'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_FILE_PATH = '/data/aibstemp/timf/example_data'
+BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
 
 PBS_FINISH_PATH = '/data/aibstemp/timf/bswe'
 MESSAGE_QUEUE_NAME = 'blue_sky'
@@ -42,13 +42,13 @@ RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 
 CONFIG_DIR = '/blue_sky/config'
-BLUE_SKY_SETTINGS = '/data/aibstemp/timf/bswe/blue_sky_settings.yml'
+BLUE_SKY_SETTINGS = '/blue_sky/config/blue_sky_settings.yml'
 WORKFLOW_CONFIG_YAML = CONFIG_DIR + '/workflow_config.yml'
 
 QMASTER_HOST = 'hpc-login.corp.alleninstitute.org'
 QMASTER_PORT = 22
 QMASTER_USERNAME = 'timf'
-QMASTER_PASSWORD = CONFIG_DIR + '/crd'
+QMASTER_PASSWORD = CONFIG_DIR + '/blue_sky/config/crd'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -159,3 +159,51 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'detailed': {
+            'class': 'logging.Formatter',
+            'format': '%(asctime)s %(name)-15s %(levelname)-8s %(processName)-10s %(message)s'
+        }
+    },    
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.environ.get('DEBUG_LOG',
+                                       'logs/debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+        'blue_sky': {
+            'handlers': ['file'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+        'workflow_engine': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'celery': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'celery.task': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }        
+    }
+}
+
+CELERYD_HIJACK_ROOT_LOGGER = False

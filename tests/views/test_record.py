@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2017. Allen Institute. All rights reserved.
+# Copyright 2017-2018. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -35,7 +35,7 @@
 #
 import pytest
 import django.test
-from workflow_engine.views import record_info_view
+from workflow_engine.views import record_view
 
 
 @pytest.fixture
@@ -45,19 +45,19 @@ def rf():
 @pytest.mark.django_db
 def test_get_record_info(rf):
     request = rf.get('/workflow_engine/executables/2')
-    response = record_info_view.get_record_info(request)
+    response = record_view.get_record_info(request)
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_check_unique(rf):
     request = rf.get('/workflow_engine/executables/2')
-    response = record_info_view.check_unique(request)
+    response = record_view.check_unique(request)
     assert response.status_code == 200
 
 
 @pytest.mark.django_db
 def test_get_search_data(rf):
     request = rf.get('/workflow_engine/executables/2')
-    response = record_info_view.get_search_data(request)
+    response = record_view.get_search_data(request)
     assert response.status_code == 200

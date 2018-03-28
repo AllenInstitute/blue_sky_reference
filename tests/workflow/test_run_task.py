@@ -34,35 +34,52 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import patch, mock_open, Mock, MagicMock
-import os
-from time import sleep
 from django.utils.timezone import now
 from datetime import timedelta
-from billiard.exceptions import SoftTimeLimitExceeded
 from workflow_engine.models.task import Task
 from workflow_engine.models.run_state import RunState
 from workflow_engine.models.job import Job
 from workflow_engine.models.job_queue import JobQueue
 from workflow_engine.models.workflow_node import WorkflowNode
 from workflow_engine.models.workflow import Workflow
-from workflow_client.celery_ingest_consumer \
-    import run_task, fail
-from workflow_client.client_settings import settings_attr_dict
+from django.test.utils import override_settings
+from workflow_client.celery_run_consumer \
+    import run_task, fail, configure_run_consumer_app, success
+
+
+@pytest.fixture(scope='session')
+def celery_enable_logging():
+    return True
 
 
 @pytest.fixture(scope='session')
 def celery_config():
     return {
         'broker_url': 'memory://',
-        'result_backend': 'rpc'
+        'result_backend': 'rpc',
+        'task_default_exchange': 'blue_sky',
+        'task_default_routing_key': 'result',
+        'task_default_queue': 'result'
     }
 
-# @pytest.fixture(scope='session')
-# def celery_parameters():
-#     return {
-#         'task_cls': 'workflow_client.celery_ingest_consumer'
-#     }
+
+@pytest.fixture(scope='session')
+def celery_worker_parameters():
+    return {
+        'queues': ( 'run', 'result', 'null' )
+    }
+
+
+@pytest.fixture(scope='session')
+def use_celery_app_trap():
+    return True
+
+
+@pytest.fixture(scope='session')
+def celery_includes():
+    return [
+        'workflow_client.celery_run_consumer'
+    ]
 
 
 def get_timeout_eta(timeout_seconds):
@@ -102,64 +119,25 @@ def task_5():
     return task
 
 @pytest.mark.django_db
-@pytest.mark.parametrize(
-    'run_seconds,timeout_seconds,transition_success', [
-    (10,2,False),
-    (2,10,True)])
-def xtest_run_task(celery_session_worker,
-                  task_5,
-                  run_seconds,
-                  timeout_seconds,
-                  transition_success):
-    name = 'em_2d_montage'
-    args = ('RUNNING', 5)
+@override_settings(
+    APP_PACKAGE='blue_sky',
+    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
+    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
+@pytest.mark.celery(task_cls='workflow_client.celery_run_consumer')
+def test_run_task(celery_app,
+                  celery_worker):
+    configure_run_consumer_app(celery_app, 'blue_sky')
+    def assert_false():
+        assert False
+    def assert_true():
+        assert True
 
-    def check_timeout(m, transition_expected):
-        if transition_expected:
-            m.assert_called()
-        else:
-            m.assert_not_called()
-
-    do_run_mock = Mock(side_effect=lambda: sleep(run_seconds))
-    do_transition_mock = Mock(name='transition mock')
-    do_timeout_mock = Mock(name='timeout mock')
-    do_timeout_mock.side_effect = [
-        lambda: check_timeout(do_transition_mock, transition_success),
-        lambda: check_timeout(do_transition_mock, transition_success)]
-    get_task_mock = MagicMock(
-        name='get_current_task_by_id',
-        return_value=5)
-
-    on_message_handler = Mock()
-    mock_strategy = Mock(name='mock_strategy')
-
-    with patch(
-        'workflow_client.celery_ingest_consumer.do_running',
-        do_run_mock):
-        with patch(
-            'workflow_client.celery_ingest_consumer.do_transition',
-            do_transition_mock):
-            with patch(
-                'workflow_client.celery_ingest_consumer.do_timeout',
-                do_timeout_mock):
-                result = run_task.apply_async(
-                    (name, args),
-                    link=enqueue_next.s(),
-                    link_error=fail.s())
-                timeout_result = timeout.apply_async(
-                    (762,),
-                    eta=get_timeout_eta(timeout_seconds))
-
-                outpt = result.get(
-                    on_message=on_message_handler,
-                    propagate=False)
-                timeout_outp = timeout_result.get()
-
-    #assert outpt == 'mock return'
+    result = run_task.apply_async(
+        ('echo', 'whatever'),
+        queue='run',
+        link=success.s(),
+        link_error=fail.s()
+        )
+    outpt = result.get()
 
     assert not result.failed()
-    assert result.state == 'SUCCESS'
-    do_run_mock.assert_called()
-    #assert len(on_message_handler.call_args_list) == 3
-    do_timeout_mock.assert_called()
-    do_transition_mock.assert_called()

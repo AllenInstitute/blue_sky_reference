@@ -1,8 +1,18 @@
 import pytest
 from mock import Mock, patch, mock_open
-from mock.mock import _patch_object
+from workflow_engine.models.task import Task
+from blue_sky.models.observation import Observation
+from workflow_engine.models.job import Job
+from workflow_engine.models.run_state import RunState
+import os
+from workflow_engine.workflow_config import WorkflowConfig
+from workflow_engine.models.workflow import Workflow
+from workflow_engine.models.workflow_node import WorkflowNode
 from workflow_engine.strategies.execution_strategy \
     import ExecutionStrategy
+from tests.workflow_configurations \
+    import TEST_CONFIG_YAML_TWO_NODES
+
 
 try:
     import __builtin__ as builtins  # @UnresolvedImport
@@ -123,7 +133,7 @@ def test_run_task(ex_strat):
 
 @pytest.mark.skipif(True, reason='need better mock')
 def test_kill_pbs_task(
-    celery_session_worker,
+    celery_worker,
     ex_strat):
     task = Mock()
     task.pbs_id = 5
@@ -133,11 +143,31 @@ def test_kill_pbs_task(
         result.get()
 
 
-@pytest.mark.skipif(True, reason='need better mock')
+@pytest.mark.django_db
 def test_run_asynchronous_task(ex_strat):
-    task = Mock()
-
-    ex_strat.run_asynchronous_task(task)
+    with patch(builtins.__name__ + ".open",
+        mock_open(read_data=TEST_CONFIG_YAML_TWO_NODES)):
+        WorkflowConfig.create_workflow(
+            os.path.join(os.path.dirname(__file__),
+                         'dev.yml'))
+        obs = Observation()
+        obs.save()
+        pend = RunState.objects.get(name="PENDING")
+        pend.save()
+        wns = WorkflowNode.objects.filter(
+            workflow=Workflow.objects.get(
+                name='test_workflow'))
+        jb = Job(id=123,
+                 enqueued_object_id=obs.id,
+                 run_state=pend,
+                 workflow_node=wns[0])
+        jb.save()
+        tsk = Task(job=jb,
+                   run_state=pend,
+                   enqueued_task_object_class='blue_sky.models.observation.Observation',
+                   enqueued_task_object_id=obs.id)
+        tsk.save()
+        ex_strat.run_asynchronous_task(tsk)
 
 
 def test_get_output_file(ex_strat):
@@ -152,7 +182,7 @@ def test_get_input_file(ex_strat):
     ex_strat.get_input_file(task)
 
 
-def test_get_pbs_file(ex_strat):
+def xest_get_pbs_file(ex_strat):
     task = Mock()
 
     ex_strat.get_pbs_file(task)

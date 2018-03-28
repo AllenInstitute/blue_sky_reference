@@ -34,14 +34,14 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_client.celery_pbs_consumer import run_pbs,\
-    configure_pbs_consumer_app, fail, on_raw_message, success, check_pbs_status
-from celery.app import shared_task
+from workflow_client.celery_pbs_tasks import run_pbs,\
+    fail, success, check_pbs_status, configure_pbs_app
+from django.test.utils import override_settings
+from celery.contrib.pytest \
+    import celery_app, celery_worker
 from mock import Mock, patch
 import time
-from celery.result import ResultBase
-from celery.contrib.pytest \
-    import celery_session_app, celery_session_worker
+
 
 @pytest.fixture(scope='session')
 def celery_enable_logging():
@@ -51,12 +51,24 @@ def celery_enable_logging():
 def celery_config():
     return {
         'broker_url': 'memory://',
-        'result_backend': 'rpc'
+        'result_backend': 'rpc',
+        'task_default_exchange': 'blue_sky',
+        'task_default_routing_key': 'result',
+        'task_default_queue': 'result'
     }
+
+
+@pytest.fixture(scope='session')
+def celery_worker_parameters():
+    return {
+        'queues': ( 'pbs', 'result', 'null' )
+    }
+
 
 @pytest.fixture(scope='session')
 def use_celery_app_trap():
     return True
+
 
 @pytest.fixture(scope='session')
 def celery_includes():
@@ -64,29 +76,9 @@ def celery_includes():
         'tests.workflow.test_pbs_task'
     ]
 
-@shared_task
-def mul(x, y):
-    return x * y
 
-#@pytest.mark.celery(task_cls='workflow_client.celery_pbs_consumer')
-def test_mul_task(celery_session_app,
-                  celery_session_worker):
-#     configure_pbs_consumer_app(
-#         celery_session_app,
-#         'at_em_imaging_workflow')
-
-    result = mul.apply_async((2, 3))
-    outpt = result.get()
-
-    assert outpt == 6
-
-
-def test_run_task(celery_session_app,
-                  celery_session_worker):
-#     configure_pbs_consumer_app(
-#         celery_session_app,
-#         'at_em_imaging_workflow')
-
+def test_run_task(celery_app,
+                  celery_worker):
     mock_on_raw_message = Mock()
 
     result = run_pbs.apply_async(
@@ -100,29 +92,56 @@ def test_run_task(celery_session_app,
     assert  outpt == 'OK'
 
 
+@pytest.fixture
+def workflow_engine_task_data():
+    return """id,run_state,start_run_time,end_run_time,duration,pbs_id
+1,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,11
+2,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,22
+3,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,33
+4,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,44
+""".encode('utf-8')
+
+
+@pytest.fixture
+def mock_moab_result():
+    return [ {
+        'name': str(i),
+        'customName': 'task_' + str(i*10 + i),  # i needs to match an id in task data
+        'states': { 'state': 'Running' },
+        'credentials': { 'user': 'somebody' }
+    } for i in [2, 4] ]
+
+
+@override_settings(
+    APP_PACKAGE='blue_sky',
+    UI_HOST='example.org',
+    UI_PORT=888,
+    PBS_MESSAGE_QUEUE_NAME='pbs',
+    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
+@pytest.mark.celery(task_cls='workflow_client.celery_pbs_tasks')
 def test_check_pbs_status(
-    celery_session_app,
-    celery_session_worker):
-#     configure_pbs_consumer_app(
-#         celery_session_app,
-#         'at_em_imaging_workflow')
+    celery_app,
+    celery_worker,
+    workflow_engine_task_data,
+    mock_moab_result):
     with patch(
-        'workflow_client.celery_pbs_consumer.on_pbs_running',
-        Mock(return_value="MOCK RUNNING")) as pbsf:
-        result = check_pbs_status.apply_async()
+        'workflow_client.nb_utils.moab_api.moab_query',
+        Mock(return_value=mock_moab_result)) as pbsf:
+        with patch('workflow_client.nb_utils.task_monitor.request_task_json',
+                   Mock(return_value=workflow_engine_task_data)):
+            configure_pbs_app(celery_app, 'blue_sky')
 
-        # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
-        for r in result.collect():
-            if not isinstance(r, (ResultBase, tuple)):
-                assert r == 'MOCK RUNNING'
+            result = check_pbs_status.apply_async(
+                exchange='blue_sky',
+                queue='pbs')
 
-#         @celery_session_app.on_after_configure.connect
-#         def setup_periodic_tasks(sender, **kwargs):
-#             sender.add_periodic_task(
-#                 1.0,
-#                 check_pbs_status.s(),
-#                 name='Check PBS Status',
-#                 expires=10)
+            while not result.ready():
+                time.sleep(1)
 
-    time.sleep(20)
+            # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
+            time.sleep(10)
+            r = list(result.get())
+            print(r)
+            #assert set(r) == {1, 2, 3, 4}
+
     pbsf.assert_called()
