@@ -34,9 +34,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_client.celery_pbs_tasks import run_pbs,\
-    fail, success, configure_pbs_app
-from workflow_client.celery_moab_tasks import check_pbs_status
+from workflow_client.celery_pbs_tasks import configure_pbs_app
+from workflow_client.celery_moab_tasks \
+    import check_pbs_status
 from django.test.utils import override_settings
 from celery.contrib.pytest \
     import celery_app, celery_worker
@@ -74,23 +74,8 @@ def use_celery_app_trap():
 @pytest.fixture(scope='session')
 def celery_includes():
     return [
-        'tests.workflow.test_pbs_task'
+        'tests.workflow.test_moab_tasks'
     ]
-
-
-def test_run_task(celery_app,
-                  celery_worker):
-    mock_on_raw_message = Mock()
-
-    result = run_pbs.apply_async(
-        link=success.s(),
-        link_error=fail.s())
-    outpt = result.get(
-        on_message=mock_on_raw_message,
-        propagate=False)
-
-    mock_on_raw_message.assert_called()
-    assert  outpt == 'OK'
 
 
 @pytest.fixture
@@ -119,7 +104,7 @@ def mock_moab_result():
     UI_PORT=888,
     PBS_MESSAGE_QUEUE_NAME='pbs',
     CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.celery_pbs_tasks')
+@pytest.mark.celery(task_cls='workflow_client.celery_moab_tasks')
 def test_check_pbs_status(
     celery_app,
     celery_worker,

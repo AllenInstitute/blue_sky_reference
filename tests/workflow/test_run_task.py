@@ -44,7 +44,7 @@ from workflow_engine.models.workflow_node import WorkflowNode
 from workflow_engine.models.workflow import Workflow
 from django.test.utils import override_settings
 from workflow_client.celery_run_consumer \
-    import run_task, fail, configure_run_consumer_app, success
+    import run_task, fail, configure_run_app, success
 
 
 @pytest.fixture(scope='session')
@@ -126,7 +126,7 @@ def task_5():
 @pytest.mark.celery(task_cls='workflow_client.celery_run_consumer')
 def test_run_task(celery_app,
                   celery_worker):
-    configure_run_consumer_app(celery_app, 'blue_sky')
+    configure_run_app(celery_app, 'blue_sky')
     def assert_false():
         assert False
     def assert_true():

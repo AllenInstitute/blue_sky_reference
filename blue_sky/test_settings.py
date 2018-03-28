@@ -28,6 +28,7 @@ PBS_FINISH_PATH = \
 MESSAGE_QUEUE_NAME = 'at_em_imaging_workflow'
 INGEST_QUEUE_NAME = 'em_2d_montage_ingest'
 CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
+PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
 # CELERY_DEFAULT_QUEUE = 'celery_' + MESSAGE_QUEUE_NAME
 CELERY_RESULT_BACKEND = 'django-db'
 
@@ -224,12 +225,16 @@ LOGGING = {
             'class': 'logging.Formatter',
             'format': '%(asctime)s %(name)-15s %(levelname)-8s %(processName)-10s %(message)s'
         }
-    },    
+    },
     'handlers': {
         'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.environ.get('DEBUG_LOG', 'debug_test.log')
+            'formatter': 'detailed',
+            'filename': os.environ.get('DEBUG_LOG', 'debug_test.log'),
+            'mode': 'a',
+            'maxBytes': 1024*1024*20,
+            'backupCount': 2,
         },
     },
     'loggers': {
