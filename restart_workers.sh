@@ -1,9 +1,13 @@
 #!/bin/bash
 
 pkill -9 -f "server_worker"
-pkill -9 -f "run_execution_worker"
+pkill -9 -f "workflow_worker"
 pkill -9 -f "runserver"
 pkill -9 -f "worker_client"
+pkill -9 -f "moab_worker"
+pkill -9 -f "celery_pbs_worker"
+pkill -9 -f "result_worker"
+
 
 export BASE_DIR=/blue_sky
 
@@ -12,11 +16,14 @@ rm ${BASE_DIR}/logs/ui.log
 rm ${BASE_DIR}/logs/pbs.log
 rm ${BASE_DIR}/logs/moab.log
 rm ${BASE_DIR}/logs/workflow.log
+rm ${BASE_DIR}/logs/result.log
+
 
 export WORKFLOW_CONFIG_YAML=$(python -c "import ${DJANGO_SETTINGS_MODULE} as settings; print(settings.WORKFLOW_CONFIG_YAML)")
 export APP_PACKAGE=$(python -c "import ${DJANGO_SETTINGS_MODULE} as settings; print(settings.APP_PACKAGE)")
 export MESSAGE_QUEUE_HOST=$(python -c "import ${DJANGO_SETTINGS_MODULE} as settings; print(settings.MESSAGE_QUEUE_HOST)")
 
+DEBUG_LOG=${BASE_DIR}/logs/result.log python -m manage result_worker &
 DEBUG_LOG=${BASE_DIR}/logs/worker.log python -m manage server_worker &
 DEBUG_LOG=${BASE_DIR}/logs/pbs.log python -m manage celery_pbs_worker &
 DEBUG_LOG=${BASE_DIR}/logs/workflow.log python -m manage workflow_worker &

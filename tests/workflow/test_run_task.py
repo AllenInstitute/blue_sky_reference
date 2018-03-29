@@ -43,8 +43,9 @@ from workflow_engine.models.job_queue import JobQueue
 from workflow_engine.models.workflow_node import WorkflowNode
 from workflow_engine.models.workflow import Workflow
 from django.test.utils import override_settings
+import time
 from workflow_client.celery_run_consumer \
-    import run_task, fail, configure_run_app, success
+    import run_task, success, fail, configure_run_app
 
 
 @pytest.fixture(scope='session')
@@ -138,6 +139,7 @@ def test_run_task(celery_app,
         link=success.s(),
         link_error=fail.s()
         )
+    time.sleep(10)
     outpt = result.get()
 
     assert not result.failed()
