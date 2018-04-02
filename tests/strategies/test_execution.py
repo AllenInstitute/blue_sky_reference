@@ -14,10 +14,7 @@ from tests.workflow_configurations \
     import TEST_CONFIG_YAML_TWO_NODES
 
 
-try:
-    import __builtin__ as builtins  # @UnresolvedImport
-except:
-    import builtins  # @UnresolvedImport
+import builtins
 
 
 @pytest.fixture
@@ -167,7 +164,14 @@ def test_run_asynchronous_task(ex_strat):
                    enqueued_task_object_class='blue_sky.models.observation.Observation',
                    enqueued_task_object_id=obs.id)
         tsk.save()
-        ex_strat.run_asynchronous_task(tsk)
+        with patch('workflow_engine'
+                   '.strategies'
+                   '.execution_strategy'
+                   '.run_celery_task'
+                   '.apply_async') as mock_rat:
+            ex_strat.run_asynchronous_task(tsk)
+
+        mock_rat.assert_called()
 
 
 def test_get_output_file(ex_strat):

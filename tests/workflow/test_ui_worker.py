@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2017. Allen Institute. All rights reserved.
+# Copyright 2018. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -34,13 +34,16 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from django.utils.timezone import now
-from datetime import timedelta
-from django.test.utils import override_settings
+from workflow_engine.models.workflow_node import WorkflowNode
+from workflow_client.worker_client \
+    import create_job, queue_job
+from workflow_client.celery_ingest_consumer \
+    import configure_ingest_consumer_app
+from celery.contrib.pytest import celery_app, celery_worker
 import time
-from tests.workflow.workflow_fixtures import run_states, task_5
-from workflow_client.celery_run_consumer \
-    import run_task, success, fail, configure_run_app
+from django.test.utils import override_settings
+from tests.workflow.workflow_fixtures \
+    import run_states, task_5, running_task_5, obs
 
 
 @pytest.fixture(scope='session')
@@ -62,9 +65,8 @@ def celery_config():
 @pytest.fixture(scope='session')
 def celery_worker_parameters():
     return {
-        'queues': ( 'run', 'result', 'null' )
+        'queues': ( 'workflow', 'result', 'null' )
     }
-
 
 @pytest.fixture(scope='session')
 def use_celery_app_trap():
@@ -74,12 +76,9 @@ def use_celery_app_trap():
 @pytest.fixture(scope='session')
 def celery_includes():
     return [
-        'workflow_client.celery_run_consumer'
+        'tests.workflow.test_result_worker',
+        'tests.workflow.celery_signal_handlers'
     ]
-
-
-def get_timeout_eta(timeout_seconds):
-    return now() + timedelta(seconds=timeout_seconds)
 
 
 @pytest.mark.django_db
@@ -87,22 +86,22 @@ def get_timeout_eta(timeout_seconds):
     APP_PACKAGE='blue_sky',
     PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
     CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.celery_run_consumer')
-def test_run_task(celery_app,
-                  celery_worker,
-                  task_5):
-    configure_run_app(celery_app, 'blue_sky')
-    def assert_false():
-        assert False
-    def assert_true():
-        assert True
+@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
+def test_create_job(
+        celery_app,
+        celery_worker,
+        task_5,
+        obs):
+    configure_ingest_consumer_app(celery_app, 'blue_sky')
 
-    result = run_task.apply_async(
-        ('echo', 'whatever'),
-        queue='run',
-        link=success.s(),
-        link_error=fail.s()
-        )
+    workflow_node_id = 1
+    priority = 50
+
+    result = create_job.apply_async(
+        (workflow_node_id,
+         obs.id,
+         priority),
+        queue='workflow')
     time.sleep(10)
     outpt = result.get()
 

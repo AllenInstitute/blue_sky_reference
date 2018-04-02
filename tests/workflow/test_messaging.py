@@ -34,21 +34,32 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
+from django.test.utils import override_settings
+import time
+import celery
+from mock import Mock, patch
+import shutil
+from workflow_engine.models.job import Job
+from tests.workflow.workflow_fixtures \
+    import run_states, workflow_node_1, obs, mock_executable
+from workflow_client.worker_client import create_job, run_server_command
+from workflow_client.celery_run_consumer import run_workflow_node_jobs_by_id
 from workflow_engine.celery.workflow_tasks \
     import process_running, process_finished_execution, \
-    process_failed_execution, process_pbs_id, configure_result_app
+    process_failed_execution, process_pbs_id
+# TODO: stuff that requires moab worker
+from tests.workflow.messaging_combined_cofiguration \
+    import configure_combined_app
 from celery.contrib.pytest import celery_app, celery_worker
-import time
-from django.test.utils import override_settings
-from tests.workflow.workflow_fixtures \
-    import run_states, task_5, \
-    running_task_5, mock_executable
+import logging
+
+
+_log = logging.getLogger('tests.workflow.test_messaging')
 
 
 @pytest.fixture(scope='session')
 def celery_enable_logging():
     return True
-
 
 @pytest.fixture(scope='session')
 def celery_config():
@@ -64,7 +75,7 @@ def celery_config():
 @pytest.fixture(scope='session')
 def celery_worker_parameters():
     return {
-        'queues': ( 'workflow', 'result', 'null' )
+        'queues': ( 'workflow', 'pbs', 'result', 'null' )
     }
 
 @pytest.fixture(scope='session')
@@ -75,103 +86,88 @@ def use_celery_app_trap():
 @pytest.fixture(scope='session')
 def celery_includes():
     return [
-        'tests.workflow.test_result_worker',
+        'tests.workflow.test_messaging',
         'tests.workflow.celery_signal_handlers'
     ]
 
+def mock_run_celery_task(args, *other_args, **kwargs):
+    (full_executable, task_id, logfile, use_pbs) = args
 
-@pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
-def test_process_running(
-        celery_app,
-        celery_worker,
-        task_5):
-    configure_result_app(celery_app, 'blue_sky')
-
-    result = process_running.apply_async(
-        (5, ),
+    _log.info(
+        'mock run_celery_task: '
+        'full_executable=%s '
+        'task_id=%d '
+        'logfile=%s '
+        'use_pbs=%s)',
+        full_executable,
+        task_id,
+        logfile,
+        str(use_pbs))
+    process_running.apply_async(
+            (task_id,),
+            countdown=1,
+            queue='result')
+    task = Task.objects.get(id=task_id)
+    shutil.copy(
+        task.input_file,
+        task.output_file)
+    process_finished_execution.apply_async(
+        (task_id,),
+        countdown=2,
         queue='result')
-    time.sleep(10)
-    outpt = result.get()
-
-    assert not result.failed()
-
-
-@pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
-def test_process_finished_execution(
-        celery_app,
-        celery_worker,
-        running_task_5):
-    configure_result_app(celery_app, 'blue_sky')
-
-    result = process_finished_execution.apply_async(
-        (5, ),
-        queue='result')
-    time.sleep(10)
-    outpt = result.get()
-
-    assert not result.failed()
 
 
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
+    PBS_MESSAGE_QUEUE_NAME='pbs',
     CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
-def test_process_failed_execution(
+@pytest.mark.celery(task_cls='test.workflow.test_messaging')
+def test_create_job(
         celery_app,
         celery_worker,
-        running_task_5):
-    configure_result_app(celery_app, 'blue_sky')
+        workflow_node_1,
+        obs):
+    configure_combined_app(celery_app, 'blue_sky')
 
-    result = process_failed_execution.apply_async(
-        (5, ),
-        queue='result')
-    time.sleep(10)
-    outpt = result.get()
+    workflow_node_id = 1
+    priority = 50
+
+    run_delay = 2,
+    finished_delay = 3
+
+    try:
+        shutil.rmtree(
+            'example_data/1/jobs/job_1/tasks/task_1/input_1.json',
+            ignore_errors=True)
+    except Exception as e:
+        _log.error(str(e))
+
+    run_celery_task_async_mock = Mock(
+        return_value=('', ''),
+        side_effect=mock_run_celery_task)
+
+    with patch(
+        'workflow_client.worker_client.run_celery_task.apply_async',
+        run_celery_task_async_mock):
+        result = create_job.apply_async(
+            (workflow_node_id,
+             obs.id,
+             priority),
+            queue='workflow')
+        time.sleep(10)
+        created_job_id = result.get()
 
     assert not result.failed()
 
-
-@pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='test.workflow.test_result_worker')
-def test_process_pbs_id(
-        celery_app,
-        celery_worker,
-        task_5):
-    configure_result_app(celery_app, 'blue_sky')
-
-    mock_pbs_id = "123"
-
-    assert task_5.pbs_id != mock_pbs_id
-    assert task_5.run_state.name == 'PENDING'
-
-    result = process_pbs_id.apply_async(
-        (task_5.id, mock_pbs_id),
-        queue='result')
-    time.sleep(10)
-    outpt = result.get()
-
-    assert not result.failed()
-    updated_task = Task.objects.get(id=task_5.id)
-    assert updated_task.pbs_id == mock_pbs_id
-    assert updated_task.run_state.name == 'QUEUED'
+    updated_task = Task.objects.get(
+        job_id=created_job_id)
+    assert updated_task.run_state.id == \
+        RunState.objects.get(name='SUCCESS').id
+    run_celery_task_async_mock.assert_called()
 
 
 # circular imports
 from workflow_engine.models.task import Task
+from workflow_engine.models.run_state import RunState
 

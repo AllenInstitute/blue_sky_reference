@@ -42,57 +42,10 @@ FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 
-RENDER_SERVICE_URL = 'renderservice'
-RENDER_SERVICE_PORT = '8080'
-RENDER_SERVICE_USER = 'test_user'
-RENDER_SERVICE_PROJECT = 'MM2'
-RENDER_STACK_NAME = 'test_stack'
-RENDER_CLIENT_SCRIPTS = '/path/to/render/scripts'
-RENDER_POINT_MATCH_COLLECTION_NAME = 'default_point_matches'
-MATLAB_SOLVER_PATH='/allen/aibs/pipeline/image_processing/volume_assembly/EMAligner/dev/allen_templates'
-MONTAGE_SOLVER_BIN=os.path.join(MATLAB_SOLVER_PATH, 'solve_montage_SL')
-RENDER_CLIENT_BASE_PATH='/allen/aibs/pipeline/image_processing/volume_assembly/render-jars/dev'
-RENDER_CLIENT_SCRIPTS = os.path.join(RENDER_CLIENT_BASE_PATH, 'scripts')
-RENDER_SPARK_JARFILE = os.path.join(RENDER_CLIENT_BASE_PATH, 'render-ws-spark-client-standalone.jar')
-RENDER_CLIENT_JAR = os.path.join(RENDER_CLIENT_BASE_PATH, 'render-ws-java-client-standalone.jar')
-
-
-FIJI_PATH = \
-    '/allen/aibs/pipeline/image_processing/volume_assembly' + \
-    '/Fiji.app/ImageJ-linux64'
-SPARK_HOME='/allen/aibs/pipeline/image_processing/volume_assembly/utils/spark'
-GRID_SIZE = 3
-HEAP_SIZE = 10
-INITIAL_SIGMA = 1.6
-STEPS = 3
-MIN_OCTAVE_SIZE = 800
-MAX_OCTAVE_SIZE = 1200
-FD_SIZE = 4
-FD_BINS = 8
-
-ROD = 0.92
-MAX_EPSILON = 50
-MIN_INLIER_RATIO = 0.0
-MIN_NUMBER_INLIERS = 5
-EXPECTED_MODEL_INDEX = 1
-MULTIPLE_HYPOTHESES = True
-REJECT_IDENTITY = True
-IDENTITY_TOLERANCE = 5.0
-TILES_ARE_IN_PLACE = True
-DESIRED_MODEL_INDEX = 0
-REGULARIZE = False
-MAX_ITERATIONS_OPTIMIZE = 2000
-MAX_PLATEAU_WIDTH_OPTIMIZE = 200
-DIMENSION = 5
-LAMBDA_VAL = 0.01
-CLEAR_TRANSFORM = True
-VISUALIZE = False
-
-CHUNK_DEFAULTS = {
-    'overlap': 2,
-    'start_z': 1,
-    'chunk_size': 10
-}
+QMASTER_HOST = 'example.org'
+QMASTER_PORT = 1234
+QMASTER_USERNAME = 'mock_user'
+QMASTER_PASSWORD = 'crd'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -227,6 +180,12 @@ LOGGING = {
         }
     },
     'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'stream': 'ext://sys.stdout'
+        },
         'file': {
             'class': 'logging.handlers.RotatingFileHandler',
             'level': 'DEBUG',
@@ -244,30 +203,30 @@ LOGGING = {
 #            'propagate': True,
 #        },
         'blue_sky': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'WARN',
             'propagate': True,
         },
         'test_output': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'workflow_engine': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'celery': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'celery.task': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
-        }        
+        }
     }
 }
 CELERYD_HIJACK_ROOT_LOGGER = False
