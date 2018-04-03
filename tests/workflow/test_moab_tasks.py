@@ -35,8 +35,14 @@
 #
 import pytest
 from workflow_client.celery_pbs_tasks import configure_pbs_app
+from django.conf import settings
+from workflow_engine.models.run_state import RunState
+from tests.nb_utils.test_moab_api \
+    import moab_dict, task_status_dict_queued
 from workflow_client.celery_moab_tasks \
     import check_pbs_status
+from tests.workflow.workflow_fixtures \
+    import run_states, task_5, running_task_5, obs, mock_executable
 from django.test.utils import override_settings
 from celery.contrib.pytest \
     import celery_app, celery_worker
@@ -79,16 +85,6 @@ def celery_includes():
 
 
 @pytest.fixture
-def workflow_engine_task_data():
-    return """id,run_state,start_run_time,end_run_time,duration,pbs_id
-1,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,11
-2,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,22
-3,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,33
-4,11,2008-07-06T05:04:03,2009-08-07T06:05:04,09:08:07,44
-""".encode('utf-8')
-
-
-@pytest.fixture
 def mock_moab_result():
     return [ {
         'name': str(i),
@@ -98,6 +94,7 @@ def mock_moab_result():
     } for i in [2, 4] ]
 
 
+@pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
     UI_HOST='example.org',
@@ -108,26 +105,26 @@ def mock_moab_result():
 def test_check_pbs_status(
     celery_app,
     celery_worker,
-    workflow_engine_task_data,
-    mock_moab_result):
-    with patch(
-        'workflow_client.nb_utils.moab_api.moab_query',
-        Mock(return_value=mock_moab_result)) as pbsf:
-        with patch('workflow_client.nb_utils.task_monitor.request_task_json',
-                   Mock(return_value=workflow_engine_task_data)):
-            configure_pbs_app(celery_app, 'blue_sky')
+    task_5,
+    moab_dict):
 
-            result = check_pbs_status.apply_async(
-                exchange='blue_sky',
-                queue='pbs')
+    task_5.run_state = RunState.get_queued_state()
+    task_5.save()
 
-            while not result.ready():
-                time.sleep(1)
+    with patch('workflow_client.nb_utils.moab_api.moab_query',
+               Mock(return_value=moab_dict)) as mq:
+        configure_pbs_app(celery_app, 'blue_sky')
+        result = check_pbs_status.apply_async(
+            exchange='blue_sky',
+            queue=settings.PBS_MESSAGE_QUEUE_NAME)
 
-            # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
-            time.sleep(10)
-            r = list(result.get())
-            print(r)
-            #assert set(r) == {1, 2, 3, 4}
+        while not result.ready():
+            time.sleep(1)
 
-    pbsf.assert_called()
+        # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
+        time.sleep(10)
+        r = result.get()
+        print(r)
+        #assert set(r) == {1, 2, 3, 4}
+
+    mq.assert_called()

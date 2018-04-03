@@ -22,6 +22,8 @@ PBS_FINISH_MODULE='workflow_client.pbs_execution_finish'
 MESSAGE_QUEUE_NAME = 'blue_sky'
 INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
 CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
+MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
+RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
 SPARK_MESSAGE_QUEUE_NAME = 'spark_' + MESSAGE_QUEUE_NAME
 PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
 
@@ -48,7 +50,7 @@ WORKFLOW_CONFIG_YAML = CONFIG_DIR + '/workflow_config.yml'
 QMASTER_HOST = 'hpc-login.corp.alleninstitute.org'
 QMASTER_PORT = 22
 QMASTER_USERNAME = 'timf'
-QMASTER_PASSWORD = CONFIG_DIR + '/blue_sky/config/crd'
+QMASTER_PASSWORD = CONFIG_DIR + 'crd'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -170,45 +172,52 @@ LOGGING = {
         }
     },    
     'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'stream': 'ext://sys.stdout'
+        },
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
+            'formatter': 'detailed',
             'filename': os.environ.get('DEBUG_LOG',
                                        'logs/debug.log'),
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'WARN',
             'propagate': True,
         },
         'blue_sky': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'WARN',
             'propagate': True,
         },
         'workflow_engine': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'workflow_client': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'celery': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'celery.task': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         }
     }
 }
 
-CELERYD_HIJACK_ROOT_LOGGER = False
+CELERYD_HIJACK_ROOT_LOGGER = True
