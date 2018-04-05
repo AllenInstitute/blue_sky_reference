@@ -4,8 +4,9 @@ executables:
         name: 'Mock Executable'
         path: 'python'
         args:
-        - '-m'
-        - "workflow_client.mock_executable"
+        - "mock_executable"
+        environment:
+        - PYTHONPATH=/allen/aibs/pipeline/image_processing/volume_assembly/workflow_conf/staging_old/bin
         remote_queue: 'pbs'
         pbs_queue: 'emconnectome'
         pbs_processor: 'nodes=1:ppn=1'

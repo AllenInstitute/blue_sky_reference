@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+APP_PACKAGE = 'blue_sky'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = BASE_DIR
@@ -19,13 +21,15 @@ PROJECT_ROOT = BASE_DIR
 #BASE_FILE_PATH = \
 #    '/allen/programs/celltypes/workgroups/array_tomography/blue_sky/files/'
 BASE_FILE_PATH = 'example_data'
-PBS_FINISH_PATH = \
-    '/allen/programs/celltypes/workgroups/array_tomography/blue_sky' + \
-    '/at_em_imaging_workflow/pbs_execution_finish.py'
 
-MESSAGE_QUEUE_NAME = 'at_em_imaging_workflow'
+MESSAGE_QUEUE_NAME = APP_PACKAGE
 INGEST_QUEUE_NAME = 'em_2d_montage_ingest'
 CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
+WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
+INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
+MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
+PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
+RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
 # CELERY_DEFAULT_QUEUE = 'celery_' + MESSAGE_QUEUE_NAME
 CELERY_RESULT_BACKEND = 'django-db'
 
@@ -39,57 +43,10 @@ FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 
-RENDER_SERVICE_URL = 'renderservice'
-RENDER_SERVICE_PORT = '8080'
-RENDER_SERVICE_USER = 'test_user'
-RENDER_SERVICE_PROJECT = 'MM2'
-RENDER_STACK_NAME = 'test_stack'
-RENDER_CLIENT_SCRIPTS = '/path/to/render/scripts'
-RENDER_POINT_MATCH_COLLECTION_NAME = 'default_point_matches'
-MATLAB_SOLVER_PATH='/allen/aibs/pipeline/image_processing/volume_assembly/EMAligner/dev/allen_templates'
-MONTAGE_SOLVER_BIN=os.path.join(MATLAB_SOLVER_PATH, 'solve_montage_SL')
-RENDER_CLIENT_BASE_PATH='/allen/aibs/pipeline/image_processing/volume_assembly/render-jars/dev'
-RENDER_CLIENT_SCRIPTS = os.path.join(RENDER_CLIENT_BASE_PATH, 'scripts')
-RENDER_SPARK_JARFILE = os.path.join(RENDER_CLIENT_BASE_PATH, 'render-ws-spark-client-standalone.jar')
-RENDER_CLIENT_JAR = os.path.join(RENDER_CLIENT_BASE_PATH, 'render-ws-java-client-standalone.jar')
-
-
-FIJI_PATH = \
-    '/allen/aibs/pipeline/image_processing/volume_assembly' + \
-    '/Fiji.app/ImageJ-linux64'
-SPARK_HOME='/allen/aibs/pipeline/image_processing/volume_assembly/utils/spark'
-GRID_SIZE = 3
-HEAP_SIZE = 10
-INITIAL_SIGMA = 1.6
-STEPS = 3
-MIN_OCTAVE_SIZE = 800
-MAX_OCTAVE_SIZE = 1200
-FD_SIZE = 4
-FD_BINS = 8
-
-ROD = 0.92
-MAX_EPSILON = 50
-MIN_INLIER_RATIO = 0.0
-MIN_NUMBER_INLIERS = 5
-EXPECTED_MODEL_INDEX = 1
-MULTIPLE_HYPOTHESES = True
-REJECT_IDENTITY = True
-IDENTITY_TOLERANCE = 5.0
-TILES_ARE_IN_PLACE = True
-DESIRED_MODEL_INDEX = 0
-REGULARIZE = False
-MAX_ITERATIONS_OPTIMIZE = 2000
-MAX_PLATEAU_WIDTH_OPTIMIZE = 200
-DIMENSION = 5
-LAMBDA_VAL = 0.01
-CLEAR_TRANSFORM = True
-VISUALIZE = False
-
-CHUNK_DEFAULTS = {
-    'overlap': 2,
-    'start_z': 1,
-    'chunk_size': 10
-}
+QMASTER_HOST = 'example.org'
+QMASTER_PORT = 1234
+QMASTER_USERNAME = 'mock_user'
+QMASTER_PASSWORD = 'crd'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -222,12 +179,22 @@ LOGGING = {
             'class': 'logging.Formatter',
             'format': '%(asctime)s %(name)-15s %(levelname)-8s %(processName)-10s %(message)s'
         }
-    },    
+    },
     'handlers': {
-        'file': {
+        'console': {
+            'class': 'logging.StreamHandler',
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.environ.get('DEBUG_LOG', 'debug_test.log')
+            'formatter': 'detailed',
+            'stream': 'ext://sys.stdout'
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'filename': os.environ.get('DEBUG_LOG', 'debug_test.log'),
+            'mode': 'a',
+            'maxBytes': 1024*1024*20,
+            'backupCount': 2,
         },
     },
     'loggers': {
@@ -237,33 +204,33 @@ LOGGING = {
 #            'propagate': True,
 #        },
         'blue_sky': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'WARN',
             'propagate': True,
         },
         'test_output': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'workflow_engine': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'celery': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'celery.task': {
-            'handlers': ['file'],
+            'handlers': ['console', 'file'],
             'level': 'DEBUG',
             'propagate': True,
-        }        
+        }
     }
 }
-CELERYD_HIJACK_ROOT_LOGGER = False
+CELERYD_HIJACK_ROOT_LOGGER = True
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 

@@ -16,20 +16,20 @@ APP_PACKAGE = 'blue_sky'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_FILE_PATH = '/data/aibstemp/timf/example_data'
+BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
 
-PBS_FINISH_PATH = '/data/aibstemp/timf/bswe'
-MESSAGE_QUEUE_NAME = 'blue_sky'
+MESSAGE_QUEUE_NAME = APP_PACKAGE
 INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
+WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
 CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
+MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
+RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
 SPARK_MESSAGE_QUEUE_NAME = 'spark_' + MESSAGE_QUEUE_NAME
 PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
 
 PBS_CONDA_HOME='/shared/utils.x86_64/python-2.7'
-PBS_FINISH_MODULE='workflow_client.pbs_execution_finish'
-PBS_PYTHONPATH='/data/aibstemp/timf/bswe'
+PBS_PYTHONPATH='/data/aibstemp/timf/example_data/at_em_imaging_workflow:/data/aibstemp/timf/example_data/blue_sky_workflow_engine'
 PBS_CONDA_ENV='/allen/aibs/pipeline/image_processing/volume_assembly/conda_envs/blue_sky/py36'
-PBS_RESPONSE_CONDA_ENV='/allen/aibs/pipeline/image_processing/volume_assembly/conda_envs/blue_sky/py36'
 
 MESSAGE_QUEUE_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 MESSAGE_QUEUE_USER = 'blue_sky_user'
@@ -42,13 +42,13 @@ RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 
 CONFIG_DIR = '/blue_sky/config'
-BLUE_SKY_SETTINGS = '/data/aibstemp/timf/bswe/blue_sky_settings.yml'
+BLUE_SKY_SETTINGS = '/blue_sky/config/blue_sky_settings.yml'
 WORKFLOW_CONFIG_YAML = CONFIG_DIR + '/workflow_config.yml'
 
 QMASTER_HOST = 'hpc-login.corp.alleninstitute.org'
 QMASTER_PORT = 22
 QMASTER_USERNAME = 'timf'
-QMASTER_PASSWORD = CONFIG_DIR + '/crd'
+QMASTER_PASSWORD = CONFIG_DIR + 'crd'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -159,3 +159,63 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'detailed': {
+            'class': 'logging.Formatter',
+            'format': '%(asctime)s %(name)-15s %(levelname)-8s %(processName)-10s %(message)s'
+        }
+    },    
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'stream': 'ext://sys.stdout'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'detailed',
+            'filename': os.environ.get('DEBUG_LOG',
+                                       'logs/debug.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+        'blue_sky': {
+            'handlers': ['console', 'file'],
+            'level': 'WARN',
+            'propagate': True,
+        },
+        'workflow_engine': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'workflow_client': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'celery': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'celery.task': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    }
+}
+
+CELERYD_HIJACK_ROOT_LOGGER = True

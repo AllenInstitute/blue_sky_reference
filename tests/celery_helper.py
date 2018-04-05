@@ -1,4 +1,6 @@
 import pytest
+from pkg_resources import resource_filename
+import os
 
 
 @pytest.fixture(scope='session')
@@ -7,6 +9,17 @@ def celery_config():
         'broker_url': 'memory://',
         'result_backend': 'rpc'
     }
+
+
+@pytest.fixture(scope='session')
+def celery_worker_parameters():
+    return {
+        'queues': ('pbs', 'ingest')
+    }
+
+@pytest.fixture(scope='session')
+def celery_enable_logging():
+    return True
 
 
 @pytest.fixture(scope='session')
@@ -22,7 +35,3 @@ def blue_sky_settings():
     import workflow_client.celery_ingest_consumer as celery_ingest_consumer
 
     return celery_ingest_consumer
-
-
-from workflow_client.celery_ingest_consumer import ingest_task
-from workflow_client.client_settings import settings_attr_dict

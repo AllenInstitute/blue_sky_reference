@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2017. Allen Institute. All rights reserved.
+# Copyright 2017-2018. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -61,3 +61,4 @@ def test_get_search_data(rf):
     request = rf.get('/workflow_engine/executables/2')
     response = record_view.get_search_data(request)
     assert response.status_code == 200
+
