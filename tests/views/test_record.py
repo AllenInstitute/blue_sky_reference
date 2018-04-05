@@ -61,3 +61,4 @@ def test_get_search_data(rf):
     request = rf.get('/workflow_engine/executables/2')
     response = record_view.get_search_data(request)
     assert response.status_code == 200
+
