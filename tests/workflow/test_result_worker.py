@@ -34,12 +34,12 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_engine.celery.workflow_tasks \
-    import process_running, process_finished_execution, \
-    process_failed_execution, process_pbs_id, configure_result_app
 from celery.contrib.pytest import celery_app, celery_worker
 import time
 from django.test.utils import override_settings
+from workflow_client.client_settings import configure_worker_app
+from workflow_engine.celery.result_tasks import process_running,\
+    process_finished_execution, process_failed_execution
 from tests.workflow.workflow_fixtures \
     import run_states, task_5, \
     running_task_5, mock_executable
@@ -90,7 +90,7 @@ def test_process_running(
         celery_app,
         celery_worker,
         task_5):
-    configure_result_app(celery_app, 'blue_sky')
+    configure_worker_app(celery_app, 'blue_sky')
 
     result = process_running.apply_async(
         (5, ),
@@ -111,7 +111,7 @@ def test_process_finished_execution(
         celery_app,
         celery_worker,
         running_task_5):
-    configure_result_app(celery_app, 'blue_sky')
+    configure_worker_app(celery_app, 'blue_sky')
 
     result = process_finished_execution.apply_async(
         (5, ),
@@ -132,7 +132,7 @@ def test_process_failed_execution(
         celery_app,
         celery_worker,
         running_task_5):
-    configure_result_app(celery_app, 'blue_sky')
+    configure_worker_app(celery_app, 'blue_sky')
 
     result = process_failed_execution.apply_async(
         (5, ),
@@ -141,35 +141,6 @@ def test_process_failed_execution(
     outpt = result.get()
 
     assert not result.failed()
-
-
-@pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='test.workflow.test_result_worker')
-def test_process_pbs_id(
-        celery_app,
-        celery_worker,
-        task_5):
-    configure_result_app(celery_app, 'blue_sky')
-
-    mock_pbs_id = "123"
-
-    assert task_5.pbs_id != mock_pbs_id
-    assert task_5.run_state.name == 'PENDING'
-
-    result = process_pbs_id.apply_async(
-        (task_5.id, mock_pbs_id),
-        queue='result')
-    time.sleep(10)
-    outpt = result.get()
-
-    assert not result.failed()
-    updated_task = Task.objects.get(id=task_5.id)
-    assert updated_task.pbs_id == mock_pbs_id
-    assert updated_task.run_state.name == 'QUEUED'
 
 
 # circular imports

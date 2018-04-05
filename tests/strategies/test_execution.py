@@ -165,9 +165,9 @@ def test_run_asynchronous_task(ex_strat):
                    enqueued_task_object_id=obs.id)
         tsk.save()
         with patch('workflow_engine'
-                   '.strategies'
-                   '.execution_strategy'
-                   '.run_celery_task'
+                   '.celery'
+                   '.moab_tasks'
+                   '.submit_moab_task'
                    '.apply_async') as mock_rat:
             ex_strat.run_asynchronous_task(tsk)
 

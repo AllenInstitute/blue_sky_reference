@@ -21,13 +21,12 @@ PROJECT_ROOT = BASE_DIR
 #BASE_FILE_PATH = \
 #    '/allen/programs/celltypes/workgroups/array_tomography/blue_sky/files/'
 BASE_FILE_PATH = 'example_data'
-PBS_FINISH_PATH = \
-    '/allen/programs/celltypes/workgroups/array_tomography/blue_sky' + \
-    '/at_em_imaging_workflow/pbs_execution_finish.py'
 
-MESSAGE_QUEUE_NAME = 'at_em_imaging_workflow'
+MESSAGE_QUEUE_NAME = APP_PACKAGE
 INGEST_QUEUE_NAME = 'em_2d_montage_ingest'
 CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
+WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
+INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
 MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
 PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
 RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME

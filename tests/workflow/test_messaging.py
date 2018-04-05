@@ -39,18 +39,16 @@ import time
 import celery
 from mock import Mock, patch
 import shutil
-from workflow_engine.models.job import Job
 from tests.workflow.workflow_fixtures \
     import run_states, workflow_node_1, obs, mock_executable
-from workflow_client.worker_client import create_job, run_server_command
-from workflow_client.celery_run_consumer import run_workflow_node_jobs_by_id
-from workflow_engine.celery.workflow_tasks \
-    import process_running, process_finished_execution, \
-    process_failed_execution, process_pbs_id
+from workflow_engine.celery.worker_tasks import create_job
+from workflow_engine.celery.result_tasks \
+    import process_running, process_finished_execution
 # TODO: stuff that requires moab worker
 from tests.workflow.messaging_combined_cofiguration \
     import configure_combined_app
 from celery.contrib.pytest import celery_app, celery_worker
+from workflow_engine.workflow_controller import WorkflowController
 import logging
 
 
@@ -75,7 +73,7 @@ def celery_config():
 @pytest.fixture(scope='session')
 def celery_worker_parameters():
     return {
-        'queues': ( 'workflow', 'pbs', 'result', 'null' )
+        'queues': ( 'workflow', 'moab', 'result', 'null' )
     }
 
 @pytest.fixture(scope='session')
@@ -87,22 +85,16 @@ def use_celery_app_trap():
 def celery_includes():
     return [
         'tests.workflow.test_messaging',
-        'tests.workflow.celery_signal_handlers'
+        'tests.workflow.celery_signal_handlers',
+        'workflow_engine.celery.moab_tasks'
     ]
 
-def mock_run_celery_task(args, *other_args, **kwargs):
-    (full_executable, task_id, logfile, use_pbs) = args
-
+def send_running_and_finished(task_id, pbs_file):
     _log.info(
-        'mock run_celery_task: '
-        'full_executable=%s '
-        'task_id=%d '
-        'logfile=%s '
-        'use_pbs=%s)',
-        full_executable,
+        'task id: %d'
+        'pbs_file=%s ',
         task_id,
-        logfile,
-        str(use_pbs))
+        pbs_file)
     process_running.apply_async(
             (task_id,),
             countdown=1,
@@ -120,9 +112,11 @@ def mock_run_celery_task(args, *other_args, **kwargs):
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='pbs',
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
+    MOAB_MESSAGE_QUEUE_NAME='moab',
+    WORKFLOW_MESSAGE_QUEUE_NAME='workflow',
+    RESULT_MESSAGE_QUEUE_NAME='result')
 @pytest.mark.celery(task_cls='test.workflow.test_messaging')
+@patch.object(WorkflowController, 'enqueue_next_queue')  # short circuit processing
 def test_create_job(
         celery_app,
         celery_worker,
@@ -143,13 +137,13 @@ def test_create_job(
     except Exception as e:
         _log.error(str(e))
 
-    run_celery_task_async_mock = Mock(
-        return_value=('', ''),
-        side_effect=mock_run_celery_task)
+    mock_submit_moab_task = Mock(
+        return_value='{todo moab result json here}',
+        side_effect=send_running_and_finished)
 
     with patch(
-        'workflow_client.worker_client.run_celery_task.apply_async',
-        run_celery_task_async_mock):
+        'workflow_engine.celery.moab_tasks.submit_job',
+        mock_submit_moab_task):
         result = create_job.apply_async(
             (workflow_node_id,
              obs.id,
@@ -158,13 +152,14 @@ def test_create_job(
         time.sleep(10)
         created_job_id = result.get()
 
+    mock_submit_moab_task.assert_called()
     assert not result.failed()
 
     updated_task = Task.objects.get(
         job_id=created_job_id)
     assert updated_task.run_state.id == \
         RunState.objects.get(name='SUCCESS').id
-    run_celery_task_async_mock.assert_called()
+    mock_submit_moab_task.assert_called()
 
 
 # circular imports

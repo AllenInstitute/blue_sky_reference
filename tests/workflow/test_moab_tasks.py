@@ -34,13 +34,12 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_client.celery_pbs_tasks import configure_pbs_app
-from django.conf import settings
 from workflow_engine.models.run_state import RunState
+from workflow_client.client_settings import configure_worker_app
 from tests.nb_utils.test_moab_api \
     import moab_dict, task_status_dict_queued
-from workflow_client.celery_moab_tasks \
-    import check_pbs_status
+from workflow_engine.celery.moab_tasks \
+    import check_moab_status
 from tests.workflow.workflow_fixtures \
     import run_states, task_5, running_task_5, obs, mock_executable
 from django.test.utils import override_settings
@@ -68,7 +67,7 @@ def celery_config():
 @pytest.fixture(scope='session')
 def celery_worker_parameters():
     return {
-        'queues': ( 'pbs', 'result', 'null' )
+        'queues': ( 'moab_blue_sky', 'result', 'null' )
     }
 
 
@@ -99,32 +98,32 @@ def mock_moab_result():
     APP_PACKAGE='blue_sky',
     UI_HOST='example.org',
     UI_PORT=888,
-    PBS_MESSAGE_QUEUE_NAME='pbs',
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.celery_moab_tasks')
+    MOAB_MESSAGE_QUEUE_NAME='moab_blue_sky')
+@pytest.mark.celery(task_cls='workflow_engine.celery.moab_tasks')
+@patch('workflow_client.nb_utils.moab_api.moab_query')
 def test_check_pbs_status(
+    mock_moab_query,
     celery_app,
     celery_worker,
     task_5,
     moab_dict):
+    mock_moab_query.return_value=moab_dict
 
     task_5.run_state = RunState.get_queued_state()
     task_5.save()
 
-    with patch('workflow_client.nb_utils.moab_api.moab_query',
-               Mock(return_value=moab_dict)) as mq:
-        configure_pbs_app(celery_app, 'blue_sky')
-        result = check_pbs_status.apply_async(
-            exchange='blue_sky',
-            queue=settings.PBS_MESSAGE_QUEUE_NAME)
+    configure_worker_app(celery_app, 'blue_sky')
 
-        while not result.ready():
-            time.sleep(1)
+    result = check_moab_status.apply_async(
+        queue='moab_blue_sky')
 
-        # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
-        time.sleep(10)
-        r = result.get()
-        print(r)
-        #assert set(r) == {1, 2, 3, 4}
+    while not result.ready():
+        time.sleep(1)
 
-    mq.assert_called()
+    # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
+    #result.wait(timeout=10)
+    r = result.get()
+    print(r)
+    #assert set(r) == {1, 2, 3, 4}
+
+    mock_moab_query.assert_called()

@@ -34,11 +34,10 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_engine.models.workflow_node import WorkflowNode
-from workflow_client.worker_client \
+from workflow_client.client_settings import configure_worker_app
+from mock import patch, call
+from workflow_engine.celery.worker_tasks \
     import create_job, queue_job
-from workflow_client.celery_ingest_consumer \
-    import configure_ingest_consumer_app
 from celery.contrib.pytest import celery_app, celery_worker
 import time
 from django.test.utils import override_settings
@@ -84,25 +83,44 @@ def celery_includes():
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
+    WORKFLOW_MESSAGE_QUEUE_NAME='workflow',
     CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
+@pytest.mark.celery(task_cls='workflow_engine.celery.worker_tasks')
+@patch('workflow_engine'
+       '.celery'
+       '.run_tasks'
+       '.run_workflow_node_jobs_by_id'
+       '.apply_async')
 def test_create_job(
+        run_job_mock,
         celery_app,
         celery_worker,
         task_5,
         obs):
-    configure_ingest_consumer_app(celery_app, 'blue_sky')
+    configure_worker_app(celery_app, 'blue_sky')
 
     workflow_node_id = 1
     priority = 50
+
+    num_jobs_before = Job.objects.count()
 
     result = create_job.apply_async(
         (workflow_node_id,
          obs.id,
          priority),
         queue='workflow')
+
     time.sleep(10)
     outpt = result.get()
+    run_job_mock.assert_called_once_with(
+        (1,), queue='workflow')
+
+    num_jobs_after = Job.objects.count()
+    assert num_jobs_after == num_jobs_before + 1
 
     assert not result.failed()
+
+
+# circular imports
+from workflow_engine.models.job import Job
+from workflow_engine.models.workflow_node import WorkflowNode

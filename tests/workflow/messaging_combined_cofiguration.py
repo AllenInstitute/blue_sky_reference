@@ -10,8 +10,8 @@ def configure_queues(app, name):
         binding(workflow_engine_exchange, routing_key='workflow')
     ]
 
-    pbs_routes = [
-        binding(workflow_engine_exchange, routing_key='pbs')
+    moab_routes = [
+        binding(workflow_engine_exchange, routing_key='moab')
     ]
 
     result_routes = [
@@ -23,22 +23,25 @@ def configure_queues(app, name):
 
     app.conf.task_queues = (
         Queue('workflow', workflow_routes),
-        Queue('pbs', pbs_routes),
+        Queue('moab', moab_routes),
         Queue('result', result_routes),
         Queue('null', null_routes))
 
 
 def route_task(name, args, kwargs, options, task=None, **kw):
     task_name = '.'.split(name)[-1]
-
-    if task_name in [
+    if task_name in {
+        'check_moab_status',
+        'submit_moab_task',
+        'kill_moab_task',
+        'run_task' }:
+        return { 
+            'queue': 'moab' }
+    elif task_name in {
         'create_job',
         'queue_job',
-        'run_workflow_node_jobs_by_id' ]:
+        'run_workflow_node_jobs_by_id' }:
         return { 'queue': 'workflow' }
-    elif task_name in [
-        'run_celery_task' ]:
-        return { 'queue': 'pbs' }
     elif task_name in [ 
         'process_pbs_id,'
         'process_running',
