@@ -34,12 +34,14 @@ def obs():
 @pytest.fixture
 def task_5(run_states):
     workflow, _ = Workflow.objects.update_or_create(
-        id=1)
+        id=1,
+        name="analyze",
+        ingest_strategy_class='blue_sky.strategies.mock_ingest.MockIngest')
     job_queue, _ = JobQueue.objects.update_or_create(
         id=7,
         name='Mock Analyze',
         enqueued_object_class='blue_sky.models.observation.Observation',
-        job_strategy_class='blue_sky.strategies.mock_analyze.MockAnalyze',
+        job_strategy_class='blue_sky.strategies.mock_ingest.MockIngest',
         defaults={})
     workflow_node, _ = WorkflowNode.objects.update_or_create(
         id=1,
@@ -79,7 +81,9 @@ def mock_executable():
 def workflow_node_1(run_states,
                     mock_executable):
     workflow, _ = Workflow.objects.update_or_create(
-        id=1)
+        id=1,
+        name='analyze',
+        ingest_strategy_class='blue_sky.strategies.mock_ingest.MockIngest')
     job_queue, _ = JobQueue.objects.update_or_create(
         id=7,
         name='Mock Analyze',

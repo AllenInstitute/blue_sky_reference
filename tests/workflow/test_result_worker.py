@@ -106,7 +106,7 @@ def test_process_running(
     APP_PACKAGE='blue_sky',
     PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
     CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
+@pytest.mark.celery(task_cls='workflow_engine.celery.workflow_tasks')
 def test_process_finished_execution(
         celery_app,
         celery_worker,

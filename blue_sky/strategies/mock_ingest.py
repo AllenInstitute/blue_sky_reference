@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2017. Allen Institute. All rights reserved.
+# Copyright 2017-2018. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -38,7 +38,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from workflow_engine.strategies.ingest_strategy import IngestStrategy
 from blue_sky.models.observation import Observation
 import logging
-import uuid
 
 class MockIngest(IngestStrategy):
     _log = logging.getLogger('blue-sky.mock_ingest')
@@ -48,26 +47,18 @@ class MockIngest(IngestStrategy):
         return 'mock_workflow'
 
     def create_enqueued_object(self, message, tags=None):
-        obs = Observation.objects.create_or_update(
+        (obs, _) = Observation.objects.update_or_create(
             arg1 = message['arg1'],
             arg2 = message['arg2'],
+            arg3 = message['arg3'],
             defaults={
-                'nested_arg': message['nested']['nested_arg']
+                'proc_state': 'PENDING'  # TODO: from settings
             })
 
-        if 'ReferenceSet' in tags:
-            return self.create_reference_set(message)
-        elif 'EMMontageSet' in tags:
-            return self.create_em_montage_set(message)
-        else:
-            return None
+        return obs, None
 
-    def create_em_montage_set(self, message):
-        study = self.create_study(message)
 
-        return study
-
-    def generate_response(self, enqueued_object):
+    def generate_response(self, observation):
         return {
-            'enqueued_object_uid': enqueued_object.uid
+            'observation_id': observation.id
         }

@@ -45,32 +45,6 @@ def test_is_ingest_strategy(in_strat):
     assert is_ingest is True
 
 
-@pytest.mark.django_db
-def test_ingest_message(in_strat):
-    message = Mock()
-    tags = ['a', 'b']
-
-    with patch.object(WorkflowController, 'start_workflow'):
-        in_strat.ingest_message(message, tags)
-
-
-@pytest.mark.django_db
-def test_ingest_message_no_tags(in_strat):
-    message = Mock()
-
-    with patch.object(WorkflowController, 'start_workflow'):
-        in_strat.ingest_message(message)
-
-
-# TODO: remove hardcoded model
-@pytest.mark.django_db
-def test_ingest_message_HARDCODED(in_strat):
-    message = Mock()
-
-    with patch.object(WorkflowController, 'start_workflow'):
-        in_strat.ingest_message(message, tags='ReferenceSet')
-
-
 def test_run_task(in_strat):
     task = Mock()
 

@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2017. Allen Institute. All rights reserved.
+# Copyright 2018. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -34,22 +34,37 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-#from tests.celery_helper import *
-from mock import patch, Mock, MagicMock
-from workflow_client.client_settings import settings_attr_dict
-from workflow_engine.celery.ingest_tasks import ingest_task
 from celery.contrib.pytest import celery_app, celery_worker
+import time
+from django.test.utils import override_settings
+from workflow_client.client_settings import configure_worker_app
+from workflow_engine.celery.ingest_tasks import ingest_task
+from blue_sky.models.observation import Observation
+from tests.workflow.workflow_fixtures \
+    import run_states, workflow_node_1, task_5, \
+    running_task_5, mock_executable
 
 
 @pytest.fixture(scope='session')
 def celery_enable_logging():
     return True
 
+
 @pytest.fixture(scope='session')
 def celery_config():
     return {
         'broker_url': 'memory://',
-        'result_backend': 'rpc'
+        'result_backend': 'rpc',
+        'task_default_exchange': 'blue_sky',
+        'task_default_routing_key': 'result',
+        'task_default_queue': 'result'
+    }
+
+
+@pytest.fixture(scope='session')
+def celery_worker_parameters():
+    return {
+        'queues': ( 'ingest', 'workflow', 'result', 'null' )
     }
 
 
@@ -61,62 +76,39 @@ def use_celery_app_trap():
 @pytest.fixture(scope='session')
 def celery_includes():
     return [
-        'tests.workflow.test_ingest_strategy'
+        'workflow_engine.celery.ingest_tasks',
+        'tests.workflow.celery_signal_handlers'
     ]
 
 
+@pytest.mark.django_db
+@override_settings(
+    APP_PACKAGE='blue_sky',
+    INGEST_MESSAGE_QUEUE_NAME='ingest',
+    RESULT_MESSAGE_QUEUE_NAME='result')
 @pytest.mark.celery(task_cls='workflow_engine.celery.ingest_tasks')
-def test_ingest_task(
+def test_ingest(
         celery_app,
-        celery_worker):
-    workflow = 'em_2d_montage'
-    message = {'log_level': 'ERROR', 'acquisition_data': {
-        'microscope_type': 'TEMCA', 'microscope': 'temca2', 'camera': {
-            'width': 3840,
-            'model': 'Ximea CB200MG',
-            'camera_id': '44500428',
-            'height': 3840
-        },
-            'acquisition_time': '2017-11-09T03:15:54+00:00',
-            'overlap': 0.15
-        },
-        'metafile': '/allen/programs/celltypes/workgroups/em-connectomics/data/WorkFlow_test/000103/0/_metadata_20171108191554_15685_1R_0093_test_01_000103_0_.json',
-        'reference_set_id': '9972961f-ce70-48d6-8ddd-461ccc84bcb6',
-        'storage_directory': '/allen/programs/celltypes/workgroups/em-connectomics/data/WorkFlow_test/000103/0/',
-        'section': {
-            'specimen': '15685_1R',
-            'z_index': 103,'sample_holder': '000103'
-        }
-    }
-    tags = ['ReferenceSetTest']
+        celery_worker,
+        workflow_node_1,):
+    configure_worker_app(celery_app, 'blue_sky')
 
-    rv = MagicMock(
-        return_value=settings_attr_dict({
-            'WORKFLOW_CONFIG_YAML': 'test.yml'}))
-
-    ingest_strategies = {
-        'em_2d_montage': 'development.strategies.in_strategy.InStrategy'
+    message = {
+        'arg1': 5,
+        'arg2': "Whatever",
+        'arg3': "Something"
     }
 
-    mock_ingest_strategy = Mock()
-    mock_ingest_strategy.return_value.ingest_message = MagicMock(
-        return_value = 'mock return')
+    tags = ['sunday']
 
-    with patch(
-        'workflow_engine.celery.ingest_tasks.load_settings_yaml',
-        rv) as load_settings_yaml_mock:
-        with patch(
-            'workflow_engine.celery.ingest_tasks.load_ingest_strategy_names',
-            Mock(return_value=ingest_strategies)):
-            #Mock(return_value=None)):
-            with patch(
-                'workflow_engine.celery.ingest_tasks.import_class',
-                Mock(return_value=mock_ingest_strategy)):
-                result = ingest_task.delay(workflow, message, tags)
-                outpt = result.get()
-
-    assert outpt == 'mock return'
-
+    result = ingest_task.apply_async(
+        ('analyze', message, tags),
+        queue='ingest')
     assert not result.failed()
-    assert result.state == 'SUCCESS'
-    load_settings_yaml_mock.assert_called_once()
+
+    response_message = result.wait(10)
+
+    obs_id = response_message["observation_id"]
+    new_observation = Observation.objects.get(id=obs_id)
+    assert new_observation is not None
+
