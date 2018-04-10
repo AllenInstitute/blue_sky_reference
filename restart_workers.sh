@@ -3,7 +3,7 @@
 pkill -9 -f "manage"
 pkill -9 -f "beat"
 
-# export MOAB_AUTH='<user>:<pass>'
+export MOAB_AUTH='timf:2 Need a safe house'
 
 export BASE_DIR=/blue_sky
 
@@ -13,6 +13,7 @@ rm ${BASE_DIR}/logs/moab.log
 rm ${BASE_DIR}/logs/workflow.log
 rm ${BASE_DIR}/logs/result.log
 rm ${BASE_DIR}/logs/beat.log
+rm celerybeat.pid
 
 
 export WORKFLOW_CONFIG_YAML=$(python -c "import ${DJANGO_SETTINGS_MODULE} as settings; print(settings.WORKFLOW_CONFIG_YAML)")

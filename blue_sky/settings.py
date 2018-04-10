@@ -82,7 +82,8 @@ INSTALLED_APPS = [
     'workflow_engine',
     'workflow_client',
     'django_celery_results',
-    'blue_sky'
+    'blue_sky',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [

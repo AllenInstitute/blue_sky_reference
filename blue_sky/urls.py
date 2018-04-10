@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from workflow_engine.views import home_view
+
 
 app_name = 'blue_sky'
 
 urlpatterns = [
+    url(r'^$', home_view.index, name='index'),
     url(r'^workflow_engine/', include('workflow_engine.urls')),
-    # url('^%s/' % (app_name), include(app_name + '.urls')),
     url(r'^admin/', admin.site.urls),
 ]
