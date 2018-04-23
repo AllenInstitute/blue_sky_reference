@@ -1,6 +1,5 @@
 import pytest
 from mock import Mock, patch, MagicMock
-from workflow_engine.workflow_controller import WorkflowController
 from workflow_engine.strategies.ingest_strategy \
     import IngestStrategy
 

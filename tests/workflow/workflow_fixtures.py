@@ -32,6 +32,46 @@ def obs():
 
 
 @pytest.fixture
+def waiting_task(run_states):
+    workflow, _ = Workflow.objects.update_or_create(
+        id=1,
+        name="analyze",
+        ingest_strategy_class='blue_sky.strategies.mock_ingest.MockIngest')
+    job_queue, _ = JobQueue.objects.update_or_create(
+        id=8,
+        name='Mock Wait',
+        enqueued_object_class='blue_sky.models.observation.Observation',
+        job_strategy_class='blue_sky.strategies.mock_wait.MockWait',
+        defaults={})
+    workflow_node, _ = WorkflowNode.objects.update_or_create(
+        id=1,
+        defaults={
+            'workflow': workflow,
+            'job_queue': job_queue})
+    waiter_obs,_ = Observation.objects.update_or_create(
+        id=72,
+        arg1='5',
+        arg2='Whatever',
+        arg3='Something',
+        proc_state='CONTEMPLATIVE')
+    job, _ = Job.objects.update_or_create(
+        id=9,
+        defaults = {
+            'enqueued_object_id': waiter_obs.id,
+            'run_state': run_states['PENDING'],
+            'workflow_node': workflow_node})
+#     task, _ = Task.objects.update_or_create(
+#         id=8,
+#         job=job,
+#         defaults={
+#             'full_executable': 'mock_task',
+#             'run_state': run_states['PENDING'],
+#             'start_run_time': timezone.now()})
+
+    return job
+
+
+@pytest.fixture
 def task_5(run_states):
     workflow, _ = Workflow.objects.update_or_create(
         id=1,

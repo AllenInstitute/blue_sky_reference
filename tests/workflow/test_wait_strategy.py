@@ -34,15 +34,15 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_client.client_settings import configure_worker_app
-from mock import patch, call
-from workflow_engine.celery.worker_tasks \
-    import create_job, queue_job
 from celery.contrib.pytest import celery_app, celery_worker
 import time
 from django.test.utils import override_settings
+from workflow_client.client_settings import configure_worker_app
+from workflow_engine.celery.ingest_tasks import ingest_task
+from blue_sky.models.observation import Observation
+from workflow_engine.celery.run_tasks import run_workflow_node_jobs_by_id
 from tests.workflow.workflow_fixtures \
-    import run_states, task_5, running_task_5, obs
+    import run_states, waiting_task
 
 
 @pytest.fixture(scope='session')
@@ -64,8 +64,9 @@ def celery_config():
 @pytest.fixture(scope='session')
 def celery_worker_parameters():
     return {
-        'queues': ( 'workflow', 'result', 'null' )
+        'queues': ( 'ingest', 'workflow', 'result', 'null' )
     }
+
 
 @pytest.fixture(scope='session')
 def use_celery_app_trap():
@@ -75,7 +76,7 @@ def use_celery_app_trap():
 @pytest.fixture(scope='session')
 def celery_includes():
     return [
-        'tests.workflow.test_result_worker',
+        'workflow_engine.celery.ingest_tasks',
         'tests.workflow.celery_signal_handlers'
     ]
 
@@ -84,42 +85,22 @@ def celery_includes():
 @override_settings(
     APP_PACKAGE='blue_sky',
     WORKFLOW_MESSAGE_QUEUE_NAME='workflow',
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_engine.celery.worker_tasks')
-@patch('workflow_engine'
-       '.celery'
-       '.run_tasks'
-       '.run_workflow_node_jobs_by_id'
-       '.apply_async')
-def test_create_job(
-        run_job_mock,
+    RESULT_MESSAGE_QUEUE_NAME='result')
+@pytest.mark.celery(task_cls='tests.workflow.test_wait_strategy')
+def test_ingest(
         celery_app,
         celery_worker,
-        task_5,
-        obs):
+        waiting_task):
     configure_worker_app(celery_app, 'blue_sky')
 
-    workflow_node_id = 1
-    priority = 50
-
-    num_jobs_before = Job.objects.count()
-
-    result = create_job.apply_async(
-        (workflow_node_id,
-         obs.id,
-         priority),
+    result = run_workflow_node_jobs_by_id.apply_async(
+        (1,),
         queue='workflow')
-
-    time.sleep(10)
-    outpt = result.get()
-    run_job_mock.assert_called_once_with(
-        (1,), queue='workflow')
-
-    num_jobs_after = Job.objects.count()
-    assert num_jobs_after == num_jobs_before + 1
-
     assert not result.failed()
 
+    response_message = result.wait(10)
 
-# circular imports
-from workflow_engine.models.job import Job
+    assert str(response_message) == 'done'
+    new_observation = Observation.objects.first()
+    assert new_observation is not None
+
