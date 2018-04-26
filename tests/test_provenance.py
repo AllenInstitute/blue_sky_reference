@@ -41,13 +41,6 @@ from tests.workflow_configurations \
     import TEST_CONFIG_YAML_TWO_NODES
 from workflow_engine.provenance import Provenance
 import simplejson as json
-
-
-try:
-    import __builtin__ as builtins  # @UnresolvedImport
-except:
-    import builtins  # @UnresolvedImport
-
 _log = logging.getLogger('test_provenance')
 
 _EXAMPLE_FREEZE="""
@@ -77,7 +70,7 @@ WORKFLOW_CONFIG_YAML: ./workflow_config.yml
 
 @pytest.mark.skipif(True, reason='written')
 def test_parse_freeze():
-    with patch(builtins.__name__ + ".open",
+    with patch("builtins.open",
         mock_open(read_data=_EXAMPLE_FREEZE),
         create=True) as mo:
         p = Provenance()
@@ -91,7 +84,7 @@ def test_parse_freeze():
 @patch.dict(os.environ,
                  {'BLUE_SKY_SETTINGS': 'blue_sky_test_config.yml'})
 def test_record_blue_sky_configuration():
-    with patch(builtins.__name__ + ".open",
+    with patch("builtins.open",
         mock_open(read_data=_EXAMPLE_BLUE_SKY_SETTINGS),
         create=True) as mo:
         p = Provenance()
@@ -133,7 +126,7 @@ def test_record_executable_configuration():
 
 @pytest.mark.skipif(True, reason='written')
 def test_record_workflow_configuration():
-    with patch(builtins.__name__ + ".open",
+    with patch("builtins.open",
         mock_open(read_data=TEST_CONFIG_YAML_TWO_NODES),
         create=True) as mo:
         p = Provenance()

@@ -33,14 +33,8 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-import pytest
-import mock
 from mock import patch, mock_open, Mock
-import os
-try:
-    import __builtin__ as builtins  # @UnresolvedImport
-except:
-    import builtins  # @UnresolvedImport
+
 
 def test_client_settings():
     cfg_string = '''
@@ -52,7 +46,7 @@ CELERY_MESSAGE_QUEUE_NAME: celery_application_name
 DEFAULT_MESSAGE_QUEUE_NAME: null_application_name
 '''
 
-    with patch(builtins.__name__ + ".open",
+    with patch("builtins.open",
                mock_open(read_data=cfg_string)):
         with patch('os.getenv', Mock(return_value='/path/to/settings.yml')):
             from workflow_client.client_settings import load_settings_yaml

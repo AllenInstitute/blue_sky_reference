@@ -36,6 +36,8 @@
 import pytest
 from workflow_client.client_settings import configure_worker_app
 from mock import patch, call
+from workflow_engine.celery.signatures import create_job_signature
+from workflow_engine.celery.run_tasks import run_workflow_node_jobs_by_id
 from workflow_engine.celery.worker_tasks \
     import create_job, queue_job
 from celery.contrib.pytest import celery_app, celery_worker
@@ -57,14 +59,14 @@ def celery_config():
         'result_backend': 'rpc',
         'task_default_exchange': 'blue_sky',
         'task_default_routing_key': 'result',
-        'task_default_queue': 'result'
+        'task_default_queue': 'null'
     }
 
 
 @pytest.fixture(scope='session')
 def celery_worker_parameters():
     return {
-        'queues': ( 'workflow', 'result', 'null' )
+        'queues': ( 'workflow_blue_sky','result_blue_sky', 'null' )
     }
 
 @pytest.fixture(scope='session')
@@ -76,44 +78,50 @@ def use_celery_app_trap():
 def celery_includes():
     return [
         'tests.workflow.test_result_worker',
+        'workflow_engine.celery.worker_tasks',
         'tests.workflow.celery_signal_handlers'
     ]
 
 
+@pytest.mark.xfail
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
-    WORKFLOW_MESSAGE_QUEUE_NAME='workflow',
+    WORKFLOW_MESSAGE_QUEUE_NAME='workflow_blue_sky',
     CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
 @pytest.mark.celery(task_cls='workflow_engine.celery.worker_tasks')
-@patch('workflow_engine'
-       '.celery'
-       '.run_tasks'
-       '.run_workflow_node_jobs_by_id'
-       '.apply_async')
+@patch(
+   'workflow_engine'
+   '.celery'
+   '.run_tasks'
+   '.run_workflow_node_jobs_by_id'
+   '.apply_async')
 def test_create_job(
         run_job_mock,
         celery_app,
         celery_worker,
         task_5,
         obs):
-    configure_worker_app(celery_app, 'blue_sky')
-
+    print('FN: ' + str(run_workflow_node_jobs_by_id))
     workflow_node_id = 1
     priority = 50
 
     num_jobs_before = Job.objects.count()
 
-    result = create_job.apply_async(
-        (workflow_node_id,
-         obs.id,
-         priority),
-        queue='workflow')
+    configure_worker_app(celery_app, 'blue_sky')
 
-    time.sleep(10)
-    outpt = result.get()
+    result = create_job_signature.delay(
+        workflow_node_id,
+        obs.id,
+        priority)
+
+    outpt = result.wait(10)
     run_job_mock.assert_called_once_with(
-        (1,), queue='workflow')
+        (1,),
+        {},
+        broker_connection_retry=False,
+        broker_connection_timeout=10,
+        queue='workflow_blue_sky')
 
     num_jobs_after = Job.objects.count()
     assert num_jobs_after == num_jobs_before + 1

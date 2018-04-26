@@ -218,6 +218,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'workflow_client': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'celery': {
             'handlers': ['console', 'file'],
             'level': 'DEBUG',

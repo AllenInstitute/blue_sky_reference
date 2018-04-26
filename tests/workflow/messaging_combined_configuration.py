@@ -22,9 +22,9 @@ def configure_queues(app, name):
                                routing_key='null')]
 
     app.conf.task_queues = (
-        Queue('workflow', workflow_routes),
-        Queue('moab', moab_routes),
-        Queue('result', result_routes),
+        Queue('workflow_blue_sky', workflow_routes),
+        Queue('moab_blue_sky', moab_routes),
+        Queue('result_blue_sky', result_routes),
         Queue('null', null_routes))
 
 
@@ -33,21 +33,22 @@ def route_task(name, args, kwargs, options, task=None, **kw):
     if task_name in {
         'check_moab_status',
         'submit_moab_task',
+        'submit_job',
         'kill_moab_task',
         'run_task' }:
         return { 
-            'queue': 'moab' }
+            'queue': 'moab_blue_sky' }
     elif task_name in {
         'create_job',
         'queue_job',
         'run_workflow_node_jobs_by_id' }:
-        return { 'queue': 'workflow' }
+        return { 'queue': 'workflow_blue_sky' }
     elif task_name in [ 
         'process_pbs_id,'
         'process_running',
         'process_failed_execution',
         'process_finished_execution' ]:
-        return { 'queue': 'result' }
+        return { 'queue': 'result_blue_sky' }
     else:
         return { 'queue': 'null' }
 

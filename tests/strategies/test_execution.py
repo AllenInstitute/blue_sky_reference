@@ -14,9 +14,6 @@ from tests.workflow_configurations \
     import TEST_CONFIG_YAML_TWO_NODES
 
 
-import builtins
-
-
 @pytest.fixture
 def ex_strat():
     return ExecutionStrategy()
@@ -83,7 +80,7 @@ def test_fail_execution_task(ex_strat):
 
     with patch('subprocess.run', Mock(return_value=result)):
         with patch(
-            builtins.__name__ + '.open',
+            'builtins.open',
             mock_open(read_data='{ "this": "that" }')):
             ex_strat.fail_execution_task(task)
 
@@ -113,7 +110,7 @@ def test_finish_task(ex_strat):
             'os.path.isfile',
             Mock(return_value=True)) as mock_isfile:
             with patch(
-                builtins.__name__ + ".open",
+                "builtins.open",
                 mock_open(read_data='{ "data": "whatever" }')):
                 ex_strat.finish_task(task)
 
@@ -142,7 +139,7 @@ def test_kill_pbs_task(
 
 @pytest.mark.django_db
 def test_run_asynchronous_task(ex_strat):
-    with patch(builtins.__name__ + ".open",
+    with patch("builtins.open",
         mock_open(read_data=TEST_CONFIG_YAML_TWO_NODES)):
         WorkflowConfig.create_workflow(
             os.path.join(os.path.dirname(__file__),

@@ -38,7 +38,6 @@ from mock import patch, mock_open
 import os
 import logging
 from workflow_engine.workflow_config import WorkflowConfig
-from django.db import transaction
 from workflow_engine.models.executable import Executable
 from workflow_engine.models.job_queue import JobQueue
 from workflow_engine.models.workflow import Workflow
@@ -46,13 +45,9 @@ from workflow_engine.models.workflow_node import WorkflowNode
 from workflow_engine.models.run_state import RunState
 from tests.workflow_configurations import TEST_CONFIG_YAML_ONE_NODE,\
     TEST_CONFIG_YAML_TWO_NODES
-try:
-    import __builtin__ as builtins  # @UnresolvedImport
-except:
-    import builtins  # @UnresolvedImport
+
 
 _log = logging.getLogger('test_output')
-
 
 
 @pytest.fixture
@@ -72,7 +67,7 @@ def test_workflow_config(workflow_config):
     ])
 def test_create_workflow(workflow_config,
                          yaml_text):
-    with patch(builtins.__name__ + ".open",
+    with patch("builtins.open",
         mock_open(read_data=yaml_text)):
         WorkflowConfig.create_workflow(
             os.path.join(os.path.dirname(__file__), 'dev.yml'))

@@ -36,7 +36,7 @@ def waiting_task(run_states):
     workflow, _ = Workflow.objects.update_or_create(
         id=1,
         name="analyze",
-        ingest_strategy_class='blue_sky.strategies.mock_ingest.MockIngest')
+        ingest_strategy_class='blue_sky.strategies.mock_ingest .MockIngest')
     job_queue, _ = JobQueue.objects.update_or_create(
         id=8,
         name='Mock Wait',
@@ -77,6 +77,8 @@ def task_5(run_states):
         id=1,
         name="analyze",
         ingest_strategy_class='blue_sky.strategies.mock_ingest.MockIngest')
+    obs = Observation(id=56)
+    obs.save()
     job_queue, _ = JobQueue.objects.update_or_create(
         id=7,
         name='Mock Analyze',
@@ -91,13 +93,14 @@ def task_5(run_states):
     job, _ = Job.objects.update_or_create(
         id=2,
         defaults = {
-            'enqueued_object_id': 56,
+            'enqueued_object_id': obs.id,
             'run_state': run_states['PENDING'],
             'workflow_node': workflow_node})
     task, _ = Task.objects.update_or_create(
         id=5,
         job=job,
         defaults={
+            'enqueued_task_object_id': obs.id,
             'full_executable': 'mock_task',
             'run_state': run_states['PENDING'],
             'start_run_time': timezone.now()})

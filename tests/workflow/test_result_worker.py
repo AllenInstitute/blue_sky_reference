@@ -35,14 +35,18 @@
 #
 import pytest
 from celery.contrib.pytest import celery_app, celery_worker
+import django; django.setup()
 import time
 from django.test.utils import override_settings
 from workflow_client.client_settings import configure_worker_app
-from workflow_engine.celery.result_tasks import process_running,\
-    process_finished_execution, process_failed_execution
+from workflow_engine.celery.result_tasks import \
+    process_finished_execution, process_failed_execution, process_running
+from workflow_engine.celery.signatures import process_running_signature,\
+    process_finished_execution_signature, process_failed_execution_signature
 from tests.workflow.workflow_fixtures \
     import run_states, task_5, \
     running_task_5, mock_executable
+import simplejson as json
 
 
 @pytest.fixture(scope='session')
@@ -57,14 +61,17 @@ def celery_config():
         'result_backend': 'rpc',
         'task_default_exchange': 'blue_sky',
         'task_default_routing_key': 'result',
-        'task_default_queue': 'result'
+        'task_default_queue': 'result_blue_sky'
     }
 
 
 @pytest.fixture(scope='session')
 def celery_worker_parameters():
     return {
-        'queues': ( 'workflow', 'result', 'null' )
+        'queues': ( 'workflow_blue_sky',
+                    'result_blue_sky',
+                    'moab_blue_sky',
+                    'null' )
     }
 
 @pytest.fixture(scope='session')
@@ -83,8 +90,7 @@ def celery_includes():
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
+    RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
 @pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
 def test_process_running(
         celery_app,
@@ -92,11 +98,9 @@ def test_process_running(
         task_5):
     configure_worker_app(celery_app, 'blue_sky')
 
-    result = process_running.apply_async(
-        (5, ),
-        queue='result')
-    time.sleep(10)
-    outpt = result.get()
+    result = process_running_signature.delay(5)
+    outpt = result.wait(10)
+    assert str(outpt) == 'set running for task 5'
 
     assert not result.failed()
 
@@ -104,8 +108,7 @@ def test_process_running(
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
+    RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
 @pytest.mark.celery(task_cls='workflow_engine.celery.workflow_tasks')
 def test_process_finished_execution(
         celery_app,
@@ -113,11 +116,9 @@ def test_process_finished_execution(
         running_task_5):
     configure_worker_app(celery_app, 'blue_sky')
 
-    result = process_finished_execution.apply_async(
-        (5, ),
-        queue='result')
-    time.sleep(10)
-    outpt = result.get()
+    result = process_finished_execution_signature.delay(5)
+    outpt = result.wait(10)
+    assert outpt == 'set finished for task 5'
 
     assert not result.failed()
 
@@ -125,8 +126,7 @@ def test_process_finished_execution(
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
-    PBS_MESSAGE_QUEUE_NAME='run', # TODO: not PBS QUEUE
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
+    RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
 @pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
 def test_process_failed_execution(
         celery_app,
@@ -134,15 +134,9 @@ def test_process_failed_execution(
         running_task_5):
     configure_worker_app(celery_app, 'blue_sky')
 
-    result = process_failed_execution.apply_async(
-        (5, ),
-        queue='result')
-    time.sleep(10)
-    outpt = result.get()
+    result = process_failed_execution_signature.delay(5)
+    outpt = result.wait(10)
+    assert outpt == 'set failed for task 5'
 
     assert not result.failed()
-
-
-# circular imports
-from workflow_engine.models.task import Task
 

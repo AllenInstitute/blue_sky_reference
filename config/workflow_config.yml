@@ -2,11 +2,7 @@ executables:
 
     mock:
         name: 'Mock Executable'
-        path: 'python'
-        args:
-        - "mock_executable"
-        environment:
-        - PYTHONPATH=/allen/aibs/pipeline/image_processing/volume_assembly/workflow_conf/staging_old/bin
+        path: '/allen/aibs/pipeline/image_processing/volume_assembly/workflow_conf/staging_old/bin/mock_executable'
         remote_queue: 'pbs'
         pbs_queue: 'emconnectome'
         pbs_processor: 'nodes=1:ppn=1'
