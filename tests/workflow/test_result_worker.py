@@ -136,7 +136,7 @@ def test_process_failed_execution(
 
     result = process_failed_execution_signature.delay(5)
     outpt = result.wait(10)
-    assert outpt == 'set failed for task 5'
+    assert outpt == 'set failed execution for task 5'
 
     assert not result.failed()
 

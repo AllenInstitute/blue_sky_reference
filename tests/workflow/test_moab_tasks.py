@@ -48,6 +48,7 @@ from celery.contrib.pytest \
 from mock import Mock, patch
 import time
 
+_MOAB_ID_OFFSET = 20
 
 @pytest.fixture(scope='session')
 def celery_enable_logging():
@@ -87,9 +88,11 @@ def celery_includes():
 def mock_moab_result():
     return [ {
         'name': str(i),
+        'id': 'Moab.' + (i + _MOAB_ID_OFFSET),
         'customName': 'task_' + str(i*10 + i),  # i needs to match an id in task data
         'states': { 'state': 'Running' },
-        'credentials': { 'user': 'somebody' }
+        'credentials': { 'user': 'somebody' },
+        'completionCode': 0
     } for i in [2, 4] ]
 
 
@@ -110,6 +113,7 @@ def test_check_pbs_status(
     mock_moab_query.return_value=moab_dict
 
     task_5.run_state = RunState.get_queued_state()
+    task_5.pbs_id = 'Moab.' + str(task_5.id + _MOAB_ID_OFFSET)
     task_5.save()
 
     configure_worker_app(celery_app, 'blue_sky')
@@ -117,13 +121,11 @@ def test_check_pbs_status(
     result = check_moab_status.apply_async(
         queue='moab_blue_sky')
 
-    while not result.ready():
-        time.sleep(1)
+    r = result.wait(10)
 
     # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
     #result.wait(timeout=10)
-    r = result.get()
-    print(r)
+    #print(r)
     #assert set(r) == {1, 2, 3, 4}
 
     mock_moab_query.assert_called()

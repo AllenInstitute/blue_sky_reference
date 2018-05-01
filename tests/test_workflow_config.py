@@ -106,7 +106,7 @@ def test_create_workflow(workflow_config,
     ])
 def test_from_yaml_file(workflow_config,
                         yaml_text):
-    with patch(builtins.__name__ + ".open",
+    with patch('builtins.open',
         mock_open(read_data=yaml_text)):
         wc = workflow_config.from_yaml_file(
             os.path.join(os.path.dirname(__file__),

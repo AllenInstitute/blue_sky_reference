@@ -6,12 +6,7 @@ export MOAB_AUTH='user:pass'
 
 export BASE_DIR=/local1/git/blue_sky
 
-rm ${BASE_DIR}/logs/worker.log
-rm ${BASE_DIR}/logs/ui.log
-rm ${BASE_DIR}/logs/moab.log
-rm ${BASE_DIR}/logs/workflow.log
-rm ${BASE_DIR}/logs/result.log
-rm ${BASE_DIR}/logs/beat.log
+rm ${BASE_DIR}/logs/*.log
 rm celerybeat.pid
 
 
