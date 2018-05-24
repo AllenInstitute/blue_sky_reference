@@ -103,5 +103,5 @@ def test_job_queues_page(rf):
 @pytest.mark.django_db
 def test_get_enqueued_object_classes(rf):
     request = rf.get('/workflow_engine/jobs')
-    response = job_queue_view.get_enqueued_object_classses(request)
+    response = job_queue_view.get_enqueued_object_classes(request)
     assert response.status_code == 200
