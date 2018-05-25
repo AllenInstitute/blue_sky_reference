@@ -119,8 +119,6 @@ def test_from_yaml_file(workflow_config,
             line = [k, ' ', s['label']]
             if s['class'] is not None:
                 line.extend([' (', s['class'], ')'])
-            if s['manual']:
-                line.append(' (m)')
             if s['workflow']:
                 line.append(' (w)')
             print(''.join(line))

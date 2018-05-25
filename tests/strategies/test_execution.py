@@ -101,23 +101,30 @@ def test_finish_task(ex_strat):
     task.job = Mock()
     task.job.id = 777
     task.job.get_enqueued_object = Mock(return_value = enqueued_obj)
-    task.job.workflow_node.get_children = Mock(return_value=[])
+
+    mock_enqueue_next = Mock(
+        name='mock_enqueue_next')
+    mock_enqueue_next.delay = Mock()
 
     with patch(
-        'workflow_engine.workflow_controller.WorkflowController.get_enqueued_object',
-        return_value=enqueued_obj):
+        'workflow_engine.strategies.execution_strategy.enqueue_next_queue_signature',
+        mock_enqueue_next):
         with patch(
-            'os.path.isfile',
-            Mock(return_value=True)) as mock_isfile:
+            'workflow_engine.workflow_controller.WorkflowController.get_enqueued_object',
+            return_value=enqueued_obj):
             with patch(
-                "builtins.open",
-                mock_open(read_data='{ "data": "whatever" }')):
-                ex_strat.finish_task(task)
+                'os.path.isfile',
+                Mock(return_value=True)) as mock_isfile:
+                with patch(
+                    "builtins.open",
+                    mock_open(read_data='{ "data": "whatever" }')):
+                    ex_strat.finish_task(task)
 
     mock_isfile.assert_called_once_with(
         'example_data/555/jobs/job_777/tasks/task_123/output_123.json')
-    task.job.get_enqueued_object.assert_called_once()
-    task.job.workflow_node.get_children.assert_called_once()
+    mock_enqueue_next.delay.assert_called_once_with(777)
+    #task.job.get_enqueued_object.assert_called_once()
+    #task.job.workflow_node.get_children.assert_called_once()
 
 def test_run_task(ex_strat):
     task = Mock()

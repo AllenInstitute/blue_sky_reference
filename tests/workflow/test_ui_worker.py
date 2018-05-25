@@ -37,7 +37,7 @@ import pytest
 from workflow_client.client_settings import configure_worker_app
 from mock import patch, call
 from workflow_engine.celery.signatures import create_job_signature
-from workflow_engine.celery.run_tasks import run_workflow_node_jobs_by_id
+from workflow_engine.celery.worker_tasks import run_workflow_node_jobs_by_id
 from workflow_engine.celery.worker_tasks \
     import create_job, queue_job
 from celery.contrib.pytest import celery_app, celery_worker
@@ -47,12 +47,12 @@ from tests.workflow.workflow_fixtures \
     import run_states, task_5, running_task_5, obs
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_config():
     return {
         'broker_url': 'memory://',
@@ -63,18 +63,18 @@ def celery_config():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_worker_parameters():
     return {
         'queues': ( 'workflow_blue_sky','result_blue_sky', 'null' )
     }
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def use_celery_app_trap():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_includes():
     return [
         'tests.workflow.test_result_worker',

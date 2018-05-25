@@ -45,12 +45,12 @@ from tests.workflow.workflow_fixtures \
     running_task_5, mock_executable
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_config():
     return {
         'broker_url': 'memory://',
@@ -61,19 +61,19 @@ def celery_config():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_worker_parameters():
     return {
         'queues': ( 'ingest', 'workflow', 'result', 'null' )
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def use_celery_app_trap():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_includes():
     return [
         'workflow_engine.celery.ingest_tasks',

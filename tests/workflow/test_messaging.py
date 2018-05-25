@@ -35,7 +35,6 @@
 #
 import pytest
 from django.test.utils import override_settings
-import celery
 from mock import Mock, patch
 import shutil
 from workflow_engine.celery.signatures import process_running_signature,\
@@ -46,8 +45,6 @@ from tests.workflow.messaging_combined_configuration \
 from tests.workflow.workflow_fixtures \
     import run_states, workflow_node_1, obs, mock_executable
 from workflow_engine.celery.worker_tasks import create_job
-from workflow_engine.celery.result_tasks \
-    import process_running, process_finished_execution
 from workflow_engine.workflow_controller import WorkflowController
 from celery.contrib.pytest import celery_app, celery_worker
 import logging
@@ -56,11 +53,11 @@ import logging
 _log = logging.getLogger('tests.workflow.test_messaging')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_config():
     return {
         'broker_url': 'memory://',
@@ -71,7 +68,7 @@ def celery_config():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_worker_parameters():
     return {
         'queues': ( 'workflow_blue_sky',
@@ -80,26 +77,27 @@ def celery_worker_parameters():
                     'null' )
     }
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def use_celery_app_trap():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_includes():
     return [
         'tests.workflow.test_messaging',
         'tests.workflow.celery_signal_handlers',
-        'workflow_engine.celery.moab_tasks'
-
+        'workflow_engine.celery.moab_tasks',
+        'workflow_engine.celery.worker_tasks',
+        'workflow_engine.celery.result_tasks'
     ]
 
-def send_running_and_finished(task_id, pbs_file):
+def send_running_and_finished(arg_tuple, queue, link):
+    task_id = arg_tuple[0]
+
     _log.info(
-        'task id: %d'
-        'pbs_file=%s ',
-        task_id,
-        pbs_file)
+        'task id: %d',
+        task_id)
     process_running_signature.apply_async(
         (task_id,),
         countdown=1)
@@ -112,26 +110,36 @@ def send_running_and_finished(task_id, pbs_file):
         countdown=2)
 
 
+_mock_submit_job = Mock(
+    name='mock_submit_moab_task')
+_mock_submit_job.apply_async = Mock(
+    return_value={ 'name': 'MockMoab:15' },
+    side_effect=send_running_and_finished)
+
+
+@pytest.mark.xfail
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
     MOAB_MESSAGE_QUEUE_NAME='moab_blue_sky',
     WORKFLOW_MESSAGE_QUEUE_NAME='workflow_blue_sky',
     RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
+@patch('workflow_engine.celery.signatures.run_workflow_node_jobs_signature')
+@patch('workflow_engine.celery.signatures.enqueue_next_queue_signature')
+@patch('workflow_engine.celery.moab_tasks.submit_moab_task', _mock_submit_job)
 @pytest.mark.celery(task_cls='test.workflow.test_messaging')
-@patch.object(WorkflowController, 'enqueue_next_queue')
 def test_create_job(
+        menqn,
         celery_app,
         celery_worker,
         workflow_node_1,
         obs):
     configure_combined_app(celery_app, 'blue_sky')
 
-    workflow_node_id = 1
-    priority = 50
+    menqn.delay = Mock()
 
-    run_delay = 2,
-    finished_delay = 3
+    workflow_node_id = workflow_node_1.id
+    priority = 50
 
     try:
         shutil.rmtree(
@@ -140,28 +148,21 @@ def test_create_job(
     except Exception as e:
         _log.error(str(e))
 
-    mock_submit_job = Mock(
-        name='mock_submit_moab_task_signature',
-        return_value={ 'name': 'MockMoab:15' },
-        side_effect=send_running_and_finished)
+    result = create_job_signature.delay(
+        workflow_node_id,
+        obs.id,
+        priority)
 
-    with patch(
-        'workflow_engine.celery.moab_tasks.submit_job',
-        mock_submit_job):
-        result = create_job_signature.delay(
-            workflow_node_id,
-            obs.id,
-            priority)
+    created_job_id = result.wait(10)
+    time.sleep(10)
+    _mock_submit_job.apply_async.assert_called_once()
+    assert not result.failed()
 
-        created_job_id = result.wait(10)
-        time.sleep(10)
-        mock_submit_job.assert_called()
-        assert not result.failed()
-    
-        updated_task = Task.objects.get(
-            job_id=created_job_id)
-        assert updated_task.run_state.id == \
-            RunState.objects.get(name='SUCCESS').id
+    updated_task = Task.objects.get(
+        job_id=created_job_id)
+    assert updated_task.run_state.id == \
+        RunState.objects.get(name='SUCCESS').id
+    menqn.delay.assert_called_once_with(workflow_node_1.id)
 
 
 # circular imports

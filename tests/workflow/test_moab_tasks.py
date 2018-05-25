@@ -50,11 +50,11 @@ import time
 
 _MOAB_ID_OFFSET = 20
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_config():
     return {
         'broker_url': 'memory://',
@@ -65,19 +65,19 @@ def celery_config():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_worker_parameters():
     return {
         'queues': ( 'moab_blue_sky', 'result', 'null' )
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def use_celery_app_trap():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_includes():
     return [
         'tests.workflow.test_moab_tasks'

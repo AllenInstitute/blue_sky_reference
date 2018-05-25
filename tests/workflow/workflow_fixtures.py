@@ -1,7 +1,6 @@
 import pytest
 from django.utils import timezone
 from blue_sky.models.observation import Observation
-from _pytest.hookspec import pytest_fixture_post_finalizer
 
 
 @pytest.fixture

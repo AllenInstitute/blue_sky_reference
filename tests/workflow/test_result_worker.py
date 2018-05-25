@@ -49,12 +49,12 @@ from tests.workflow.workflow_fixtures \
 import simplejson as json
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_config():
     return {
         'broker_url': 'memory://',
@@ -65,7 +65,7 @@ def celery_config():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_worker_parameters():
     return {
         'queues': ( 'workflow_blue_sky',
@@ -74,12 +74,12 @@ def celery_worker_parameters():
                     'null' )
     }
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def use_celery_app_trap():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_includes():
     return [
         'tests.workflow.test_result_worker',

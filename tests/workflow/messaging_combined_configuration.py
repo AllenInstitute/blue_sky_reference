@@ -41,6 +41,7 @@ def route_task(name, args, kwargs, options, task=None, **kw):
     elif task_name in {
         'create_job',
         'queue_job',
+        'enqueue_next_queue',
         'run_workflow_node_jobs_by_id' }:
         return { 'queue': 'workflow_blue_sky' }
     elif task_name in [ 

@@ -40,17 +40,17 @@ from django.test.utils import override_settings
 from workflow_client.client_settings import configure_worker_app
 from workflow_engine.celery.ingest_tasks import ingest_task
 from blue_sky.models.observation import Observation
-from workflow_engine.celery.run_tasks import run_workflow_node_jobs_by_id
+from workflow_engine.celery.worker_tasks import run_workflow_node_jobs_by_id
 from tests.workflow.workflow_fixtures \
     import run_states, waiting_task
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_config():
     return {
         'broker_url': 'memory://',
@@ -61,19 +61,19 @@ def celery_config():
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_worker_parameters():
     return {
         'queues': ( 'ingest', 'workflow', 'result', 'null' )
     }
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def use_celery_app_trap():
     return True
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def celery_includes():
     return [
         'workflow_engine.celery.ingest_tasks',
