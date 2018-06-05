@@ -43,6 +43,8 @@ from workflow_engine.celery.result_tasks import \
     process_finished_execution, process_failed_execution, process_running
 from workflow_engine.celery.signatures import process_running_signature,\
     process_finished_execution_signature, process_failed_execution_signature
+from datetime import timedelta
+from django.utils import timezone
 from tests.workflow.workflow_fixtures \
     import run_states, task_5, \
     running_task_5, mock_executable
@@ -128,7 +130,26 @@ def test_process_finished_execution(
     APP_PACKAGE='blue_sky',
     RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
 @pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
-def test_process_failed_execution(
+def test_process_failed_execution_task_not_found(
+        celery_app,
+        celery_worker,
+        running_task_5):
+    configure_worker_app(celery_app, 'blue_sky')
+
+    result = process_failed_execution_signature.delay(1)
+    time.sleep(17)
+    outpt = result.wait(1)
+    assert outpt == 'Task 1 not found'
+
+    assert not result.failed()
+
+
+@pytest.mark.django_db
+@override_settings(
+    APP_PACKAGE='blue_sky',
+    RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
+@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
+def test_process_failed_execution_15_second_window(
         celery_app,
         celery_worker,
         running_task_5):
@@ -136,7 +157,26 @@ def test_process_failed_execution(
 
     result = process_failed_execution_signature.delay(5)
     outpt = result.wait(10)
-    assert outpt == 'set failed execution for task 5'
+    assert outpt == 'Not failing execution for task 5 in 15 second window'
 
     assert not result.failed()
 
+
+@pytest.mark.django_db
+@override_settings(
+    APP_PACKAGE='blue_sky',
+    RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
+@pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
+def test_process_failed_execution(
+        celery_app,
+        celery_worker,
+        running_task_5):
+    configure_worker_app(celery_app, 'blue_sky')
+    running_task_5.start_run_time = timezone.now() - timedelta(minutes=20)
+    running_task_5.save()
+
+    result = process_failed_execution_signature.delay(5)
+    outpt = result.wait(1)
+    assert outpt == 'set failed execution for task 5'
+
+    assert not result.failed()

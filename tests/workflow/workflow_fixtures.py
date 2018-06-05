@@ -72,6 +72,17 @@ def waiting_task(run_states):
 
 @pytest.fixture
 def task_5(run_states):
+    xcute,_ = Executable.objects.get_or_create(
+        name='Mock Executable',
+        defaults={
+            'description': 'Mock',
+            'executable_path': '/lorem/ipsum',
+            'static_arguments': None,
+            'environment': '',
+            'remote_queue': 'pbs',
+            'pbs_queue': 'NULLQUEUE',
+            'pbs_processor': 'ERROR',
+            'pbs_walltime': 'ERROR'})
     workflow, _ = Workflow.objects.update_or_create(
         id=1,
         name="analyze",
@@ -83,6 +94,7 @@ def task_5(run_states):
         name='Mock Analyze',
         enqueued_object_class='blue_sky.models.observation.Observation',
         job_strategy_class='blue_sky.strategies.mock_ingest.MockIngest',
+        executable=xcute,
         defaults={})
     workflow_node, _ = WorkflowNode.objects.update_or_create(
         id=1,
