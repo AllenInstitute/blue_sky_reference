@@ -45,6 +45,7 @@ from workflow_engine.celery.signatures import process_running_signature,\
     process_finished_execution_signature, process_failed_execution_signature
 from datetime import timedelta
 from django.utils import timezone
+from mock import patch
 from tests.workflow.workflow_fixtures \
     import run_states, task_5, \
     running_task_5, mock_executable
@@ -161,13 +162,14 @@ def test_process_failed_execution_15_second_window(
 
     assert not result.failed()
 
-@pytest.mark.skipif(message='Temp')
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
     RESULT_MESSAGE_QUEUE_NAME='result_blue_sky')
+@patch('workflow_engine.strategies.wait_strategy.WaitStrategy.run_task')
 @pytest.mark.celery(task_cls='workflow_client.workflow_tasks')
 def test_process_failed_execution(
+        mrt,
         celery_app,
         celery_worker,
         running_task_5):
