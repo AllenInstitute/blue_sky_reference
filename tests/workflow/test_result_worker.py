@@ -161,7 +161,7 @@ def test_process_failed_execution_15_second_window(
 
     assert not result.failed()
 
-
+@pytest.mark.skipif(message='Temp')
 @pytest.mark.django_db
 @override_settings(
     APP_PACKAGE='blue_sky',
