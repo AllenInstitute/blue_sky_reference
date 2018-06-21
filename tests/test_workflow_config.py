@@ -125,5 +125,5 @@ def test_from_yaml_file(workflow_config,
 
 
 @pytest.mark.django_db
-def test_delete_all_workflows():
-    WorkflowConfig.delete_all_workflows()
+def test_archive_all_workflows():
+    WorkflowConfig.archive_all_workflows()
