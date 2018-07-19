@@ -158,7 +158,7 @@ def test_process_failed_execution_15_second_window(
 
     result = process_failed_execution_signature.delay(5)
     outpt = result.wait(10)
-    assert outpt == 'Not failing execution for task 5 in 15 second window'
+    assert outpt == 'Not failing execution for task 5 in 45 second window'
 
     assert not result.failed()
 
