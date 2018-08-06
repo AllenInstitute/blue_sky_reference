@@ -5,6 +5,9 @@ class Observation(models.Model):
     arg2 = models.CharField(max_length=255, null=True)
     arg3 = models.CharField(max_length=255, null=True)
     proc_state = models.CharField(max_length=255, null=True)
+    groups = models.ManyToManyField(
+        'ObservationGroup', related_name='observations',
+        through='GroupAssignment')
 
     def __str__(self):
         return str(self.arg2)

@@ -35,5 +35,26 @@ workflows:
               enqueued_class: "blue_sky.models.observation.Observation"
               executable: "mock"
 
+            - key: "group_assign"
+              label: "Group Assignment"
+              class: "blue_sky.strategies.mock_group_assignment.MockGroupAssignment"
+              enqueued_class: "blue_sky.models.observation.Observation"
+              executable: "mock"
+
+            - key: "process_grouped"
+              label: "Process Grouped Observations"
+              class: "blue_sky.strategies.process_grouped_observations.ProcessGroupedObservations"
+              enqueued_class: "blue_sky.models.observation.Observation"
+              executable: "mock"
+
+            - key: "complete_group"
+              label: "Complete Group"
+              class: "blue_sky.strategies.mock_complete_group.MockCompleteGroup"
+              enqueued_class: "blue_sky.models.observation_group.ObservationGroup"
+              executable: "mock"
+
         graph:
             - [ "ingest_mock", [ "mock_analyze" ] ]
+            - [ "mock_analyze", [ "group_assign" ] ]
+            - [ "group_assign", [ "process_grouped" ] ]
+            - [ "process_grouped", [ "complete_group" ] ]

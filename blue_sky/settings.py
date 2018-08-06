@@ -16,7 +16,8 @@ APP_PACKAGE = 'blue_sky'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
+#BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
+BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
 
 MESSAGE_QUEUE_NAME = APP_PACKAGE
 INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
@@ -26,6 +27,8 @@ MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
 RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
 SPARK_MESSAGE_QUEUE_NAME = 'spark_' + MESSAGE_QUEUE_NAME
 PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
+LOCAL_MESSAGE_QUEUE_NAME = 'local_' + MESSAGE_QUEUE_NAME
+BROADCAST_MESSAGE_QUEUE_NAME = 'broadcast_' + MESSAGE_QUEUE_NAME
 
 PBS_CONDA_HOME='/shared/utils.x86_64/python-2.7'
 PBS_PYTHONPATH='/data/aibstemp/timf/example_data/at_em_imaging_workflow:/data/aibstemp/timf/example_data/blue_sky_workflow_engine'
@@ -35,11 +38,12 @@ MESSAGE_QUEUE_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 MESSAGE_QUEUE_USER = 'blue_sky_user'
 MESSAGE_QUEUE_PASSWORD = 'blue_sky_user'
 MESSAGE_QUEUE_PORT = 9008
-UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
-UI_PORT = 9002
+#UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
+UI_HOST = '172.20.0.4'
+UI_PORT = 8000 
 FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
-ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
+ADMIN_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/admin'
 
 CONFIG_DIR = '/blue_sky/config'
 BLUE_SKY_SETTINGS = '/blue_sky/config/blue_sky_settings.yml'
@@ -193,27 +197,27 @@ LOGGING = {
         },
         'blue_sky': {
             'handlers': ['console', 'file'],
-            'level': 'WARN',
+            'level': 'INFO',
             'propagate': True,
         },
         'workflow_engine': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'workflow_client': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'celery': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'celery.task': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         }
     }

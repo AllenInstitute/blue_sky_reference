@@ -1,27 +1,21 @@
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
 # from django.conf import settings
 import logging
+from workflow_engine.models.configuration import Configuration
 import copy
 
-class MockAnalyze(ExecutionStrategy):
+class MockParametrizedAnalyze(ExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_analyze')
 
-    _base_input_dict = {
-        'arg1': 5,
-        'arg2': 'overwrite me',
-        'nested': {
-            'nested_arg': 'yay'
-        }
-    }
-
     def get_input(self, enqueued_object, storage_directory, task):
-        inp = copy.deepcopy(MockAnalyze._base_input_dict)
+        strategy_configuration = \
+            Configuration.objects.filter(
+                attachable_id=1)
+        inp = copy.deepcopy(strategy_configuration.json_object)
     
         inp['arg1'] = 7  # settings.ARG_1
 
         return inp 
 
-    def on_finishing(self, observation, results, task):
+    def on_finishing(self, em_mset, results, task):
         self.check_key(results, 'arg2')
-        observation.proc_state = 'PROCESSING'
-        observation.save()

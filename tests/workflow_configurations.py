@@ -34,6 +34,7 @@ executables:
     mock:
         name: 'Mock Executable'
         path: '/data/aibstemp/timf/example_data/bin/mock_executable'
+        remote_queue: 'pbs'
         pbs_queue: 'lims2'
         pbs_processor: 'vmem=128g'
         pbs_walltime: 'walltime=5:00:00'
