@@ -19,6 +19,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
 BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
 
+NOTEBOOK_ARGUMENTS = [
+    '--ip', '0.0.0.0',
+    '--port', '8888'
+]
+
 MESSAGE_QUEUE_NAME = APP_PACKAGE
 INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
 WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
@@ -164,6 +169,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/static'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, APP_PACKAGE, 'static')
+]
 
 LOGGING = {
     'version': 1,
