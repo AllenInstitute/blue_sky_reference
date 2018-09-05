@@ -23,5 +23,5 @@ class MockAnalyze(ExecutionStrategy):
 
     def on_finishing(self, observation, results, task):
         self.check_key(results, 'arg2')
-        observation.proc_state = 'PROCESSING'
+        observation.start_processing()
         observation.save()

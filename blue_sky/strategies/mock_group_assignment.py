@@ -19,7 +19,7 @@ class MockGroupAssignment(ExecutionStrategy):
         group, _ = ObservationGroup.objects.get_or_create(
             label=group_label,
             defaults={
-                'group_state': 'PENDING'
+                'object_state': ObservationGroup.STATE.GROUP_INCOMPLETE
             })
 
         group_assign, _ = GroupAssignment.objects.get_or_create(
@@ -37,5 +37,5 @@ class MockGroupAssignment(ExecutionStrategy):
         return inp 
 
     def on_finishing(self, observation, results, task):
-        observation.proc_state = 'GROUPED'
+        observation.group()
         observation.save()

@@ -1,4 +1,5 @@
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from blue_sky.models import ObservationGroup
 import logging
 import copy
 
@@ -15,7 +16,7 @@ class MockCompleteGroup(ExecutionStrategy):
 
         for grp in groups:
             observations = grp.observations.filter(
-                proc_state='DONE')
+                object_state=ObservationGroup.STATE.GROUP_COMPLETE)
 
             if observations.count() == 10:
                 objects = objects | { grp }
@@ -30,5 +31,5 @@ class MockCompleteGroup(ExecutionStrategy):
         return inp 
 
     def on_finishing(self, group, results, task):
-        group.group_state = 'COMPLETED'
+        group.complete()
         group.save()

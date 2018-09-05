@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blue_sky.models.observation import Observation
+from blue_sky.models import Observation, ObservationGroup
 
 
 class ObservationGroupInline(admin.StackedInline):
@@ -8,11 +8,11 @@ class ObservationGroupInline(admin.StackedInline):
 
 def reset_pending(modeladmin, request, queryset):
     for obs in queryset:
-        obs.proc_state = 'PENDING'
+        obs.object_state = Observation.STATE.OBSERVATION_PENDING
         obs.save()
 
         for grp in obs.groups.all():
-            grp.group_state = 'PENDING'
+            grp.object_state = ObservationGroup.STATE.GROUP_INCOMPLETE
             grp.save()
 
 class ObservationAdmin(admin.ModelAdmin):
@@ -22,9 +22,9 @@ class ObservationAdmin(admin.ModelAdmin):
         'arg1',
         'arg2',
         'arg3',
-        'proc_state'
+        'object_state'
         ]
     list_select_related = []
-    list_filter = ['proc_state']
+    list_filter = ['object_state']
     actions = [reset_pending,]
     inlines = [ObservationGroupInline,]

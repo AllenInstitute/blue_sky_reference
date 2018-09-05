@@ -32,6 +32,7 @@ services:
     ports:
     - "9002:8000"
     - "9003:5555"
+    - "9009:8888"
     depends_on:
     - devdb2
     - message_queue

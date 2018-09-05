@@ -52,7 +52,7 @@ class MockIngest(IngestStrategy):
             arg2 = message['arg2'],
             arg3 = message['arg3'],
             defaults={
-                'proc_state': 'PENDING'  # TODO: from settings
+                'object_state': Observation.STATE.OBSERVATION_PENDING
             })
 
         return obs, None

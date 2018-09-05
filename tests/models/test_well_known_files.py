@@ -47,7 +47,7 @@ def test_well_known_file(running_task_5):
     job = Mock()
     job.id = 1234
     obs = Observation(
-        arg1=5, arg2='this', arg3='that', proc_state='WA')
+        arg1=5, arg2='this', arg3='that', object_state='WA')
     obs.save()
 
     full_path1 = '/this/is/a/test.txt'

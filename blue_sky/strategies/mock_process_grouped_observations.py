@@ -1,4 +1,5 @@
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from blue_sky.models import Observation
 import logging
 import copy
 
@@ -14,7 +15,8 @@ class MockProcessGroupedObservations(ExecutionStrategy):
         groups = observation.groups.all()
 
         for grp in groups:
-            observations = grp.observations.filter(proc_state='GROUPED')
+            observations = grp.observations.filter(
+                object_state=Observation.STATE.OBSERVATION_GROUPED)
 
             if observations.count() == 10:
                 objects = objects | set(observations)
@@ -29,5 +31,5 @@ class MockProcessGroupedObservations(ExecutionStrategy):
         return inp 
 
     def on_finishing(self, observation, results, task):
-        observation.proc_state = 'DONE'
+        observation.done()
         observation.save()

@@ -25,7 +25,7 @@ def obs():
         arg1='5',
         arg2='Whatever',
         arg3='Something',
-        proc_state='CONTEMPLATIVE')
+        object_state='CONTEMPLATIVE')
 
     return o
 
@@ -52,7 +52,7 @@ def waiting_task(run_states):
         arg1='5',
         arg2='Whatever',
         arg3='Something',
-        proc_state='CONTEMPLATIVE')
+        object_state='CONTEMPLATIVE')
     job, _ = Job.objects.update_or_create(
         id=9,
         defaults = {
