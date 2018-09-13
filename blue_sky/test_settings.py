@@ -44,6 +44,7 @@ UI_PORT = 9002
 FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
+NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
 
 QMASTER_HOST = 'example.org'
 QMASTER_PORT = 1234

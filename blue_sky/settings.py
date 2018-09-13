@@ -49,6 +49,7 @@ UI_PORT = 8000
 FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/admin'
+NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
 
 CONFIG_DIR = '/blue_sky/config'
 BLUE_SKY_SETTINGS = '/blue_sky/config/blue_sky_settings.yml'
