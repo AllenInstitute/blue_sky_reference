@@ -125,7 +125,7 @@ def test_check_pbs_status(
 
     # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
     #result.wait(timeout=10)
-    #print(r)
+    print(r)
     #assert set(r) == {1, 2, 3, 4}
 
     mock_moab_query.assert_called()
