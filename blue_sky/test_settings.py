@@ -28,6 +28,7 @@ CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
 WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
 INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
 MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
+MOAB_STATUS_MESSAGE_QUEUE_NAME = 'moab_status_' + MESSAGE_QUEUE_NAME
 PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
 RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
 LOCAL_MESSAGE_QUEUE_NAME = 'local_' + MESSAGE_QUEUE_NAME
@@ -182,7 +183,7 @@ LOGGING = {
     'formatters': {
         'detailed': {
             'class': 'logging.Formatter',
-            'format': '%(asctime)s %(name)-15s %(levelname)-8s %(processName)-10s %(message)s'
+            'format': '%(asctime)s %(name)-15s:%(lineno)d %(levelname)-8s %(processName)-10s %(message)s'
         }
     },
     'handlers': {

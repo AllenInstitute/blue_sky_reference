@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 APP_PACKAGE = 'blue_sky'
+DEVELOPMENT_PACKAGE = 'blue_sky'
+
+JOB_GRID_CLASS=None
+MONITOR_TASK_MODULES=[]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,18 +25,23 @@ BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
 
 NOTEBOOK_ARGUMENTS = [
     '--ip', '0.0.0.0',
-    '--port', '8888'
+    '--port', '8888',
+    '--notebook-dir' ,
+    '/blue_sky/notebooks'
 ]
+
 
 MESSAGE_QUEUE_NAME = APP_PACKAGE
 INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
 WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
 CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
 MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
+MOAB_STATUS_MESSAGE_QUEUE_NAME = 'moab_status_' + MESSAGE_QUEUE_NAME
 RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
 SPARK_MESSAGE_QUEUE_NAME = 'spark_' + MESSAGE_QUEUE_NAME
 PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
 LOCAL_MESSAGE_QUEUE_NAME = 'local_' + MESSAGE_QUEUE_NAME
+CIRCUS_MESSAGE_QUEUE_NAME = 'circus_' + MESSAGE_QUEUE_NAME
 BROADCAST_MESSAGE_QUEUE_NAME = 'broadcast_' + MESSAGE_QUEUE_NAME
 
 PBS_CONDA_HOME='/shared/utils.x86_64/python-2.7'
@@ -43,11 +52,11 @@ MESSAGE_QUEUE_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 MESSAGE_QUEUE_USER = 'blue_sky_user'
 MESSAGE_QUEUE_PASSWORD = 'blue_sky_user'
 MESSAGE_QUEUE_PORT = 9008
-#UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
-UI_HOST = '172.20.0.4'
-UI_PORT = 8000 
-FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
-RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
+UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
+#UI_HOST = 'localhost'
+UI_PORT = 9001
+FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/flower/'
+RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/rabbitmq/'
 ADMIN_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/admin'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
 

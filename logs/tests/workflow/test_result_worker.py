@@ -39,12 +39,8 @@ import django; django.setup()
 import time
 from django.test.utils import override_settings
 from workflow_client.client_settings import configure_worker_app
-from workflow_engine.celery.result_tasks import (
-    process_finished_execution,
-    process_failed_execution,
-    process_running
-)
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from workflow_engine.celery.result_tasks import \
+    process_finished_execution, process_failed_execution, process_running
 from workflow_engine.celery.signatures import process_running_signature,\
     process_finished_execution_signature, process_failed_execution_signature
 from datetime import timedelta
@@ -67,7 +63,7 @@ def celery_config():
         'broker_url': 'memory://',
         'result_backend': 'rpc',
         'task_default_exchange': 'blue_sky',
-        'task_default_routing_key': 'null',
+        'task_default_routing_key': 'result',
         'task_default_queue': 'result_blue_sky'
     }
 
@@ -162,8 +158,8 @@ def test_process_failed_execution_15_second_window(
 
     result = process_failed_execution_signature.delay(5)
     outpt = result.wait(10)
-
     assert outpt == 'Not failing execution for task 5 in moab check window'
+
     assert not result.failed()
 
 @pytest.mark.django_db
@@ -181,12 +177,8 @@ def test_process_failed_execution(
     running_task_5.start_run_time = timezone.now() - timedelta(minutes=20)
     running_task_5.save()
 
-    with patch.object(
-        ExecutionStrategy,
-        'set_error_message_from_log'
-    ):
-        result = process_failed_execution_signature.delay(5)
-        outpt = result.wait(1)
+    result = process_failed_execution_signature.delay(5)
+    outpt = result.wait(1)
+    assert outpt == 'set failed execution for task 5'
 
-        assert outpt == 'set failed execution for task 5'
-        assert not result.failed()
+    assert not result.failed()

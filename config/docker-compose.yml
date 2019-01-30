@@ -1,5 +1,13 @@
 version: "3"
 services:
+  nginx:
+    restart: on-failure:3
+    image: nginx:1.15.3
+    volumes:
+    - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+    - "/var/www/static:/var/www/static"
+    ports:
+    - "9001:80"
   devdb2:
     restart: on-failure:3
     image: postgres:9.4.14
@@ -19,26 +27,32 @@ services:
     environment:
     - RABBITMQ_DEFAULT_USER=blue_sky_user
     - RABBITMQ_DEFAULT_PASS=blue_sky_user
+    expose:
+    - "5672"
+    - "15672"
     ports:
     - "9008:5672"
     - "9000:15672"
   blue_sky:
-    image: alleninstitute/at_em_imaging_workflow:timf
+    #image: alleninstitute/at_em_imaging_workflow:timf
+    image: alleninstitute/blue_sky:dev
     environment:
-    - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine
+    - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine:/blue_sky_workflow_engine/circus
     - DJANGO_SETTINGS_MODULE=blue_sky.settings
     - BLUE_SKY_SETTINGS=/blue_sky/config/docker_blue_sky_settings.yml
     command: bash -c "cd /blue_sky; /bin/bash entry.sh"
+    expose:
+    - "8000"
+    - "5555"
+    - "8888"
     ports:
-    - "9002:8000"
-    - "9003:5555"
-    - "9009:8888"
+    - "9999:9999"
+    - "8080:8080"
     depends_on:
     - devdb2
     - message_queue
     volumes:
     - "/data:/data:shared"
     - "/allen:/allen:shared"
-    - "./log:/log"
     - "/local1/git/blue_sky_workflow_engine:/blue_sky_workflow_engine"
     - "/local1/git/blue_sky:/blue_sky"

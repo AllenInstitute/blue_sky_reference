@@ -38,7 +38,7 @@ from workflow_engine.models.run_state import RunState
 from workflow_client.client_settings import configure_worker_app
 from tests.nb_utils.test_moab_api \
     import moab_dict, task_status_dict_queued
-from workflow_engine.celery.moab_status_tasks \
+from workflow_engine.celery.moab_tasks \
     import check_moab_status
 from tests.workflow.workflow_fixtures \
     import run_states, task_5, running_task_5, obs, mock_executable
@@ -102,7 +102,6 @@ def mock_moab_result():
     UI_HOST='example.org',
     UI_PORT=888,
     MOAB_MESSAGE_QUEUE_NAME='moab_blue_sky')
-@pytest.mark.xfail
 @pytest.mark.celery(task_cls='workflow_engine.celery.moab_tasks')
 @patch('workflow_client.nb_utils.moab_api.moab_query')
 def test_check_pbs_status(
