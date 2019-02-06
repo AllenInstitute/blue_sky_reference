@@ -23,7 +23,7 @@ workflows:
             - key: "start"
               label: "Start"
               class: "blue_sky.strategies.mock_analyze.MockAnalyze"
-              enqueued_class: "development.models.e_o.EO"
+              enqueued_class: "blue_sky.models.observation.Observation"
               executable: "mock"
         graph:
             - [ "start", [ ] ]
@@ -55,12 +55,12 @@ workflows:
             - key: "start"
               label: "Start"
               class: "development.strategies.start.Start"
-              enqueued_class: "development.models.e_o.EO"
+              enqueued_class: "blue_sky.models.observation.Observation"
               executable: "mock"
             - key: "continue"
               label: "Continue"
               class: "development.strategies.continue.Continue"
-              enqueued_class: "development.models.e_o.EO"
+              enqueued_class: "blue_sky.models.observation.Observation"
               executable: "mock"
         graph:
             - [ "start", [ "continue" ] ]
