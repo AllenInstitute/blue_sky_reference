@@ -11,7 +11,7 @@ export MOAB_AUTH=':'
 
 export BASE_DIR=/blue_sky
 
-rm ${BASE_DIR}/logs/worker.log
+rm ${BASE_DIR}/logs/ingest.log
 rm ${BASE_DIR}/logs/ui.log
 rm ${BASE_DIR}/logs/moab.log
 rm ${BASE_DIR}/logs/moab_status.log
@@ -36,25 +36,40 @@ python -m celery flower --url_prefix=flower \
   -n flower@${APP_PACKAGE} &
 
 echo 'STARTING RESULT WORKER'
-DEBUG_LOG=${BASE_DIR}/logs/result.log python -m manage result_worker &
-echo 'STARTING SERVER WORKER'
-DEBUG_LOG=${BASE_DIR}/logs/worker.log python -m manage server_worker &
+DEBUG_LOG=${BASE_DIR}/logs/result.log \
+  celery -A workflow_engine.celery.result_tasks worker \
+  --concurrency=1 --loglevel=info -n result@blue_sky &
+echo 'STARTING INGEST WORKER'
+DEBUG_LOG=${BASE_DIR}/logs/ingest.log \
+  celery -A workflow_engine.celery.ingest_tasks worker \
+  --concurrency=1 --loglevel=info -n ingest@blue_sky &
 echo 'STARTING WORKFLOW WORKER'
-DEBUG_LOG=${BASE_DIR}/logs/workflow.log python -m manage workflow_worker &
+DEBUG_LOG=${BASE_DIR}/logs/workflow.log \
+  celery -A workflow_engine.celery.worker_tasks worker \
+  --concurrency=1 --loglevel=info -n workflow@blue_sky &
 echo 'STARTING MOAB WORKER'
-DEBUG_LOG=${BASE_DIR}/logs/moab.log python -m manage moab_worker &
+DEBUG_LOG=${BASE_DIR}/logs/moab.log \
+  celery -A workflow_engine.celery.moab_tasks worker \
+  --concurrency=1 --loglevel=info -n moab@blue_sky &
 echo 'STARTING MOAB STATUS WORKER'
-DEBUG_LOG=${BASE_DIR}/logs/moab_status.log python -m manage moab_status_worker &
+DEBUG_LOG=${BASE_DIR}/logs/moab_status.log \
+  celery -A workflow_engine.celery.moab_status_tasks worker \
+  --concurrency=1 --loglevel=info -n moab_status@blue_sky &
 echo 'STARTING LOCAL WORKER'
-DEBUG_LOG=${BASE_DIR}/logs/local.log python -m manage local_worker &
-# DEBUG_LOG=${BASE_DIR}/logs/circus.log python -m manage circus_worker &
+DEBUG_LOG=${BASE_DIR}/logs/local.log \
+  celery -A workflow_engine.celery.local_tasks worker \
+  --concurrency=1 --loglevel=info -n local@blue_sky &
 echo 'STARTING MONITOR WORKER'
-DEBUG_LOG=${BASE_DIR}/logs/monitor.log python -m manage monitor_worker &
+DEBUG_LOG=${BASE_DIR}/logs/monitor.log \
+  celery -A workflow_engine.celery.monitor_tasks worker \
+  --concurrency=1 --loglevel=info -n monitor@blue_sky &
 echo 'STARTING UI WORKER'
 DEBUG_LOG=${BASE_DIR}/logs/ui.log python -m workflow_engine.ui_server &
 echo 'STARTING CIRCUS'
 DEBUG_LOG=${BASE_DIR}/logs/circus.log /bin/bash -c 'source activate circus; unset DJANGO_SETTING_MODULE; cd /blue_sky_workflow_engine/circus; /opt/conda/envs/circus/bin/circusd --daemon circus.ini; nohup celery -A workflow_client.tasks.circus_test worker --concurrency=1 --loglevel=info -n circus@blue_sky&'
-DEBUG_LOG=${BASE_DIR}/logs/circus_status.log celery -A workflow_engine.celery.circus_status_tasks worker --concurrency=1 --loglevel=info -n circus_status@blue_sky &
+DEBUG_LOG=${BASE_DIR}/logs/circus_status.log \
+  celery -A workflow_engine.celery.circus_status_tasks worker \
+  --concurrency=1 --loglevel=info -n circus_status@blue_sky &
 echo 'STARTING NOTEBOOK WORKER'
 /bin/bash -c 'source activate nb; cd notebooks; DEBUG_LOG=${BASE_DIR}/logs/nb.log nohup python -m manage shell_plus --notebook 2>&1 > /dev/null &'
 sleep 20
