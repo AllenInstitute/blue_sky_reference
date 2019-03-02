@@ -22,12 +22,6 @@ printf "blue_sky_user\nt@a.org\nblue_sky_user\n" | python -m manage createsuperu
 echo "reading workflows from workflow config yaml: " ${WORKFLOW_CONFIG_YAML}
 DEBUG_LOG=${BASE_DIR}/logs/import_workflows.log python -m manage import_workflows ${WORKFLOW_CONFIG_YAML}
 
-# Monitoring
-python -m celery flower \
-  --backend=rpc:// \
-  --broker=amqp://blue_sky_user:blue_sky_user@${MESSAGE_QUEUE_HOST}:${MESSAGE_QUEUE_PORT} \
-  -n flower@${APP_PACKAGE} &
-
 /bin/bash restart_workers.sh
 
-while true; do sleep 500; done
+while true; do sleep 3600; done

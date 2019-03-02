@@ -9,6 +9,8 @@ services:
     ports:
     - "9001:80"
     - "9002:81"
+    depends_on:
+    - blue_sky
   devdb2:
     restart: on-failure:3
     image: postgres:9.4.14
@@ -36,7 +38,7 @@ services:
     - "9000:15672"
   blue_sky:
     #image: alleninstitute/at_em_imaging_workflow:timf
-    image: alleninstitute/blue_sky:dev
+    image: alleninstitute/blue_sky:circus
     environment:
     - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine:/blue_sky_workflow_engine/circus
     - DJANGO_SETTINGS_MODULE=blue_sky.settings
@@ -45,42 +47,14 @@ services:
     command: bash -c "cd /blue_sky; /bin/bash entry.sh"
     expose:
     - "8000"
-    - "5555"
+    - "5557"
     - "8888"
-    ports:
-    - "9999:9999"
-    - "8080:8080"
     depends_on:
     - devdb2
     - message_queue
     volumes:
-    - "/data:/data:shared"
+    - "/local1/git/blue_sky/config/data:/data:shared"
     - "/allen:/allen:shared"
     - "/local1/git/blue_sky_workflow_engine:/blue_sky_workflow_engine"
     - "/local1/git/blue_sky:/blue_sky"
     - "/local1/git/blue_sky/config/static:/var/www/static"
-#  green_sky:
-#    #image: alleninstitute/at_em_imaging_workflow:timf
-#    image: alleninstitute/blue_sky:dev
-#    environment:
-#    - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine:/blue_sky_workflow_engine/circus
-#    - DJANGO_SETTINGS_MODULE=blue_sky.settings
-#    - BLUE_SKY_SETTINGS=/blue_sky/config/docker_blue_sky_settings.yml
-#    - BLUE_GREEN=green
-#    command: bash -c "cd /blue_sky; /bin/bash entry.sh"
-#    expose:
-#    - "8000"
-#    - "5555"
-#    - "8888"
-#    #ports:
-#    #- "9999:9999"
-#    #- "8080:8080"
-#    depends_on:
-#    - devdb2
-#    - message_queue
-#    volumes:
-#    - "/data:/data:shared"
-#    - "/allen:/allen:shared"
-#    - "/local1/git/green_sky_workflow_engine:/blue_sky_workflow_engine"
-#    - "/local1/git/green_sky:/blue_sky"
-#    - "/local1/git/blue_sky/config/static:/var/www/static"

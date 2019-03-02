@@ -21,7 +21,8 @@ MONITOR_TASK_MODULES=[]
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
-BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
+#BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
+BASE_FILE_PATH='/data'
 
 NOTEBOOK_ARGUMENTS = [
     '--ip', '0.0.0.0',
@@ -59,6 +60,7 @@ FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/flower/'
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/rabbitmq/'
 ADMIN_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/admin'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
+STANBOL_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/stanbol/'
 
 CONFIG_DIR = '/blue_sky/config'
 BLUE_SKY_SETTINGS = '/blue_sky/config/blue_sky_settings.yml'
@@ -192,7 +194,7 @@ LOGGING = {
     'formatters': {
         'detailed': {
             'class': 'logging.Formatter',
-            'format': '%(asctime)s %(name)-15s %(levelname)-8s %(processName)-10s %(message)s'
+            'format': '%(asctime)s %(name)-15s %(levelname)-8s %(processName)-10s %(lineno)-5d %(message)s'
         }
     },    
     'handlers': {

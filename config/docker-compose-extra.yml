@@ -1,0 +1,175 @@
+version: "3"
+services:
+  nginx:
+    restart: on-failure:3
+    image: nginx:1.15.3
+    volumes:
+    - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+    - "/local1/git/blue_sky/config/static:/var/www/static"
+    ports:
+    - "9001:80"
+    - "9002:81"
+    depends_on:
+    - blue_sky
+    - stanbol
+    - marmotta
+  devdb2:
+    restart: on-failure:3
+    image: postgres:9.4.14
+    volumes:
+    - "./pg_data:/var/lib/postgresl/data"
+    - "./initdb/initbluesky.sql:/docker-entrypoint-initdb.d/01_initbluesky.sql"
+    expose:
+    - "5432"
+    ports:
+    - "5432:5432"
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+  message_queue:
+    restart: on-failure:3
+    image: rabbitmq:3-management
+    environment:
+    - RABBITMQ_DEFAULT_USER=blue_sky_user
+    - RABBITMQ_DEFAULT_PASS=blue_sky_user
+    expose:
+    - "5672"
+    - "15672"
+    ports:
+    - "9008:5672"
+    - "9000:15672"
+  blue_sky:
+    #image: alleninstitute/at_em_imaging_workflow:timf
+    image: alleninstitute/blue_sky:circus
+    environment:
+    - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine:/blue_sky_workflow_engine/circus
+    - DJANGO_SETTINGS_MODULE=blue_sky.settings
+    - BLUE_SKY_SETTINGS=/blue_sky/config/docker_blue_sky_settings.yml
+    - BLUE_GREEN=blue
+    command: bash -c "cd /blue_sky; /bin/bash entry.sh"
+    expose:
+    - "8000"
+    - "5557"
+    - "8888"
+    #ports:
+    #- "9999:9999"
+    #- "8080:8080"
+    depends_on:
+    - devdb2
+    - message_queue
+    volumes:
+    - "/local1/git/blue_sky/config/data:/data:shared"
+    - "/allen:/allen:shared"
+    - "/local1/git/blue_sky_workflow_engine:/blue_sky_workflow_engine"
+    - "/local1/git/blue_sky:/blue_sky"
+    - "/local1/git/blue_sky/config/static:/var/www/static"
+#  green_sky:
+#    #image: alleninstitute/at_em_imaging_workflow:timf
+#    image: alleninstitute/blue_sky:dev
+#    environment:
+#    - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine:/blue_sky_workflow_engine/circus
+#    - DJANGO_SETTINGS_MODULE=blue_sky.settings
+#    - BLUE_SKY_SETTINGS=/blue_sky/config/docker_blue_sky_settings.yml
+#    - BLUE_GREEN=green
+#    command: bash -c "cd /blue_sky; /bin/bash entry.sh"
+#    expose:
+#    - "8000"
+#    - "5555"
+#    - "8888"
+#    #ports:
+#    #- "9999:9999"
+#    #- "8080:8080"
+#    depends_on:
+#    - devdb2
+#    - message_queue
+#    volumes:
+#    - "/data:/data:shared"
+#    - "/allen:/allen:shared"
+#    - "/local1/git/green_sky_workflow_engine:/blue_sky_workflow_engine"
+#    - "/local1/git/green_sky:/blue_sky"
+#    - "/local1/git/blue_sky/config/static:/var/www/static"
+  master:
+    image: gettyimages/spark
+    command: bin/spark-class org.apache.spark.deploy.master.Master -h master
+    hostname: master
+    environment:
+      MASTER: spark://master:7077
+      SPARK_CONF_DIR: /conf
+      SPARK_PUBLIC_DNS: localhost
+    expose:
+      - 7001
+      - 7002
+      - 7003
+      - 7004
+      - 7005
+      - 7077
+      - 6066
+    ports:
+      - 4040:4040
+      - 6066:6066
+      - 7077:7077
+      - 8080:8080
+    volumes:
+      - ./conf/master:/conf
+      - ./data:/tmp/data
+  worker:
+    image: gettyimages/spark
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    hostname: worker
+    environment:
+      SPARK_CONF_DIR: /conf
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_WORKER_PORT: 8881
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_PUBLIC_DNS: localhost
+    links:
+      - master
+    expose:
+      - 7012
+      - 7013
+      - 7014
+      - 7015
+      - 8881
+    ports:
+      - 8081:8081
+    volumes:
+      - ./conf/worker:/conf
+      - ./data:/tmp/data
+  stanbol:
+    image: mxr576/stanbol
+    hostname: stanbol
+    expose:
+      - 8080
+    ports:
+      - 7070:8080
+  marmotta:
+    image: apache/marmotta
+    hostname: marmotta
+    expose:
+      - 8080
+    ports:
+      - 9090:8080
+  mongodb:
+    image: mongo
+    hostname: mongodb
+    expose:
+      - 8080
+      - 8081
+      - 27017
+      - 27018
+      - 27019
+    ports:
+      - 8181:8080
+  webprotege:
+    image: skyplabs/webprotege
+    hostname: webprotege
+    expose:
+      - 8080
+    ports:
+      - 8282:8080
+    volumes:
+      - ./webprotege:/srv/webprotege
+      - ./webprotege/webprotege.properties:/etc/webprotege/webprotege.properties
+    depends_on:
+      - mongodb

@@ -1,6 +1,7 @@
 import pytest
 from django.utils import timezone
 from blue_sky.models.observation import Observation
+from django.contrib.contenttypes.models import ContentType
 
 
 @pytest.fixture
@@ -25,7 +26,7 @@ def obs():
         arg1='5',
         arg2='Whatever',
         arg3='Something',
-        object_state='CONTEMPLATIVE')
+        object_state='PROCESSING')
 
     return o
 
@@ -35,11 +36,12 @@ def waiting_task(run_states):
     workflow, _ = Workflow.objects.update_or_create(
         id=1,
         name="analyze",
-        ingest_strategy_class='blue_sky.strategies.mock_ingest .MockIngest')
+        ingest_strategy_class='blue_sky.strategies.mock_ingest.MockIngest')
     job_queue, _ = JobQueue.objects.update_or_create(
         id=8,
         name='Mock Wait',
         enqueued_object_class='blue_sky.models.observation.Observation',
+        enqueued_object_type = ContentType.objects.get_for_model(Observation),
         job_strategy_class='blue_sky.strategies.mock_wait.MockWait',
         defaults={})
     workflow_node, _ = WorkflowNode.objects.update_or_create(
@@ -93,6 +95,7 @@ def task_5(run_states):
         id=7,
         name='Mock Analyze',
         enqueued_object_class='blue_sky.models.observation.Observation',
+        enqueued_object_type = ContentType.objects.get_for_model(Observation),
         job_strategy_class='blue_sky.strategies.mock_ingest.MockIngest',
         executable=xcute,
         defaults={})
@@ -142,6 +145,7 @@ def workflow_node_1(run_states,
         id=7,
         name='Mock Analyze',
         enqueued_object_class='blue_sky.models.observation.Observation',
+        enqueued_object_type = ContentType.objects.get_for_model(Observation),
         job_strategy_class='blue_sky.strategies.mock_analyze.MockAnalyze',
         executable=mock_executable,
         defaults={})

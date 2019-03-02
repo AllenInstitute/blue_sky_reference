@@ -25,42 +25,60 @@ class Observation(models.Model):
 
     @transition(
         field='object_state',
-        source=STATE.OBSERVATION_PENDING,
+        source=[
+            STATE.OBSERVATION_PENDING,
+            STATE.OBSERVATION_PROCESSING
+        ],
         target=STATE.OBSERVATION_PROCESSING)
     def start_processing(self):
         pass
 
     @transition(
         field='object_state',
-        source=STATE.OBSERVATION_PROCESSING,
+        source=[
+            STATE.OBSERVATION_PROCESSING,
+            STATE.OBSERVATION_QC
+        ],
         target=STATE.OBSERVATION_QC)
     def stop_processing(self):
         pass
 
     @transition(
         field='object_state',
-        source=STATE.OBSERVATION_QC,
+        source=[
+            STATE.OBSERVATION_QC,
+            STATE.OBSERVATION_QC_FAILED
+        ],
         target=STATE.OBSERVATION_QC_FAILED)
     def fail_qc(self):
         pass
 
     @transition(
         field='object_state',
-        source=STATE.OBSERVATION_QC,
+        source=[
+            STATE.OBSERVATION_QC,
+            STATE.OBSERVATION_QC_PASSED
+        ],
         target=STATE.OBSERVATION_QC_PASSED)
     def pass_qc(self):
         pass
 
     @transition(
         field='object_state',
-        source=STATE.OBSERVATION_QC_PASSED,
+        source=[
+            STATE.OBSERVATION_QC_PASSED,
+            STATE.OBSERVATION_GROUPED
+        ],
         target=STATE.OBSERVATION_GROUPED)
     def group(self):
         pass
 
     @transition(
         field='object_state',
-        source=STATE.OBSERVATION_GROUPED,
+        source=[
+            STATE.OBSERVATION_GROUPED,
+            STATE.OBSERVATION_DONE
+        ],
         target=STATE.OBSERVATION_DONE)
     def done(self):
         pass

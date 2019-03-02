@@ -1,5 +1,5 @@
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
-from blue_sky.models import ObservationGroup
+from blue_sky.models import Observation
 import logging
 import copy
 
@@ -16,7 +16,8 @@ class MockCompleteGroup(ExecutionStrategy):
 
         for grp in groups:
             observations = grp.observations.filter(
-                object_state=ObservationGroup.STATE.GROUP_COMPLETE)
+                object_state=Observation.STATE.OBSERVATION_DONE
+            )
 
             if observations.count() == 10:
                 objects = objects | { grp }

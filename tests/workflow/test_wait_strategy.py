@@ -34,15 +34,16 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
+from mock import Mock, patch
 from celery.contrib.pytest import celery_app, celery_worker
-import time
-from django.test.utils import override_settings
 from workflow_client.client_settings import configure_worker_app
-from workflow_engine.celery.ingest_tasks import ingest_task
-from blue_sky.models.observation import Observation
-from workflow_engine.celery.worker_tasks import run_workflow_node_jobs_by_id
-from tests.workflow.workflow_fixtures \
-    import run_states, waiting_task
+from blue_sky.models import Observation
+from workflow_client.simple_router import SimpleRouter
+from workflow_engine.celery.signatures import run_workflow_node_jobs_signature
+from tests.workflow.workflow_fixtures import (
+    run_states,
+    waiting_task
+)
 
 
 @pytest.fixture(scope='module')
@@ -54,17 +55,18 @@ def celery_enable_logging():
 def celery_config():
     return {
         'broker_url': 'memory://',
-        'result_backend': 'rpc',
-        'task_default_exchange': 'blue_sky',
-        'task_default_routing_key': 'result',
-        'task_default_queue': 'result'
+        'result_backend': 'rpc'
     }
 
 
 @pytest.fixture(scope='module')
 def celery_worker_parameters():
+    router = SimpleRouter('blue_sky')
+
     return {
-        'queues': ( 'ingest', 'workflow', 'result', 'null' )
+        'queues': ('workflow_blue_sky', 'result_blue_sky',),
+        'task_routes': (router.route_task,),
+        'perform_ping_check': False
     }
 
 
@@ -76,26 +78,27 @@ def use_celery_app_trap():
 @pytest.fixture(scope='module')
 def celery_includes():
     return [
-        'workflow_engine.celery.ingest_tasks',
+        'workflow_engine.celery.workflow_tasks',
         'tests.workflow.celery_signal_handlers'
     ]
 
 
+@pytest.fixture
+@patch('workflow_client.client_settings.get_message_broker_url',
+        Mock(return_value='memory://'))
+def workflow_celery_app(celery_app):
+    configure_worker_app(celery_app, 'blue_sky', 'workflow')
+
+    return celery_app
+
+
+@pytest.mark.xfail
 @pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    WORKFLOW_MESSAGE_QUEUE_NAME='workflow',
-    RESULT_MESSAGE_QUEUE_NAME='result')
-@pytest.mark.celery(task_cls='tests.workflow.test_wait_strategy')
-def test_ingest(
-        celery_app,
+def test_wait_strategy(
+        workflow_celery_app,
         celery_worker,
         waiting_task):
-    configure_worker_app(celery_app, 'blue_sky')
-
-    result = run_workflow_node_jobs_by_id.apply_async(
-        (1,),
-        queue='workflow')
+    result = run_workflow_node_jobs_signature.delay(1)
     assert not result.failed()
 
     response_message = result.wait(10)

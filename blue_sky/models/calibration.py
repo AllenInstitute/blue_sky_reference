@@ -15,7 +15,10 @@ class Calibration(models.Model):
 
     @transition(
         field='object_state',
-        source=STATE.CALIBRATION_PENDING,
+        source=[
+            STATE.CALIBRATION_PENDING,
+            STATE.CALIBRATION_DONE
+        ],
         target=STATE.CALIBRATION_DONE)
     def done(self):
         pass

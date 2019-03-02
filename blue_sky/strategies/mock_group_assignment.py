@@ -1,9 +1,10 @@
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
 from blue_sky.models.observation_group import ObservationGroup
 from blue_sky.models.group_assignment import GroupAssignment
-# from django.conf import settings
+from django_fsm import can_proceed
 import logging
 import copy
+
 
 class MockGroupAssignment(ExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_group_assignment')
@@ -28,7 +29,6 @@ class MockGroupAssignment(ExecutionStrategy):
 
         return [ observation ]
 
-
     def get_input(self, observation, storage_directory, task):
         inp = copy.deepcopy(MockGroupAssignment._base_input_dict)
 
@@ -36,6 +36,20 @@ class MockGroupAssignment(ExecutionStrategy):
 
         return inp 
 
-    def on_finishing(self, observation, results, task):
-        observation.group()
-        observation.save()
+    def set_output_state(self, observation_object):
+        if can_proceed(observation_object.group):
+            observation_object.group()
+            observation_object.save()
+        else:
+            if (observation_object.object_state ==
+                observation_object.__class__.STATE.OBSERVATION_GROUPED):
+                MockGroupAssignment._log.warn(
+                    '{} is already in state {}'.format(
+                        observation_object,
+                        observation_object.__class__.STATE.OBSERVATION_GROUPED
+                    )
+                )
+
+    def on_finishing(self, observation_object, results, task):
+        self.set_output_state(observation_object)
+        observation_object.save()

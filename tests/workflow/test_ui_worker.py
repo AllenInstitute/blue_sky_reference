@@ -34,17 +34,22 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_client.client_settings import configure_worker_app
-from mock import patch, call
-from workflow_engine.celery.signatures import create_job_signature
-from workflow_engine.celery.worker_tasks import run_workflow_node_jobs_by_id
-from workflow_engine.celery.worker_tasks \
-    import create_job, queue_job
+from workflow_client.simple_router import SimpleRouter
+from mock import Mock, patch, call
 from celery.contrib.pytest import celery_app, celery_worker
-import time
-from django.test.utils import override_settings
-from tests.workflow.workflow_fixtures \
-    import run_states, task_5, running_task_5, obs
+from workflow_client.client_settings import configure_worker_app
+from workflow_engine.celery.signatures import create_job_signature
+# from workflow_engine.celery.workflow_tasks import (
+#     run_workflow_node_jobs_by_id,
+#     create_job,
+#     queue_job
+# )
+from tests.workflow.workflow_fixtures import (
+    run_states,
+    task_5,
+    running_task_5,
+    obs
+)
 
 
 @pytest.fixture(scope='module')
@@ -56,17 +61,18 @@ def celery_enable_logging():
 def celery_config():
     return {
         'broker_url': 'memory://',
-        'result_backend': 'rpc',
-        'task_default_exchange': 'blue_sky',
-        'task_default_routing_key': 'result',
-        'task_default_queue': 'null'
+        'result_backend': 'rpc'
     }
 
 
 @pytest.fixture(scope='module')
 def celery_worker_parameters():
+    router = SimpleRouter('blue_sky')
+
     return {
-        'queues': ( 'workflow_blue_sky','result_blue_sky', 'null' )
+        'queues': ('workflow_blue_sky','result_blue_sky'),
+        'task_routes': (router.route_task,),
+        'perform_ping_check': False
     }
 
 @pytest.fixture(scope='module')
@@ -77,38 +83,39 @@ def use_celery_app_trap():
 @pytest.fixture(scope='module')
 def celery_includes():
     return [
-        'tests.workflow.test_result_worker',
-        'workflow_engine.celery.worker_tasks',
+        'workflow_engine.celery.workflow_tasks',
         'tests.workflow.celery_signal_handlers'
     ]
 
 
+@pytest.fixture
+@patch('workflow_client.client_settings.get_message_broker_url',
+        Mock(return_value='memory://'))
+def workflow_celery_app(celery_app):
+    configure_worker_app(celery_app, 'blue_sky', 'workflow')
+
+    return celery_app
+
 @pytest.mark.xfail
 @pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    WORKFLOW_MESSAGE_QUEUE_NAME='workflow_blue_sky',
-    CELERY_MESSAGE_QUEUE_NAME='celery_blue_sky')
-@pytest.mark.celery(task_cls='workflow_engine.celery.worker_tasks')
-@patch(
-   'workflow_engine'
-   '.celery'
-   '.run_tasks'
-   '.run_workflow_node_jobs_by_id'
-   '.apply_async')
+#@pytest.mark.celery(task_cls='workflow_engine.celery.workflow_tasks')
+# @patch(
+#    'workflow_engine'
+#    '.celery'
+#    '.run_tasks'
+#    '.run_workflow_node_jobs_by_id'
+#    '.apply_async')
 def test_create_job(
-        run_job_mock,
-        celery_app,
+        #run_job_mock,
+        workflow_celery_app,
         celery_worker,
         task_5,
         obs):
-    print('FN: ' + str(run_workflow_node_jobs_by_id))
+    #print('FN: ' + str(run_workflow_node_jobs_by_id))
     workflow_node_id = 1
     priority = 50
 
     num_jobs_before = Job.objects.count()
-
-    configure_worker_app(celery_app, 'blue_sky')
 
     result = create_job_signature.delay(
         workflow_node_id,
@@ -116,12 +123,12 @@ def test_create_job(
         priority)
 
     outpt = result.wait(10)
-    run_job_mock.assert_called_once_with(
-        (1,),
-        {},
-        broker_connection_retry=False,
-        broker_connection_timeout=10,
-        queue='workflow_blue_sky')
+#     run_job_mock.assert_called_once_with(
+#         (1,),
+#         {},
+#         broker_connection_retry=False,
+#         broker_connection_timeout=10,
+#         queue='workflow_blue_sky')
 
     num_jobs_after = Job.objects.count()
     assert num_jobs_after == num_jobs_before + 1

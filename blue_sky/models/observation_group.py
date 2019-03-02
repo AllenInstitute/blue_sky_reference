@@ -14,7 +14,10 @@ class ObservationGroup(models.Model):
 
     @transition(
         field='object_state',
-        source=STATE.GROUP_INCOMPLETE,
+        source=[
+            STATE.GROUP_INCOMPLETE,
+            STATE.GROUP_COMPLETE
+        ],
         target=STATE.GROUP_COMPLETE)
     def complete(self):
         pass

@@ -1,0 +1,7 @@
+- model: blue_sky.observation
+  pk: 1
+  fields:
+    arg1: 53
+    arg2: Something
+    arg3: Everything
+    proc_state: WA

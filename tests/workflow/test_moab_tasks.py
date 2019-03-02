@@ -34,17 +34,24 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
+from workflow_client.simple_router import SimpleRouter
 from workflow_engine.models.run_state import RunState
 from workflow_client.client_settings import configure_worker_app
-from tests.nb_utils.test_moab_api \
-    import moab_dict, task_status_dict_queued
-from workflow_engine.celery.moab_status_tasks \
-    import check_moab_status
-from tests.workflow.workflow_fixtures \
-    import run_states, task_5, running_task_5, obs, mock_executable
+from tests.nb_utils.test_moab_api import (
+    moab_dict,
+    task_status_dict_queued
+)
+from workflow_engine.celery.signatures import check_moab_status_signature
+from tests.workflow.workflow_fixtures import (
+    run_states,
+    task_5,
+    running_task_5,
+    obs,
+    mock_executable
+)
+
 from django.test.utils import override_settings
-from celery.contrib.pytest \
-    import celery_app, celery_worker
+from celery.contrib.pytest import celery_app, celery_worker
 from mock import Mock, patch
 import time
 
@@ -58,17 +65,18 @@ def celery_enable_logging():
 def celery_config():
     return {
         'broker_url': 'memory://',
-        'result_backend': 'rpc',
-        'task_default_exchange': 'blue_sky',
-        'task_default_routing_key': 'result',
-        'task_default_queue': 'result'
+        'result_backend': 'rpc'
     }
 
 
 @pytest.fixture(scope='module')
 def celery_worker_parameters():
+    router = SimpleRouter('blue_sky')
+
     return {
-        'queues': ( 'moab_blue_sky', 'result', 'null' )
+        'queues': ('moab_status_blue_sky', 'result_blue_sky', 'moab_blue_sky'),
+        'task_routes': (router.route_task,),
+        'perform_ping_check': False
     }
 
 
@@ -80,7 +88,8 @@ def use_celery_app_trap():
 @pytest.fixture(scope='module')
 def celery_includes():
     return [
-        'tests.workflow.test_moab_tasks'
+        'workflow_engine.celery.moab_status_tasks',
+        'tests.workflow.celery_signal_handlers'
     ]
 
 
@@ -95,19 +104,19 @@ def mock_moab_result():
         'completionCode': 0
     } for i in [2, 4] ]
 
+@pytest.fixture
+@patch('workflow_client.client_settings.get_message_broker_url',
+        Mock(return_value='memory://'))
+def moab_status_celery_app(celery_app):
+    configure_worker_app(celery_app, 'blue_sky', 'moab_status')
+
+    return celery_app
 
 @pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    UI_HOST='example.org',
-    UI_PORT=888,
-    MOAB_MESSAGE_QUEUE_NAME='moab_blue_sky')
-@pytest.mark.xfail
-@pytest.mark.celery(task_cls='workflow_engine.celery.moab_tasks')
 @patch('workflow_client.nb_utils.moab_api.moab_query')
-def test_check_pbs_status(
+def test_check_moab_status(
     mock_moab_query,
-    celery_app,
+    moab_status_celery_app,
     celery_worker,
     task_5,
     moab_dict):
@@ -117,10 +126,8 @@ def test_check_pbs_status(
     task_5.pbs_id = 'Moab.' + str(task_5.id + _MOAB_ID_OFFSET)
     task_5.save()
 
-    configure_worker_app(celery_app, 'blue_sky')
-
-    result = check_moab_status.apply_async(
-        queue='moab_blue_sky')
+    result = check_moab_status_signature.clone(
+        delivery_mode='persistent').delay()
 
     r = result.wait(10)
 

@@ -43,6 +43,7 @@ MESSAGE_QUEUE_PORT = 5672
 UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 UI_PORT = 9002
 FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
+STANBOL_URL='http://' + UI_HOST + ":" + str(9009)
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
@@ -209,6 +210,11 @@ LOGGING = {
 #            'level': 'WARN',
 #            'propagate': True,
 #        },
+        'tests': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
         'blue_sky': {
             'handlers': ['console', 'file'],
             'level': 'WARN',

@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2018. Allen Institute. All rights reserved.
+# Copyright 2018-2019. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -34,15 +34,19 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
+from mock import Mock, patch
 from celery.contrib.pytest import celery_app, celery_worker
-import time
-from django.test.utils import override_settings
+from workflow_client.simple_router import SimpleRouter
 from workflow_client.client_settings import configure_worker_app
-from workflow_engine.celery.ingest_tasks import ingest_task
+from workflow_engine.celery.signatures import ingest_signature
 from blue_sky.models.observation import Observation
-from tests.workflow.workflow_fixtures \
-    import run_states, workflow_node_1, task_5, \
-    running_task_5, mock_executable
+from tests.workflow.workflow_fixtures import (
+    run_states,
+    workflow_node_1,
+    task_5,
+    running_task_5,
+    mock_executable
+)
 
 
 @pytest.fixture(scope='module')
@@ -54,17 +58,20 @@ def celery_enable_logging():
 def celery_config():
     return {
         'broker_url': 'memory://',
-        'result_backend': 'rpc',
-        'task_default_exchange': 'blue_sky',
-        'task_default_routing_key': 'result',
-        'task_default_queue': 'result'
+        'result_backend': 'rpc'
     }
 
 
 @pytest.fixture(scope='module')
 def celery_worker_parameters():
+    router = SimpleRouter('blue_sky')
+
     return {
-        'queues': ( 'ingest', 'workflow', 'result', 'null' )
+        'queues': (
+            'ingest_blue_sky',
+        ),
+        'router': (router.route_task,),
+        'perform_ping_check': False
     }
 
 
@@ -80,19 +87,19 @@ def celery_includes():
         'tests.workflow.celery_signal_handlers'
     ]
 
+@pytest.fixture
+@patch('workflow_client.client_settings.get_message_broker_url',
+        Mock(return_value='memory://'))
+def ingest_celery_app(celery_app):
+    configure_worker_app(celery_app, 'blue_sky', 'ingest')
+
+    return celery_app
 
 @pytest.mark.django_db
-@override_settings(
-    APP_PACKAGE='blue_sky',
-    INGEST_MESSAGE_QUEUE_NAME='ingest',
-    RESULT_MESSAGE_QUEUE_NAME='result')
-@pytest.mark.celery(task_cls='workflow_engine.celery.ingest_tasks')
 def test_ingest(
-        celery_app,
+        ingest_celery_app,
         celery_worker,
         workflow_node_1,):
-    configure_worker_app(celery_app, 'blue_sky')
-
     message = {
         'arg1': 5,
         'arg2': "Whatever",
@@ -101,9 +108,7 @@ def test_ingest(
 
     tags = ['sunday']
 
-    result = ingest_task.apply_async(
-        ('analyze', message, tags),
-        queue='ingest')
+    result = ingest_signature.delay('analyze', message, tags)
     assert not result.failed()
 
     response_message = result.wait(10)
