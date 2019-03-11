@@ -28,9 +28,8 @@ unset DJANGO_SETTINGS_MODULE
 
 source activate base
 
-echo 'STARTING CIRCUSD'
-/bin/bash -c 'source activate circus; cd /blue_sky_workflow_engine/circus; /opt/conda/envs/circus/bin/circusd --daemon circus.ini'
-
+#echo 'STARTING CIRCUSD'
+#/bin/bash -c 'source activate circus; cd /blue_sky_workflow_engine/circus; /opt/conda/envs/circus/bin/circusd --daemon circus.ini'
 
 /bin/bash -c "source activate circus; python -m workflow_client.process_manager&"
 

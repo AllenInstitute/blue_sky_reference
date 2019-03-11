@@ -135,6 +135,8 @@ DATABASES = {
     },
     # Work around locked database table error w/ multiple processes
     'OPTIONS': {
+        'NAME': '',
+        'ENGINE': '',
         'timeout': 20
     }
 }
