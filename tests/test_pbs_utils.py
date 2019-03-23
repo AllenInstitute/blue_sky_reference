@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2017. Allen Institute. All rights reserved.
+# Copyright 2017-2019. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -36,22 +36,113 @@
 import pytest
 from mock import Mock
 from workflow_client.pbs_utils import PbsUtils
-
+import re
 
 @pytest.fixture
 def pu():
     return PbsUtils()
 
+
 @pytest.mark.django_db
 def test_generate_script(pu):
     ex = Mock()
-    ex.get_task_name = Mock(return_value='Task Name')
+    ex.remote_queue = 'pbs'
+    ex.pbs_queue = 'emconnectome'
+    ex.pbs_processor = 'vmem=192g,nodes=1:ppn=32'
+    ex.pbs_walltime = 'walltime=5:00:00'
+    
     tsk = Mock()
     tsk.environment_vars = Mock(
         return_value=[
             'THIS=that',
             'ABC=xyz',
             'PATH=/least/resistance:$PATH'])
+    tsk.get_task_name = Mock(return_value='Mock Task')
+    tsk.log_file = 'mock.log'
+    tsk.full_executable = 'run.sh arg1 arg2 arg3'
     settings = Mock()
+    settings.PBS_CONDA_ENV = 'kingsnake'
 
-    pu.get_template(ex, tsk, settings)
+    generated_script = pu.get_template(ex, tsk, settings)
+
+    assert re.search(
+        '^#PBS -q emconnectome$',
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        '^#PBS -l vmem=192g,nodes=1:ppn=32$',
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        '^#PBS -l walltime=5:00:00$',
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        '^#PBS -N Mock Task$',
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        '^#PBS -o mock.log$',
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        '^run.sh arg1 arg2 arg3$',
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        "^source activate kingsnake$",
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        "^export THIS=that$",
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        "^export ABC=xyz$",
+        generated_script,
+        re.MULTILINE
+    )
+    assert re.search(
+        "^export PATH=/least/resistance:\$PATH$",
+        generated_script,
+        re.MULTILINE
+    )
+
+
+@pytest.mark.django_db
+def test_generate_spark_script(pu):
+    ex = Mock()
+    ex.remote_queue = 'spark_cluster'
+    ex.pbs_queue = 'emconnectome'
+    ex.pbs_processor = 'vmem=192g,nodes=1:ppn=32'
+    ex.pbs_walltime = 'walltime=5:00:00'
+    
+    tsk = Mock()
+    tsk.environment_vars = Mock(
+        return_value=[
+            'THIS=that',
+            'ABC=xyz',
+            'PATH=/least/resistance:$PATH'])
+    tsk.get_task_name = Mock(return_value='Mock Task')
+    tsk.log_file = 'mock.log'
+    tsk.full_executable = 'run.sh arg1 arg2 arg3'
+    settings = Mock()
+    settings.PBS_CONDA_ENV = 'kingsnake'
+
+    generated_script = pu.get_template(ex, tsk, settings)
+
+#     assert re.search(
+#         '^#PBS -l walltime=5:00:00$',
+#         generated_script,
+#         re.MULTILINE
+#     )
+
+    raise(Exception(generated_script))

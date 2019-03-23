@@ -1,7 +1,8 @@
 from django.db import models
 from django_fsm import FSMField, transition
+from workflow_engine.mixins import Enqueueable
 
-class Calibration(models.Model):
+class Calibration(Enqueueable, models.Model):
     class STATE:
         CALIBRATION_PENDING = "PENDING"
         CALIBRATION_DONE = "DONE"

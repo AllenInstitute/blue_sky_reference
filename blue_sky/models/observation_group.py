@@ -1,7 +1,8 @@
 from django.db import models
 from django_fsm import FSMField, transition
+from workflow_engine.mixins import Enqueueable
 
-class ObservationGroup(models.Model):
+class ObservationGroup(Enqueueable, models.Model):
     class STATE:
         GROUP_INCOMPLETE = "INCOMPLETE"
         GROUP_COMPLETE = "COMPLETE"

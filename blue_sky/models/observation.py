@@ -1,8 +1,9 @@
 from django.db import models
+from workflow_engine.mixins import Enqueueable
 from django_fsm import FSMField, transition
 
 
-class Observation(models.Model):
+class Observation(Enqueueable, models.Model):
     class STATE:
         OBSERVATION_PENDING = "PENDING"
         OBSERVATION_PROCESSING = "PROCESSING"
