@@ -1,7 +1,6 @@
 import pytest
-from mock import Mock, MagicMock, patch
-from workflow_engine.strategies.wait_strategy \
-    import WaitStrategy
+from mock import Mock, MagicMock
+from workflow_engine.strategies.wait_strategy import WaitStrategy
 
 @pytest.fixture
 def wait_strat():
@@ -24,11 +23,9 @@ def test_skip_execution(wait_strat):
 
 def test_run_task(wait_strat):
     task = MagicMock()
+    task.enqueued_task_object = Mock()
 
-    with patch(
-        'workflow_engine.workflow_controller.'
-        'WorkflowController.get_enqueued_object'):
-        wait_strat.run_task(task)
+    wait_strat.run_task(task)
 
 
 @pytest.mark.django_db

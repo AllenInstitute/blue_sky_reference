@@ -82,7 +82,7 @@ def test_job_queues_show_data(rf):
     assert set(payload.keys()) == set([
         'name', 'executable name', 'job strategy class',
         'executable path', 'id', 'updated at', 'created at',
-        'description', 'enqueued object class'])
+        'description', 'enqueued object type'])
 
 
 @pytest.mark.django_db
@@ -97,11 +97,4 @@ def test_job_queues_page(rf):
     request = rf.get('/workflow_engine/jobs')
     page = 2
     response = job_queue_view.job_queues_page(request, page)
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_get_enqueued_object_classes(rf):
-    request = rf.get('/workflow_engine/jobs')
-    response = job_queue_view.get_enqueued_object_classes(request)
     assert response.status_code == 200

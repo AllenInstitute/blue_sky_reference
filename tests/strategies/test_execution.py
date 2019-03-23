@@ -1,17 +1,18 @@
 import pytest
 from mock import Mock, patch, mock_open
 from workflow_engine.models.task import Task
-from blue_sky.models.observation import Observation
 from workflow_engine.models.job import Job
 from workflow_engine.models.run_state import RunState
 import os
 from workflow_engine.workflow_config import WorkflowConfig
 from workflow_engine.models.workflow import Workflow
 from workflow_engine.models.workflow_node import WorkflowNode
-from workflow_engine.strategies.execution_strategy \
-    import ExecutionStrategy
-from tests.workflow_configurations \
-    import TEST_CONFIG_YAML_TWO_NODES
+from django.contrib.contenttypes.models import ContentType
+from blue_sky.models import Observation
+from workflow_engine.strategies.execution_strategy import (
+    ExecutionStrategy
+)
+from tests.workflow_configurations import TEST_CONFIG_YAML_TWO_NODES
 
 
 @pytest.fixture
@@ -100,7 +101,7 @@ def xest_finish_task(ex_strat):
     enqueued_obj.id = 555
     task.job = Mock()
     task.job.id = 777
-    task.job.get_enqueued_object = Mock(return_value = enqueued_obj)
+    task.job.enqueued_object = Mock(return_value = enqueued_obj)
 
     mock_enqueue_next = Mock(
         name='mock_enqueue_next')
@@ -110,21 +111,17 @@ def xest_finish_task(ex_strat):
         'workflow_engine.strategies.execution_strategy.enqueue_next_queue_signature',
         mock_enqueue_next):
         with patch(
-            'workflow_engine.workflow_controller.WorkflowController.get_enqueued_object',
-            return_value=enqueued_obj):
+            'os.path.isfile',
+            Mock(return_value=True)) as mock_isfile:
             with patch(
-                'os.path.isfile',
-                Mock(return_value=True)) as mock_isfile:
-                with patch(
-                    "builtins.open",
-                    mock_open(read_data='{ "data": "whatever" }')):
-                    ex_strat.finish_task(task)
+                "builtins.open",
+                mock_open(read_data='{ "data": "whatever" }')):
+                ex_strat.finish_task(task)
 
     mock_isfile.assert_called_once_with(
         'example_data/555/jobs/job_777/tasks/task_123/output_123.json')
     mock_enqueue_next.delay.assert_called_once_with(777)
-    #task.job.get_enqueued_object.assert_called_once()
-    #task.job.workflow_node.get_children.assert_called_once()
+
 
 def xest_run_task(ex_strat):
     task = Mock()
@@ -168,7 +165,9 @@ def test_run_asynchronous_task(ex_strat):
         jb.save()
         tsk = Task(job=jb,
                    run_state=pend,
-                   enqueued_task_object_class='blue_sky.models.observation.Observation',
+                   enqueued_task_object_type=ContentType.objects.get_for_model(
+                       Observation
+                    ),
                    enqueued_task_object_id=obs.id)
         tsk.save()
         with patch('workflow_engine'

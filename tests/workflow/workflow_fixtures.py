@@ -40,7 +40,6 @@ def waiting_task(run_states):
     job_queue, _ = JobQueue.objects.update_or_create(
         id=8,
         name='Mock Wait',
-        enqueued_object_class='blue_sky.models.observation.Observation',
         enqueued_object_type = ContentType.objects.get_for_model(Observation),
         job_strategy_class='blue_sky.strategies.mock_wait.MockWait',
         defaults={})
@@ -94,7 +93,6 @@ def task_5(run_states):
     job_queue, _ = JobQueue.objects.update_or_create(
         id=7,
         name='Mock Analyze',
-        enqueued_object_class='blue_sky.models.observation.Observation',
         enqueued_object_type = ContentType.objects.get_for_model(Observation),
         job_strategy_class='blue_sky.strategies.mock_ingest.MockIngest',
         executable=xcute,
@@ -144,7 +142,6 @@ def workflow_node_1(run_states,
     job_queue, _ = JobQueue.objects.update_or_create(
         id=7,
         name='Mock Analyze',
-        enqueued_object_class='blue_sky.models.observation.Observation',
         enqueued_object_type = ContentType.objects.get_for_model(Observation),
         job_strategy_class='blue_sky.strategies.mock_analyze.MockAnalyze',
         executable=mock_executable,

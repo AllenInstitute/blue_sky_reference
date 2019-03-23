@@ -145,4 +145,4 @@ def test_generate_spark_script(pu):
 #         re.MULTILINE
 #     )
 
-    raise(Exception(generated_script))
+#    raise(Exception(generated_script))
