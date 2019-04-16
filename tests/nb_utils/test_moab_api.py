@@ -45,6 +45,7 @@ def moab_dict(task_status_dict_queued):
           'id': d['moab_id'],
           'customName': 'task_%d' % (d['task_id']),
           'states': { 'state': 'Complete' },
+          'isActive': False,
           'credentials': { 'user': user },
           'completionCode': 0
         } for d in task_status_dict_queued ]
