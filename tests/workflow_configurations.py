@@ -1,4 +1,4 @@
-TEST_CONFIG_YAML_ONE_NODE = """
+TEST_CONFIG_YAML_ONE_NODE = u"""
 executables:
     mock:
         name: 'Mock Executable'
@@ -6,19 +6,9 @@ executables:
         pbs_queue: 'lims2'
         pbs_processor: 'vmem=128g'
         pbs_walltime: 'walltime=5:00:00'
-run_states:
-    - "PENDING"
-    - "QUEUED"
-    - "RUNNING"
-    - "FINISHED_EXECUTION"
-    - "FAILED_EXECUTION"
-    - "FAILED"
-    - "SUCCESS"
-    - "PROCESS_KILLED"
 workflows:
     test_workflow:
         ingest: "blue_sky.strategies.mock_ingest.MockIngest"
-
         states:
             - key: "start"
               label: "Start"
@@ -29,39 +19,32 @@ workflows:
             - [ "start", [ ] ]
 """
 
-TEST_CONFIG_YAML_TWO_NODES = """
+TEST_CONFIG_YAML_TWO_NODES = u"""
 executables:
     mock:
         name: 'Mock Executable'
-        path: '/data/aibstemp/timf/example_data/bin/mock_executable'
-        remote_queue: 'pbs'
-        pbs_queue: 'lims2'
+        path: 'python'
+        args: [ '-m', 'mock_executable' ]
+        remote_queue: 'mock'
+        pbs_queue: 'test'
         pbs_processor: 'vmem=128g'
         pbs_walltime: 'walltime=5:00:00'
-run_states:
-    - "PENDING"
-    - "QUEUED"
-    - "RUNNING"
-    - "FINISHED_EXECUTION"
-    - "FAILED_EXECUTION"
-    - "FAILED"
-    - "SUCCESS"
-    - "PROCESS_KILLED"
 workflows:
     test_workflow:
-        ingest: "development.strategies.lens_correction_ingest.LensCorrectionIngest"
-
+        ingest: "blue_sky.strategies.mock_ingest.MockIngest"
         states:
-            - key: "start"
-              label: "Start"
-              class: "development.strategies.start.Start"
+            - key: "ingest_mock"
+              label: "Ingest Mock"
+              class: "blue_sky.strategies.mock_ingest.MockIngest"
               enqueued_class: "blue_sky.models.observation.Observation"
               executable: "mock"
-            - key: "continue"
-              label: "Continue"
-              class: "development.strategies.continue.Continue"
+              batch_size: 100
+            - key: "mock_preprocess"
+              label: "Mock Preprocess"
+              class: "blue_sky.strategies.mock_preprocess.MockPreprocess"
               enqueued_class: "blue_sky.models.observation.Observation"
               executable: "mock"
+              batch_size: 100
         graph:
-            - [ "start", [ "continue" ] ]
+            - [ "ingest_mock", [ "mock_preprocess" ] ]
 """

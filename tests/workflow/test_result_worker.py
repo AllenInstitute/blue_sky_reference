@@ -34,118 +34,97 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import Mock, patch
-from celery.contrib.pytest import celery_app, celery_worker
-from workflow_client.client_settings import configure_worker_app
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
-from workflow_engine.celery.signatures import (
-    process_running_signature,
-    process_finished_execution_signature,
-    process_failed_execution_signature
-)
-from workflow_client.simple_router import SimpleRouter
-from tests.workflow.workflow_fixtures import (
-    run_states,
-    task_5,
-    running_task_5,
-    mock_executable
-)
-import logging
-import os
+import workflow_engine.celery.signatures as signatures
 
+# Workflow Fixtures
+from tests.workflow.workflow_fixtures import (
+    run_states,           # noqa # pylint: disable=unused-import
+    task_5,
+    running_task_5,       # noqa # pylint: disable=unused-import
+    mock_executable       # noqa # pylint: disable=unused-import
+)
+
+
+# Message queue fixtures
+from tests.celery_fixtures import (
+    celery_enable_logging,           # noqa # pylint: disable=unused-import
+    celery_config,                   # noqa # pylint: disable=unused-import
+    use_celery_app_trap,             # noqa # pylint: disable=unused-import
+    celery_worker_parameters_helper,
+    celery_includes_helper,
+    result_celery_app,               # noqa # pylint: disable=unused-import
+)
+
+
+# celery_includes issue workaround
+from workflow_engine.celery.result_tasks import (
+    process_running,             # noqa # pylint: disable=unused-import
+    process_finished_execution,  # noqa # pylint: disable=unused-import
+    process_failed_execution     # noqa # pylint: disable=unused-import
+)
+
+import logging
 _log = logging.getLogger('test.workflow.test_result_worker')
 
 
-@pytest.fixture(scope='module')
-def celery_enable_logging():
-    return True
-
-
-@pytest.fixture(scope='module')
-def celery_config():
-    return {
-        'broker_url': 'memory://',
-        'result_backend': 'rpc'
-    }
-
-
-@pytest.fixture(scope='module')
-def celery_worker_parameters():
-    router = SimpleRouter('blue_sky')
-
-    return {
-        'queues': ('result_blue_sky',),
-        'task_routes': (router.route_task,),
-        'perform_ping_check': False
-    }
-
-@pytest.fixture(scope='module')
-def use_celery_app_trap():
-    return True
-
-
-@pytest.fixture(scope='module')
+@pytest.fixture
 def celery_includes():
-    return [
-        'tests.workflow.test_result_worker',
-        'tests.workflow.celery_signal_handlers'
-    ]
+    return celery_includes_helper(['workflow_engine.celery.result_tasks'])
+
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
-def result_celery_app(celery_app):
-    configure_worker_app(celery_app, 'blue_sky', 'result')
-
-    return celery_app
-
-@pytest.fixture
-def result_celery_worker(celery_worker):
-    return celery_worker
+def celery_worker_parameters():
+    return celery_worker_parameters_helper('result')
 
 
-@pytest.mark.skipif(
-    os.environ.get('INCLUDE_PROBLEM_TESTS') != 'true',
-    reason='these tests conflict when run with the full suite')
 @pytest.mark.django_db
 def test_process_running(
     result_celery_app,
     celery_worker,
-    running_task_5):
-    result = process_running_signature.delay(5)
+    task_5):
+
+    mock_cluster_process_id = 12345
+
+    task_5.job.set_queued_state(mock_cluster_process_id, quiet=True)
+    task_5.set_queued_state(mock_cluster_process_id, quiet=True)
+    result = signatures.process_running_signature.delay(5)
     assert not result.failed()
     outpt = result.wait(10)
     assert str(outpt) == 'set running for task 5'
 
-# 
-# @pytest.mark.django_db
-# def xtest_process_finished_execution(
-#         result_celery_app,
-#         celery_worker,
-#         running_task_5):
-    result = process_finished_execution_signature.delay(5)
+
+@pytest.mark.django_db
+def xtest_process_finished_execution(
+    result_celery_app,
+    celery_worker,
+    running_task_5):
+
+    result = signatures.process_finished_execution_signature.delay(5)
     outpt = result.wait(10)
     assert outpt == 'set finished for task 5'
  
     assert not result.failed()
 
-# 
-# @pytest.mark.django_db
-# def test_process_failed_execution_task_not_found(
-#         result_celery_app,
-#         celery_worker,
-#         running_task_5):
-    result = process_failed_execution_signature.delay(1)
+
+@pytest.mark.django_db
+def xtest_process_failed_execution_task_not_found(
+    result_celery_app,
+    celery_worker,
+    running_task_5):
+
+    result = signatures.process_failed_execution_signature.delay(1)
     assert not result.failed()
     outpt = result.wait(10)
     assert outpt == 'Task 1 not found'
 
-# 
-# def test_process_failed_execution_15_second_window(
-#         result_celery_app,
-#         result_celery_worker,
-#         running_task_5):
-    result = process_failed_execution_signature.delay(5)
+
+@pytest.mark.django_db
+def xtest_process_failed_execution_15_second_window(
+    result_celery_app,
+    celery_worker,
+    running_task_5):
+
+    result = signatures.process_failed_execution_signature.delay(5)
     outpt = result.wait(10)
  
     assert outpt == 'Not failing execution for task 5 in moab check window'

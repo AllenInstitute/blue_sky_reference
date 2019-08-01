@@ -34,107 +34,69 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_client.simple_router import SimpleRouter
-from mock import Mock, patch, call
-from celery.contrib.pytest import celery_app, celery_worker
-from workflow_client.client_settings import configure_worker_app
-from workflow_engine.celery.signatures import create_job_signature
-# from workflow_engine.celery.workflow_tasks import (
-#     run_workflow_node_jobs_by_id,
-#     create_job,
-#     queue_job
-# )
+from mock import Mock, patch
+from workflow_engine.workflow_controller import WorkflowController
+from workflow_engine.celery import signatures
+from tests.signature_fixtures import (
+    ENQUEUE_NEXT,
+    mock_celery_task  # noqa # pylint: disable=unused-import
+)
 from tests.workflow.workflow_fixtures import (
-    run_states,
-    task_5,
-    running_task_5,
-    obs
+    run_states,      # noqa # pylint: disable=unused-import
+    task_5,          # noqa # pylint: disable=unused-import
+    obs             # noqa # pylint: disable=unused-import
 )
 
 
-@pytest.fixture(scope='module')
-def celery_enable_logging():
-    return True
-
-
-@pytest.fixture(scope='module')
-def celery_config():
-    return {
-        'broker_url': 'memory://',
-        'result_backend': 'rpc'
-    }
-
-
-@pytest.fixture(scope='module')
-def celery_worker_parameters():
-    router = SimpleRouter('blue_sky')
-
-    return {
-        'queues': ('workflow_blue_sky','result_blue_sky'),
-        'task_routes': (router.route_task,),
-        'perform_ping_check': False
-    }
-
-@pytest.fixture(scope='module')
-def use_celery_app_trap():
-    return True
-
-
-@pytest.fixture(scope='module')
-def celery_includes():
-    return [
-        'workflow_engine.celery.workflow_tasks',
-        'tests.workflow.celery_signal_handlers'
-    ]
+# Message queue fixtures
+from tests.celery_fixtures import (
+    celery_enable_logging,           # noqa # pylint: disable=unused-import
+    celery_config,                   # noqa # pylint: disable=unused-import
+    use_celery_app_trap,             # noqa # pylint: disable=unused-import
+    celery_worker_parameters_helper,
+    celery_includes_helper,
+    workflow_celery_app,             # noqa # pylint: disable=unused-import
+)
 
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
-def workflow_celery_app(celery_app):
-    configure_worker_app(celery_app, 'blue_sky', 'workflow')
+def celery_includes():
+    return celery_includes_helper(['workflow_engine.celery.workflow_tasks'])
 
-    return celery_app
 
-@pytest.mark.xfail
+@pytest.fixture
+def celery_worker_parameters():
+    return celery_worker_parameters_helper('workflow')
+
+
+
 @pytest.mark.django_db
-#@pytest.mark.celery(task_cls='workflow_engine.celery.workflow_tasks')
-# @patch(
-#    'workflow_engine'
-#    '.celery'
-#    '.run_tasks'
-#    '.run_workflow_node_jobs_by_id'
-#    '.apply_async')
+@patch('workflow_engine.workflow_controller.run_workflow_node_jobs_signature')
 def test_create_job(
-        #run_job_mock,
-        workflow_celery_app,
-        celery_worker,
-        task_5,
-        obs):
-    #print('FN: ' + str(run_workflow_node_jobs_by_id))
+    mock_start_helper,
+    workflow_celery_app,
+    celery_worker,
+    task_5,
+    obs):
+
     workflow_node_id = 1
     priority = 50
 
     num_jobs_before = Job.objects.count()
 
-    result = create_job_signature.delay(
+    result = signatures.create_job_signature.delay(
         workflow_node_id,
         obs.id,
         priority)
 
-    outpt = result.wait(10)
-#     run_job_mock.assert_called_once_with(
-#         (1,),
-#         {},
-#         broker_connection_retry=False,
-#         broker_connection_timeout=10,
-#         queue='workflow_blue_sky')
+    assert not result.failed()
+
+    job_id = result.wait(10)
+
+    assert job_id > 0
 
     num_jobs_after = Job.objects.count()
     assert num_jobs_after == num_jobs_before + 1
 
-    assert not result.failed()
-
-
 # circular imports
-from workflow_engine.models.job import Job
+from workflow_engine.models import Job

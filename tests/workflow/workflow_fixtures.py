@@ -1,5 +1,6 @@
 import pytest
 from django.utils import timezone
+from workflow_engine.mixins import Runnable
 from blue_sky.models.observation import Observation
 from django.contrib.contenttypes.models import ContentType
 
@@ -57,8 +58,10 @@ def waiting_task(run_states):
     job, _ = Job.objects.update_or_create(
         id=9,
         defaults = {
-            'enqueued_object_id': waiter_obs.id,
-            'run_state': run_states['PENDING'],
+            'enqueued_object': waiter_obs,
+            'run_state_id': Runnable.get_run_state_id_for(
+                Runnable.STATE.PENDING),
+            'running_state': Runnable.STATE.PENDING,
             'workflow_node': workflow_node})
 #     task, _ = Task.objects.update_or_create(
 #         id=8,
@@ -94,7 +97,7 @@ def task_5(run_states):
         id=7,
         name='Mock Analyze',
         enqueued_object_type = ContentType.objects.get_for_model(Observation),
-        job_strategy_class='blue_sky.strategies.mock_ingest.MockIngest',
+        job_strategy_class='blue_sky.strategies.mock_analyze.MockAnalyze',
         executable=xcute,
         defaults={})
     workflow_node, _ = WorkflowNode.objects.update_or_create(
@@ -106,7 +109,9 @@ def task_5(run_states):
         id=2,
         defaults = {
             'enqueued_object_id': obs.id,
-            'run_state': run_states['PENDING'],
+            'run_state_id': Runnable.get_run_state_id_for(
+                Runnable.STATE.PENDING),
+            'running_state': Runnable.STATE.PENDING,
             'workflow_node': workflow_node})
     task, _ = Task.objects.update_or_create(
         id=5,
@@ -114,7 +119,9 @@ def task_5(run_states):
         defaults={
             'enqueued_task_object_id': obs.id,
             'full_executable': 'mock_task',
-            'run_state': run_states['PENDING'],
+            'run_state_id': Runnable.get_run_state_id_for(
+                Runnable.STATE.PENDING),
+            'running_state': Runnable.STATE.PENDING,
             'start_run_time': timezone.now()})
 
     return task
@@ -175,7 +182,9 @@ def running_task_5(run_states,
         id=2,
         defaults = {
             'enqueued_object_id': 56,
-            'run_state': run_states['RUNNING'],
+            'run_state_id': Runnable.get_run_state_id_for(
+                Runnable.STATE.RUNNING),
+            'running_state': Runnable.STATE.RUNNING,
             'workflow_node': workflow_node,
             'start_run_time': timezone.now()})
     task, _ = Task.objects.update_or_create(
@@ -183,16 +192,20 @@ def running_task_5(run_states,
         job=job,
         defaults={
             'full_executable': 'mock_task',
-            'run_state': run_states['RUNNING'],
+            'run_state_id': Runnable.get_run_state_id_for(
+                Runnable.STATE.RUNNING),
+            'running_state': Runnable.STATE.RUNNING,
             'start_run_time': timezone.now()})
 
     return task
 
 # circular imports
-from workflow_engine.models.task import Task
-from workflow_engine.models.run_state import RunState
-from workflow_engine.models.job import Job
-from workflow_engine.models.job_queue import JobQueue
-from workflow_engine.models.workflow_node import WorkflowNode
-from workflow_engine.models.executable import Executable
-from workflow_engine.models.workflow import Workflow
+from workflow_engine.models import (
+    RunState,
+    Task,
+    Job,
+    JobQueue,
+    WorkflowNode,
+    Executable,
+    Workflow,
+)

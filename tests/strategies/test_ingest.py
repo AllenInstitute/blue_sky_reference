@@ -1,7 +1,21 @@
 import pytest
 from mock import Mock, patch, MagicMock
-from workflow_engine.strategies.ingest_strategy \
-    import IngestStrategy
+from tests.signature_fixtures import (
+    ENQUEUE_NEXT,
+    mock_celery_task  # noqa # pylint: disable=unused-import
+)
+from workflow_engine.strategies.ingest_strategy import IngestStrategy
+
+
+@pytest.fixture
+def task_to_enqueue():
+    task = Mock()
+    task.job = Mock()
+    task.job.id = 5
+    task.job.all_tasks_finished = Mock(return_value=True)
+
+    return task
+
 
 @pytest.fixture
 def in_strat():
@@ -44,18 +58,30 @@ def test_is_ingest_strategy(in_strat):
     assert is_ingest is True
 
 
-@pytest.mark.skipif(True, reason='skip')
-def test_run_task(in_strat):
-    task = Mock()
+def test_run_task(
+    in_strat,
+    task_to_enqueue,
+    mock_celery_task):
+    '''Run an ingest strategy, verify the task enqueued message is sent.
+    '''
+    with patch(ENQUEUE_NEXT, mock_celery_task):
+        result = in_strat.run_task(task_to_enqueue)
 
-    in_strat.run_task(task)
+    assert result == None
+    task_to_enqueue.job.all_tasks_finished.assert_called_once()
+    mock_celery_task.delay.assert_called_once_with(5)
 
 
-@pytest.mark.skipif(True, reason='skip')
-def test_finish_task(in_strat):
-    task = MagicMock()
+def test_finish_task(
+    in_strat,
+    task_to_enqueue,
+    mock_celery_task):
 
-    in_strat.finish_task(task)
+    with patch(ENQUEUE_NEXT, mock_celery_task):
+        in_strat.finish_task(task_to_enqueue)
+
+    task_to_enqueue.job.all_tasks_finished.assert_called_once()
+    mock_celery_task.delay.assert_called_once_with(5)
 
 
 def test_call_ingest_strategy():

@@ -34,66 +34,44 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import Mock, patch
-from celery.contrib.pytest import celery_app, celery_worker
-from workflow_client.simple_router import SimpleRouter
-from workflow_client.client_settings import configure_worker_app
-from workflow_engine.celery.signatures import ingest_signature
+#from mock import Mock, patch
+#from celery.contrib.pytest import celery_app, celery_worker
+#from workflow_client.simple_router import SimpleRouter
+#from workflow_client.client_settings import configure_worker_app
+import workflow_engine.celery.signatures as signatures
 from blue_sky.models.observation import Observation
+
 from tests.workflow.workflow_fixtures import (
-    run_states,
-    workflow_node_1,
-    task_5,
-    running_task_5,
-    mock_executable
+    run_states,      # noqa # pylint: disable=unused-import
+    workflow_node_1, # noqa # pylint: disable=unused-import
+    task_5,          # noqa # pylint: disable=unused-import
+    running_task_5,  # noqa # pylint: disable=unused-import
+    mock_executable  # noqa # pylint: disable=unused-import
+)
+from workflow_engine.celery.ingest_tasks import (
+    ingest_task  # noqa # pylint: disable=unused-import
+)
+
+# Message queue fixtures
+from tests.celery_fixtures import (
+    celery_enable_logging,           # noqa # pylint: disable=unused-import
+    celery_config,                   # noqa # pylint: disable=unused-import
+    use_celery_app_trap,             # noqa # pylint: disable=unused-import
+    celery_worker_parameters_helper,
+    celery_includes_helper,
+    ingest_celery_app,             # noqa # pylint: disable=unused-import
 )
 
 
-@pytest.fixture(scope='module')
-def celery_enable_logging():
-    return True
-
-
-@pytest.fixture(scope='module')
-def celery_config():
-    return {
-        'broker_url': 'memory://',
-        'result_backend': 'rpc'
-    }
-
-
-@pytest.fixture(scope='module')
-def celery_worker_parameters():
-    router = SimpleRouter('blue_sky')
-
-    return {
-        'queues': (
-            'ingest_blue_sky',
-        ),
-        'router': (router.route_task,),
-        'perform_ping_check': False
-    }
-
-
-@pytest.fixture(scope='module')
-def use_celery_app_trap():
-    return True
-
-
-@pytest.fixture(scope='module')
+@pytest.fixture
 def celery_includes():
-    return [
-        'workflow_engine.celery.ingest_tasks',
-        'tests.workflow.celery_signal_handlers'
-    ]
+    return celery_includes_helper(['workflow_engine.celery.ingest_tasks'])
+
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
-def ingest_celery_app(celery_app):
-    configure_worker_app(celery_app, 'blue_sky', 'ingest')
+def celery_worker_parameters():
+    return celery_worker_parameters_helper('ingest')
 
-    return celery_app
 
 @pytest.mark.django_db
 def test_ingest(
@@ -108,7 +86,7 @@ def test_ingest(
 
     tags = ['sunday']
 
-    result = ingest_signature.delay('analyze', message, tags)
+    result = signatures.ingest_signature.delay('analyze', message, tags)
     assert not result.failed()
 
     response_message = result.wait(10)

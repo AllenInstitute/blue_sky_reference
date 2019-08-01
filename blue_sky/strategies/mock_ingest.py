@@ -33,32 +33,49 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from workflow_engine.strategies.ingest_strategy import IngestStrategy
-from blue_sky.models.observation import Observation
+from blue_sky.models import Calibration, Observation
 import logging
 
 class MockIngest(IngestStrategy):
-    _log = logging.getLogger('blue-sky.mock_ingest')
+    _log = logging.getLogger('blue_sky.strategies.mock_ingest')
 
     # TODO, query from datbase using class name
     def get_workflow_name(self):
         return 'mock_workflow'
 
     def create_enqueued_object(self, message, tags=None):
-        (obs, _) = Observation.objects.update_or_create(
-            arg1 = message['arg1'],
-            arg2 = message['arg2'],
-            arg3 = message['arg3'],
-            defaults={
-                'object_state': Observation.STATE.OBSERVATION_PENDING
-            })
+        if 'observation' in tags:
+            # Reuses an existing object if arg1 is the same
+            obs, _ = Observation.objects.update_or_create(
+                arg1 = message['arg1'],
+                defaults={
+                    'arg2': message['arg2'],
+                    'arg3': message['arg3'],
+                    'calibration_id': (
+                        message['calibration_id']
+                        if 'calibration_id' in message
+                        else None
+                    ), 
+                    'object_state': Observation.STATE.OBSERVATION_PENDING
+                }
+            )
+            return obs, None
+        elif 'calibration' in tags:
+            cal = Calibration.objects.create(
+                object_state=Calibration.STATE.CALIBRATION_PENDING,
+                offset=message['offset']
+            )
+            return cal, None
 
-        return obs, None
 
+    def generate_response(self, ingested_obj):
+        if ingested_obj.__class__ is Observation:
+            return {
+                'observation_id': ingested_obj.id
+            }
 
-    def generate_response(self, observation):
-        return {
-            'observation_id': observation.id
-        }
+        if ingested_obj.__class__ is Calibration:
+            return {
+                'calibration_id': ingested_obj.id
+            }

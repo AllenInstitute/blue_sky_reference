@@ -37,11 +37,7 @@ import pytest
 from mock import Mock, patch
 from celery.contrib.pytest import celery_app, celery_worker
 import shutil
-from workflow_engine.celery.signatures import (
-    process_running_signature,
-    process_finished_execution_signature,
-    create_job_signature
-)
+from workflow_engine.celery import signatures
 from workflow_client.simple_router import SimpleRouter
 import time
 from workflow_client.client_settings import configure_worker_app
@@ -74,9 +70,9 @@ def celery_worker_parameters():
     router = SimpleRouter('blue_sky')
 
     return {
-        'queues': ( 'workflow_blue_sky',
-                    #'moab_blue_sky',   # hook up mock moab worker
-                    'result_blue_sky', ),
+        'queues': ( 'workflow@blue_sky',
+                    #'moab@blue_sky',   # hook up mock moab worker
+                    'result@blue_sky', ),
         'task_routes': (router.route_task,),
         'perform_ping_check': False
     }
@@ -102,14 +98,14 @@ def send_running_and_finished(arg_tuple, queue, link):
     _log.info(
         'task id: %d',
         task_id)
-    process_running_signature.apply_async(
+    signatures.process_running_signature.apply_async(
         (task_id,),
         countdown=1)
     task = Task.objects.get(id=task_id)
     shutil.copy(
         task.input_file,
         task.output_file)
-    process_finished_execution_signature.apply_async(
+    signatures.process_finished_execution_signature.apply_async(
         (task_id,),
         countdown=2)
 
@@ -132,11 +128,7 @@ def combined_celery_app(celery_app):
     return celery_app
 
 
-#@pytest.mark.xfail
 @pytest.mark.django_db
-#@patch('workflow_engine.celery.signatures.run_workflow_node_jobs_signature')
-#@patch('workflow_engine.celery.signatures.enqueue_next_queue_signature')
-#@patch('workflow_engine.celery.moab_tasks.submit_moab_task', _mock_submit_job)
 def test_create_job(
         #mock_enqueue_next_queue,
         combined_celery_app,
@@ -155,7 +147,7 @@ def test_create_job(
     except Exception as e:
         _log.error(str(e))
 
-    result = create_job_signature.delay(
+    result = signatures.create_job_signature.delay(
         workflow_node_id,
         obs.id,
         priority)
@@ -163,7 +155,7 @@ def test_create_job(
     created_job_id = result.wait(10)
     #_mock_submit_job.delay.assert_called_once()
     assert not result.failed()
-    assert created_job_id == -1
+    assert created_job_id > 0
 
     #raise Exception(created_job_id)
 
@@ -176,5 +168,4 @@ def test_create_job(
 
 # circular imports
 from workflow_engine.models.task import Task
-from workflow_engine.models.run_state import RunState
 

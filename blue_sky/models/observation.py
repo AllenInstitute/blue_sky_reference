@@ -1,9 +1,15 @@
 from django.db import models
-from workflow_engine.mixins import Enqueueable
-from django_fsm import FSMField, transition
+from workflow_engine.mixins import Enqueueable, Stateful
+from django_fsm import transition
 
 
-class Observation(Enqueueable, models.Model):
+class Observation(Enqueueable, Stateful, models.Model):
+    '''Represents experimental data
+
+    .. figure:: _static/observation_states.png
+        :height: 300px
+    '''
+
     class STATE:
         OBSERVATION_PENDING = "PENDING"
         OBSERVATION_PROCESSING = "PROCESSING"
@@ -16,10 +22,13 @@ class Observation(Enqueueable, models.Model):
     arg1 = models.IntegerField(null=True)
     arg2 = models.CharField(max_length=255, null=True)
     arg3 = models.CharField(max_length=255, null=True)
-    object_state = FSMField(default=STATE.OBSERVATION_PENDING)
     groups = models.ManyToManyField(
         'ObservationGroup', related_name='observations',
         through='GroupAssignment')
+    calibration = models.ForeignKey(
+        'Calibration',
+        null=True, blank=True)
+
 
     def __str__(self):
         return str(self.arg2)

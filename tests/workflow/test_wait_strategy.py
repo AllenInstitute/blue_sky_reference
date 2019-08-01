@@ -34,71 +34,51 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import Mock, patch
-from celery.contrib.pytest import celery_app, celery_worker
-from workflow_client.client_settings import configure_worker_app
+from mock import patch
+# from celery.contrib.pytest import celery_app, celery_worker
+#from workflow_client.client_settings import configure_worker_app
 from blue_sky.models import Observation
-from workflow_client.simple_router import SimpleRouter
-from workflow_engine.celery.signatures import run_workflow_node_jobs_signature
+#from workflow_client.simple_router import SimpleRouter
+#from workflow_engine.celery.signatures import run_workflow_node_jobs_signature
+import workflow_engine.celery.signatures as signatures
+
 from tests.workflow.workflow_fixtures import (
-    run_states,
-    waiting_task
+    run_states,   # noqa # pylint: disable=unused-import
+    waiting_task  # noqa # pylint: disable=unused-import
 )
 
 
-@pytest.fixture(scope='module')
-def celery_enable_logging():
-    return True
+# Message queue fixtures
+from tests.celery_fixtures import (
+    celery_enable_logging,           # noqa # pylint: disable=unused-import
+    celery_config,                   # noqa # pylint: disable=unused-import
+    use_celery_app_trap,             # noqa # pylint: disable=unused-import
+    celery_worker_parameters_helper,
+    celery_includes_helper,
+    workflow_celery_app,             # noqa # pylint: disable=unused-import
+)
 
-
-@pytest.fixture(scope='module')
-def celery_config():
-    return {
-        'broker_url': 'memory://',
-        'result_backend': 'rpc'
-    }
-
-
-@pytest.fixture(scope='module')
-def celery_worker_parameters():
-    router = SimpleRouter('blue_sky')
-
-    return {
-        'queues': ('workflow_blue_sky', 'result_blue_sky',),
-        'task_routes': (router.route_task,),
-        'perform_ping_check': False
-    }
-
-
-@pytest.fixture(scope='module')
-def use_celery_app_trap():
-    return True
-
-
-@pytest.fixture(scope='module')
-def celery_includes():
-    return [
-        'workflow_engine.celery.workflow_tasks',
-        'tests.workflow.celery_signal_handlers'
-    ]
+from workflow_engine.celery.workflow_tasks import (
+    run_workflow_node_jobs_by_id
+)
 
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
-def workflow_celery_app(celery_app):
-    configure_worker_app(celery_app, 'blue_sky', 'workflow')
-
-    return celery_app
+def celery_includes():
+    return celery_includes_helper(['workflow_engine.celery.workflow_tasks'])
 
 
-@pytest.mark.xfail
+@pytest.fixture
+def celery_worker_parameters():
+    return celery_worker_parameters_helper('workflow')
+
+
 @pytest.mark.django_db
 def test_wait_strategy(
         workflow_celery_app,
         celery_worker,
         waiting_task):
-    result = run_workflow_node_jobs_signature.delay(1)
+    result = signatures.run_workflow_node_jobs_signature.delay(1)
     assert not result.failed()
 
     response_message = result.wait(10)

@@ -38,13 +38,16 @@ from mock import patch, mock_open
 import os
 import logging
 from workflow_engine.workflow_config import WorkflowConfig
-from workflow_engine.models.executable import Executable
-from workflow_engine.models.job_queue import JobQueue
-from workflow_engine.models.workflow import Workflow
-from workflow_engine.models.workflow_node import WorkflowNode
-from workflow_engine.models.run_state import RunState
-from tests.workflow_configurations import TEST_CONFIG_YAML_ONE_NODE,\
+from workflow_engine.models import (
+    Executable,
+    JobQueue,
+    Workflow,
+    WorkflowNode
+)
+from tests.workflow_configurations import (
+    TEST_CONFIG_YAML_ONE_NODE,
     TEST_CONFIG_YAML_TWO_NODES
+)
 
 
 _log = logging.getLogger('test_output')
@@ -92,8 +95,6 @@ def test_create_workflow(workflow_config,
     #     name='lens_correction generate_lens_correction_transform')
     # eq.
     
-    for rs in RunState.objects.all():
-        _log.info("Run States %s" % (rs.name))
 
     # Workflow.start_workflow('em_2d_montage',
     #                         enqueued_object)
@@ -112,7 +113,7 @@ def test_from_yaml_file(workflow_config,
             os.path.join(os.path.dirname(__file__),
                          'dev.yml'))
 
-    for w in wc['flows']:
+    for w in wc['workflows']:
         print("\nworkflow: " + w.name)
         for k in w.states.keys():
             s = w.states[k]

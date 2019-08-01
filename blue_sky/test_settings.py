@@ -22,18 +22,6 @@ PROJECT_ROOT = BASE_DIR
 #    '/allen/programs/celltypes/workgroups/array_tomography/blue_sky/files/'
 BASE_FILE_PATH = 'example_data'
 
-MESSAGE_QUEUE_NAME = APP_PACKAGE
-INGEST_QUEUE_NAME = 'em_2d_montage_ingest'
-CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
-WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
-INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
-MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
-MOAB_STATUS_MESSAGE_QUEUE_NAME = 'moab_status_' + MESSAGE_QUEUE_NAME
-PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
-RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
-LOCAL_MESSAGE_QUEUE_NAME = 'local_' + MESSAGE_QUEUE_NAME
-BROADCAST_MESSAGE_QUEUE_NAME = 'broadcast_' + MESSAGE_QUEUE_NAME
-# CELERY_DEFAULT_QUEUE = 'celery_' + MESSAGE_QUEUE_NAME
 CELERY_RESULT_BACKEND = 'django-db'
 
 MESSAGE_QUEUE_HOST = 'message_queue'
@@ -47,6 +35,7 @@ STANBOL_URL='http://' + UI_HOST + ":" + str(9009)
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(9000)
 ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
+JOB_GRID_CLASS=None
 
 QMASTER_HOST = 'example.org'
 QMASTER_PORT = 1234
@@ -74,6 +63,7 @@ MILLISECONDS_BETWEEN_REFRESH = 10000
 # MILLISECONDS_BETWEEN_REFRESH = 1000
 MOAB_CHECK_SECONDS = 45.0
 DASHBOARD_UPDATE_SECONDS = 60.0
+MONITOR_TASK_MODULES=[]
 
 # Application definition
 
@@ -87,7 +77,8 @@ INSTALLED_APPS = [
     'workflow_engine',
     'workflow_client',
     'django_celery_results',
-    'blue_sky'
+    'blue_sky',
+    'django_fsm'
 ]
 
 MIDDLEWARE = [
@@ -219,7 +210,7 @@ LOGGING = {
         },
         'blue_sky': {
             'handlers': ['console', 'file'],
-            'level': 'WARN',
+            'level': 'INFO',
             'propagate': True,
         },
         'test_output': {

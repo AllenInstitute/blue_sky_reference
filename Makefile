@@ -5,6 +5,7 @@ RELEASEDIR = $(PROJECTNAME)-$(VERSION)$(RELEASE)
 EGGINFODIR = $(PROJECTNAME).egg-info
 DOCDIR = doc
 COVDIR = htmlcov
+BSWE_DIR = ../blue_sky_workflow_engine
 
 DOC_URL=http://alleninstitute.github.io/BlueSky
 
@@ -24,14 +25,14 @@ pypi_deploy:
 	python setup.py sdist upload --repository local
 
 pytest_lax:
-	python -m pytest -s --cov=workflow_engine --cov-report html --junitxml=test-reports/test.xml
+	pytest -s --cov=workflow_engine --cov-report html --cov-append --junitxml=test-reports/test.xml
 
 pytest: pytest_lax
 
 test: pytest
 
 pytest_pep8:
-	find -L . -name "test_*.py" -exec py.test --pep8 --cov-config coveragerc --cov=workflow_engine --cov-report html --junitxml=test-reports/test.xml {} \+
+	find -L . -name "test_*.py" -exec py.test --pep8 --cov-config coveragerc --cov=workflow_client --cov=workflow_engine --cov-report html --junitxml=test-reports/test.xml {} \+
 
 pytest_lite:
 	find -L . -name "test_*.py" -exec py.test --assert=reinterp --junitxml=test-reports/test.xml {} \+
@@ -46,13 +47,23 @@ flake8:
 
 EXAMPLES=doc/_static/examples
 
+fsm_figures:
+	python -m manage graph_transitions -o doc_template/aibs_sphinx/static/task_states.png workflow_engine.Task
+	python -m manage graph_transitions -o doc_template/aibs_sphinx/static/job_states.png workflow_engine.Job
+	python -m manage graph_transitions -o doc_template/aibs_sphinx/static/job_states.png workflow_engine.Job
+	python -m manage graph_transitions -o doc_template/aibs_sphinx/static/calibration_states.png blue_sky.Calibration
+	python -m manage graph_transitions -o doc_template/aibs_sphinx/static/observation_states.png blue_sky.Observation
+	python -m manage graph_transitions -o doc_template/aibs_sphinx/static/observation_group_states.png blue_sky.ObservationGroup
+
 doc: FORCE
-	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o doc workflow_client
-	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o doc $(PROJECTNAME)
+	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o doc $(BSWE_DIR)/workflow_client
+	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o doc $(BSWE_DIR)/workflow_engine
+	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o doc blue_sky
 	cp doc_template/*.rst doc_template/conf.py doc
 	# cp -R doc_template/examples $(EXAMPLES)
 	sed -i --expression "s/|version|/${VERSION}/g" doc/conf.py
 	cp -R doc_template/aibs_sphinx/static/* doc/_static
+	cp -R htmlcov doc/_static
 	cp -R doc_template/aibs_sphinx/templates/* doc/_templates
 ifdef STATIC
 	sed -i --expression "s/\/_static\/external_assets/${STATIC}\/external_assets/g" doc/_templates/layout.html

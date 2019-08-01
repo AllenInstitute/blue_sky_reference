@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 APP_PACKAGE = 'blue_sky'
-DEVELOPMENT_PACKAGE = 'blue_sky'
 
 JOB_GRID_CLASS=None
 MONITOR_TASK_MODULES=[]
@@ -22,7 +21,8 @@ MONITOR_TASK_MODULES=[]
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
 #BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
-BASE_FILE_PATH='/data'
+BASE_FILE_PATH='/data/aibstemp/timf/blue_sky_data'
+BASE_FILE_PATH='/allen/programs/celltypes/production/wijem/workflow_data/em_blue_sky_desktop'
 
 NOTEBOOK_ARGUMENTS = [
     '--ip', '0.0.0.0',
@@ -30,20 +30,6 @@ NOTEBOOK_ARGUMENTS = [
     '--notebook-dir' ,
     '/blue_sky/notebooks'
 ]
-
-
-MESSAGE_QUEUE_NAME = APP_PACKAGE
-INGEST_MESSAGE_QUEUE_NAME = 'ingest_' + MESSAGE_QUEUE_NAME
-WORKFLOW_MESSAGE_QUEUE_NAME = 'workflow_' + MESSAGE_QUEUE_NAME
-CELERY_MESSAGE_QUEUE_NAME = 'celery_' + MESSAGE_QUEUE_NAME
-MOAB_MESSAGE_QUEUE_NAME = 'moab_' + MESSAGE_QUEUE_NAME
-MOAB_STATUS_MESSAGE_QUEUE_NAME = 'moab_status_' + MESSAGE_QUEUE_NAME
-RESULT_MESSAGE_QUEUE_NAME = 'result_' + MESSAGE_QUEUE_NAME
-SPARK_MESSAGE_QUEUE_NAME = 'spark_' + MESSAGE_QUEUE_NAME
-PBS_MESSAGE_QUEUE_NAME = 'pbs_' + MESSAGE_QUEUE_NAME
-LOCAL_MESSAGE_QUEUE_NAME = 'local_' + MESSAGE_QUEUE_NAME
-CIRCUS_MESSAGE_QUEUE_NAME = 'circus_' + MESSAGE_QUEUE_NAME
-BROADCAST_MESSAGE_QUEUE_NAME = 'broadcast_' + MESSAGE_QUEUE_NAME
 
 PBS_CONDA_HOME='/shared/utils.x86_64/python-2.7'
 PBS_PYTHONPATH='/data/aibstemp/timf/example_data/at_em_imaging_workflow:/data/aibstemp/timf/example_data/blue_sky_workflow_engine'
@@ -53,6 +39,7 @@ MESSAGE_QUEUE_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 MESSAGE_QUEUE_USER = 'blue_sky_user'
 MESSAGE_QUEUE_PASSWORD = 'blue_sky_user'
 MESSAGE_QUEUE_PORT = 9008
+MESSAGE_QUEUE_VHOST = '/'
 UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 #UI_HOST = 'localhost'
 UI_PORT = 9001
@@ -71,6 +58,20 @@ QMASTER_PORT = 22
 QMASTER_USERNAME = 'timf'
 QMASTER_PASSWORD = CONFIG_DIR + 'crd'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_rabbitmq.core.RabbitmqChannelLayer",
+        "CONFIG": {
+            "host": (
+                "amqp://" + 
+                MESSAGE_QUEUE_USER + ":" +
+                MESSAGE_QUEUE_PASSWORD + "@" +
+                MESSAGE_QUEUE_HOST + ":" + str(MESSAGE_QUEUE_PORT) +
+                "/asgi"
+            )
+        }
+    }
+}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -92,6 +93,7 @@ MILLISECONDS_BETWEEN_REFRESH = 10000
 # MILLISECONDS_BETWEEN_REFRESH = 1000
 MOAB_CHECK_SECONDS = 45.0
 DASHBOARD_UPDATE_SECONDS = 60.0
+MONITOR_TASK_MODULES=[]
 
 # Application definition
 
@@ -185,7 +187,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/static'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, APP_PACKAGE, 'static')
+    os.path.join('/green/blue_sky', APP_PACKAGE, 'static')
 ]
 
 LOGGING = {

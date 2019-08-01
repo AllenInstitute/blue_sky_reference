@@ -42,8 +42,6 @@ MESSAGE_QUEUE_HOST: message_queue.example.org
 MESSAGE_QUEUE_PORT: 222
 MESSAGE_QUEUE_USER: blue_sky_test_user
 MESSAGE_QUEUE_PASSWORD: blue_sky_test_user
-CELERY_MESSAGE_QUEUE_NAME: celery_application_name
-DEFAULT_MESSAGE_QUEUE_NAME: null_application_name
 '''
 
     with patch("builtins.open",
@@ -57,4 +55,3 @@ DEFAULT_MESSAGE_QUEUE_NAME: null_application_name
     assert settings.MESSAGE_QUEUE_PORT == 222
     assert settings.MESSAGE_QUEUE_USER == 'blue_sky_test_user'
     assert settings.MESSAGE_QUEUE_PASSWORD == 'blue_sky_test_user'
-    assert settings.CELERY_MESSAGE_QUEUE_NAME == 'celery_application_name'

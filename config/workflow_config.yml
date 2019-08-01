@@ -5,20 +5,10 @@ executables:
         path: '/opt/conda/bin/python'
         args: [ '-m', 'mock_executable' ]
         environment: ['SLEEPTIME=60', 'PYTHONPATH=/blue_sky/bin' ]
-        remote_queue: 'circus'
+        remote_queue: 'mock'
         pbs_queue: 'emconnectome'
         pbs_processor: 'nodes=1:ppn=1'
         pbs_walltime: 'walltime=0:10:00'
-
-run_states:
-    - "PENDING"
-    - "QUEUED"
-    - "RUNNING"
-    - "FINISHED_EXECUTION"
-    - "FAILED_EXECUTION"
-    - "FAILED"
-    - "SUCCESS"
-    - "PROCESS_KILLED"
 
 workflows:
     mock_workflow:

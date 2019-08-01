@@ -63,8 +63,6 @@ MESSAGE_QUEUE_HOST: example.org
 MESSAGE_QUEUE_PORT: 9008
 MESSAGE_QUEUE_USER: blue_sky_user
 MESSAGE_QUEUE_PASSWORD: blue_sky_user
-CELERY_MESSAGE_QUEUE_NAME: celery_at_em_imaging_workflow
-DEFAULT_MESSAGE_QUEUE_NAME: null
 WORKFLOW_CONFIG_YAML: ./workflow_config.yml
 """
 
@@ -99,10 +97,6 @@ def test_record_blue_sky_configuration():
         p.json_dict['blue_sky']['MESSAGE_QUEUE_PORT']
     assert 'blue_sky_user' == \
         p.json_dict['blue_sky']['MESSAGE_QUEUE_USER']
-    assert 'celery_at_em_imaging_workflow' == \
-        p.json_dict['blue_sky']['CELERY_MESSAGE_QUEUE_NAME']
-    assert None == \
-        p.json_dict['blue_sky']['DEFAULT_MESSAGE_QUEUE_NAME']
     assert './workflow_config.yml' == \
         p.json_dict['blue_sky']['WORKFLOW_CONFIG_YAML']
 

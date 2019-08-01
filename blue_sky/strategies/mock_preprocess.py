@@ -1,4 +1,5 @@
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from blue_sky.models import Observation
 from django_fsm import can_proceed
 import logging
 import copy
@@ -13,6 +14,9 @@ class MockPreprocess(ExecutionStrategy):
             'nested_arg': 'yay'
         }
     }
+
+    def can_transition(self, enqueued_object, from_node):
+        return enqueued_object.__class__ == Observation
 
     def check_input_state(self, observation_object):
         if can_proceed(observation_object.start_processing):
@@ -33,6 +37,12 @@ class MockPreprocess(ExecutionStrategy):
         inp['arg1'] = 7  # settings.ARG_1
 
         return inp
+
+    def get_of_create_task_storage_directory(self):
+        return '.'
+
+    def get_output_file(self, task_obj):
+        return None
 
     def on_finishing(self, observation_object, results, task):
         #self.check_key(results, 'arg2')
