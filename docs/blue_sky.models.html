@@ -1,0 +1,762 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>blue_sky.models package &#8212; Blue Sky Workflow Engine  documentation</title>
+    <link rel="stylesheet" href="_static/aibs_sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="blue_sky.strategies package" href="blue_sky.strategies.html" />
+    <link rel="prev" title="blue_sky.migrations package" href="blue_sky.migrations.html" /> 
+  </head>
+  <body>
+<link href="http://www.brain-map.org/assets/stylesheets/portal.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="http://www.brain-map.org/assets/javascripts/portal.js" type="text/javascript"></script>
+<script src="http://www.brain-map.org/assets/javascripts/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var _pSupressBrowserFlashWarning = true;
+    var _pTabId = "pHome";
+    var _pMoreProjectsId = "pMoreProjects";
+    var _pImagePath = "http://www.brain-map.org/assets/images/";
+    var _pSiteWarnings = function() {
+        this.show_warning() = {};
+    }
+</script>
+<script type="text/javascript">
+    function initialize() {
+        /*** do your stuff, then initialize the portal plugin ***/
+        _pPortalOnLoad();
+    }
+</script>
+<style>
+  #header_content > a {
+  display: inline-block;
+  width: 250px;
+  height: 75px;
+  background-image:url("/_static/external_assets/images/Brain_Atlas_Logotype_SDK.png") !important;
+  background-size: 235px 37px;
+  background-position: 0px 20px;
+  background-repeat: no-repeat;
+  }
+</style>
+
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalHeader.js"></script>
+<link rel="stylesheet" type="text/css" href="/_static/external_assets/stylesheets/common_layout.css" />
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="blue-sky-models-package">
+<h1>blue_sky.models package<a class="headerlink" href="#blue-sky-models-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-blue_sky.models.calibration">
+<span id="blue-sky-models-calibration-module"></span><h2>blue_sky.models.calibration module<a class="headerlink" href="#module-blue_sky.models.calibration" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.models.calibration.Calibration">
+<em class="property">class </em><code class="descclassname">blue_sky.models.calibration.</code><code class="descname">Calibration</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/calibration.html#Calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.calibration.Calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.enqueueable.Enqueueable" title="workflow_engine.mixins.enqueueable.Enqueueable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.enqueueable.Enqueueable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.stateful.Stateful" title="workflow_engine.mixins.stateful.Stateful"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.stateful.Stateful</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Represents information needed to adjust a
+<a class="reference internal" href="#blue_sky.models.observation.Observation" title="blue_sky.models.observation.Observation"><code class="xref py py-class docutils literal"><span class="pre">Observation</span></code></a></p>
+<div class="figure">
+<a class="reference internal image-reference" href="_images/calibration_states.png"><img alt="_images/calibration_states.png" src="_images/calibration_states.png" style="height: 300px;" /></a>
+</div>
+<dl class="exception">
+<dt id="blue_sky.models.calibration.Calibration.DoesNotExist">
+<em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="blue_sky.models.calibration.Calibration.MultipleObjectsReturned">
+<em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="blue_sky.models.calibration.Calibration.STATE">
+<em class="property">class </em><code class="descname">STATE</code><a class="reference internal" href="_modules/blue_sky/models/calibration.html#Calibration.STATE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.calibration.Calibration.STATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.STATE.CALIBRATION_DONE">
+<code class="descname">CALIBRATION_DONE</code><em class="property"> = 'DONE'</em><a class="headerlink" href="#blue_sky.models.calibration.Calibration.STATE.CALIBRATION_DONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.STATE.CALIBRATION_PENDING">
+<code class="descname">CALIBRATION_PENDING</code><em class="property"> = 'PENDING'</em><a class="headerlink" href="#blue_sky.models.calibration.Calibration.STATE.CALIBRATION_PENDING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.calibration.Calibration.done">
+<code class="descname">done</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/calibration.html#Calibration.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.calibration.Calibration.done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.calibration.Calibration.get_all_object_state_transitions">
+<code class="descname">get_all_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.calibration.Calibration.get_all_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.calibration.Calibration.get_available_object_state_transitions">
+<code class="descname">get_available_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.calibration.Calibration.get_available_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.calibration.Calibration.get_available_user_object_state_transitions">
+<code class="descname">get_available_user_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.calibration.Calibration.get_available_user_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.id">
+<code class="descname">id</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.jobs">
+<code class="descname">jobs</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.object_state">
+<code class="descname">object_state</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.object_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.objects">
+<code class="descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#blue_sky.models.calibration.Calibration.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.observation_set">
+<code class="descname">observation_set</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.observation_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Parent.children</span></code> is a <code class="docutils literal"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.offset">
+<code class="descname">offset</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.calibration.Calibration.tasks">
+<code class="descname">tasks</code><a class="headerlink" href="#blue_sky.models.calibration.Calibration.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-blue_sky.models.group_assignment">
+<span id="blue-sky-models-group-assignment-module"></span><h2>blue_sky.models.group_assignment module<a class="headerlink" href="#module-blue_sky.models.group_assignment" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.models.group_assignment.GroupAssignment">
+<em class="property">class </em><code class="descclassname">blue_sky.models.group_assignment.</code><code class="descname">GroupAssignment</code><span class="sig-paren">(</span><em>id</em>, <em>observation</em>, <em>group</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/group_assignment.html#GroupAssignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.enqueueable.Enqueueable" title="workflow_engine.mixins.enqueueable.Enqueueable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.enqueueable.Enqueueable</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
+<dl class="exception">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.DoesNotExist">
+<em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.MultipleObjectsReturned">
+<em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.group">
+<code class="descname">group</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Child.parent</span></code> is a <code class="docutils literal"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.group_id">
+<code class="descname">group_id</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.group_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.id">
+<code class="descname">id</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.jobs">
+<code class="descname">jobs</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.objects">
+<code class="descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.observation">
+<code class="descname">observation</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.observation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Child.parent</span></code> is a <code class="docutils literal"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.observation_id">
+<code class="descname">observation_id</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.observation_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.group_assignment.GroupAssignment.tasks">
+<code class="descname">tasks</code><a class="headerlink" href="#blue_sky.models.group_assignment.GroupAssignment.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-blue_sky.models.observation">
+<span id="blue-sky-models-observation-module"></span><h2>blue_sky.models.observation module<a class="headerlink" href="#module-blue_sky.models.observation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.models.observation.Observation">
+<em class="property">class </em><code class="descclassname">blue_sky.models.observation.</code><code class="descname">Observation</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.enqueueable.Enqueueable" title="workflow_engine.mixins.enqueueable.Enqueueable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.enqueueable.Enqueueable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.stateful.Stateful" title="workflow_engine.mixins.stateful.Stateful"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.stateful.Stateful</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>Represents experimental data</p>
+<div class="figure">
+<a class="reference internal image-reference" href="_images/observation_states.png"><img alt="_images/observation_states.png" src="_images/observation_states.png" style="height: 300px;" /></a>
+</div>
+<dl class="exception">
+<dt id="blue_sky.models.observation.Observation.DoesNotExist">
+<em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#blue_sky.models.observation.Observation.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="blue_sky.models.observation.Observation.MultipleObjectsReturned">
+<em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#blue_sky.models.observation.Observation.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="blue_sky.models.observation.Observation.STATE">
+<em class="property">class </em><code class="descname">STATE</code><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation.STATE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.STATE.OBSERVATION_DONE">
+<code class="descname">OBSERVATION_DONE</code><em class="property"> = 'DONE'</em><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE.OBSERVATION_DONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.STATE.OBSERVATION_GROUPED">
+<code class="descname">OBSERVATION_GROUPED</code><em class="property"> = 'GROUPED'</em><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE.OBSERVATION_GROUPED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.STATE.OBSERVATION_PENDING">
+<code class="descname">OBSERVATION_PENDING</code><em class="property"> = 'PENDING'</em><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE.OBSERVATION_PENDING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.STATE.OBSERVATION_PROCESSING">
+<code class="descname">OBSERVATION_PROCESSING</code><em class="property"> = 'PROCESSING'</em><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE.OBSERVATION_PROCESSING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.STATE.OBSERVATION_QC">
+<code class="descname">OBSERVATION_QC</code><em class="property"> = 'QC'</em><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE.OBSERVATION_QC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.STATE.OBSERVATION_QC_FAILED">
+<code class="descname">OBSERVATION_QC_FAILED</code><em class="property"> = 'QC_FAILED'</em><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE.OBSERVATION_QC_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.STATE.OBSERVATION_QC_PASSED">
+<code class="descname">OBSERVATION_QC_PASSED</code><em class="property"> = 'QC_PASSED'</em><a class="headerlink" href="#blue_sky.models.observation.Observation.STATE.OBSERVATION_QC_PASSED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.arg1">
+<code class="descname">arg1</code><a class="headerlink" href="#blue_sky.models.observation.Observation.arg1" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.arg2">
+<code class="descname">arg2</code><a class="headerlink" href="#blue_sky.models.observation.Observation.arg2" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.arg3">
+<code class="descname">arg3</code><a class="headerlink" href="#blue_sky.models.observation.Observation.arg3" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.calibration">
+<code class="descname">calibration</code><a class="headerlink" href="#blue_sky.models.observation.Observation.calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Child.parent</span></code> is a <code class="docutils literal"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.calibration_id">
+<code class="descname">calibration_id</code><a class="headerlink" href="#blue_sky.models.observation.Observation.calibration_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.done">
+<code class="descname">done</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation.done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation.done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.fail_qc">
+<code class="descname">fail_qc</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation.fail_qc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation.fail_qc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.get_all_object_state_transitions">
+<code class="descname">get_all_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.observation.Observation.get_all_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.get_available_object_state_transitions">
+<code class="descname">get_available_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.observation.Observation.get_available_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.get_available_user_object_state_transitions">
+<code class="descname">get_available_user_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.observation.Observation.get_available_user_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.group">
+<code class="descname">group</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation.group" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.groupassignment_set">
+<code class="descname">groupassignment_set</code><a class="headerlink" href="#blue_sky.models.observation.Observation.groupassignment_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Parent.children</span></code> is a <code class="docutils literal"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.groups">
+<code class="descname">groups</code><a class="headerlink" href="#blue_sky.models.observation.Observation.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.id">
+<code class="descname">id</code><a class="headerlink" href="#blue_sky.models.observation.Observation.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.jobs">
+<code class="descname">jobs</code><a class="headerlink" href="#blue_sky.models.observation.Observation.jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.object_state">
+<code class="descname">object_state</code><a class="headerlink" href="#blue_sky.models.observation.Observation.object_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.objects">
+<code class="descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#blue_sky.models.observation.Observation.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.pass_qc">
+<code class="descname">pass_qc</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation.pass_qc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation.pass_qc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.start_processing">
+<code class="descname">start_processing</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation.start_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation.start_processing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation.Observation.stop_processing">
+<code class="descname">stop_processing</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation.html#Observation.stop_processing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation.Observation.stop_processing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation.Observation.tasks">
+<code class="descname">tasks</code><a class="headerlink" href="#blue_sky.models.observation.Observation.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-blue_sky.models.observation_group">
+<span id="blue-sky-models-observation-group-module"></span><h2>blue_sky.models.observation_group module<a class="headerlink" href="#module-blue_sky.models.observation_group" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.models.observation_group.ObservationGroup">
+<em class="property">class </em><code class="descclassname">blue_sky.models.observation_group.</code><code class="descname">ObservationGroup</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation_group.html#ObservationGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.enqueueable.Enqueueable" title="workflow_engine.mixins.enqueueable.Enqueueable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.enqueueable.Enqueueable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.stateful.Stateful" title="workflow_engine.mixins.stateful.Stateful"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.stateful.Stateful</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
+<p>A collenction of experimental data to be processed together</p>
+<div class="figure">
+<a class="reference internal image-reference" href="_images/observation_group_states.png"><img alt="_images/observation_group_states.png" src="_images/observation_group_states.png" style="height: 300px;" /></a>
+</div>
+<dl class="exception">
+<dt id="blue_sky.models.observation_group.ObservationGroup.DoesNotExist">
+<em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="blue_sky.models.observation_group.ObservationGroup.MultipleObjectsReturned">
+<em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="blue_sky.models.observation_group.ObservationGroup.STATE">
+<em class="property">class </em><code class="descname">STATE</code><a class="reference internal" href="_modules/blue_sky/models/observation_group.html#ObservationGroup.STATE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.STATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.STATE.GROUP_COMPLETE">
+<code class="descname">GROUP_COMPLETE</code><em class="property"> = 'COMPLETE'</em><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.STATE.GROUP_COMPLETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.STATE.GROUP_INCOMPLETE">
+<code class="descname">GROUP_INCOMPLETE</code><em class="property"> = 'INCOMPLETE'</em><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.STATE.GROUP_INCOMPLETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation_group.ObservationGroup.complete">
+<code class="descname">complete</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation_group.html#ObservationGroup.complete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.complete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation_group.ObservationGroup.get_all_object_state_transitions">
+<code class="descname">get_all_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.get_all_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation_group.ObservationGroup.get_available_object_state_transitions">
+<code class="descname">get_available_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.get_available_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation_group.ObservationGroup.get_available_user_object_state_transitions">
+<code class="descname">get_available_user_object_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.get_available_user_object_state_transitions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.groupassignment_set">
+<code class="descname">groupassignment_set</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.groupassignment_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Parent.children</span></code> is a <code class="docutils literal"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.id">
+<code class="descname">id</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.jobs">
+<code class="descname">jobs</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.label">
+<code class="descname">label</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.object_state">
+<code class="descname">object_state</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.object_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.objects">
+<code class="descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.objects" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.observations">
+<code class="descname">observations</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.observations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.models.observation_group.ObservationGroup.reset_pending">
+<code class="descname">reset_pending</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/models/observation_group.html#ObservationGroup.reset_pending"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.reset_pending" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.models.observation_group.ObservationGroup.tasks">
+<code class="descname">tasks</code><a class="headerlink" href="#blue_sky.models.observation_group.ObservationGroup.tasks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accessor to the related objects manager on the one-to-many relation created
+by GenericRelation.</p>
+<p>In the example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">GenericRelation</span><span class="p">(</span><span class="n">Comment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">post.comments</span></code> is a ReverseGenericManyToOneDescriptor instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-blue_sky.models">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-blue_sky.models" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">blue_sky.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.views.html">blue_sky.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AllenInstitute/BlueSkyWorkflowEngine">Github Profile</a></li>
+</ul>
+
+<h3> Questions </h3>
+<p class="questions">
+  Send any questions using the <a href="http://alleninstitute.org/contact_us/index.html">Send Us a Message</a> link below, 
+  or submit your question to <a href="http://stackoverflow.com/">StackOverflow</a> using with the 'allen-sdk' tag.
+</p>
+
+<p class="questions">
+  If you encounter any problems using the AllenSDK, please create an issue on <a href="http://github.com/alleninstitute/allensdk/issues/">Github's issue tracker</a>.
+</p>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    </div>
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalFooter.js"></script>
+
+
+  </body>
+</html>

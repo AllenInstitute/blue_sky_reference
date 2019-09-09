@@ -1,0 +1,9 @@
+digraph {
+	subgraph cluster_blue_sky_ObservationGroup_object_state {
+		graph [label="blue_sky.ObservationGroup.object_state"]
+		"blue_sky.observation_group.object_state.INCOMPLETE" [label=INCOMPLETE shape=circle]
+		"blue_sky.observation_group.object_state.COMPLETE" [label=COMPLETE shape=circle]
+		"blue_sky.observation_group.object_state.COMPLETE" -> "blue_sky.observation_group.object_state.COMPLETE" [label=complete]
+		"blue_sky.observation_group.object_state.INCOMPLETE" -> "blue_sky.observation_group.object_state.COMPLETE" [label=complete]
+	}
+}

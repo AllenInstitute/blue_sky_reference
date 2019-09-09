@@ -1,0 +1,22 @@
+blue\_sky\.admin package
+========================
+
+Submodules
+----------
+
+blue\_sky\.admin\.observation\_admin module
+-------------------------------------------
+
+.. automodule:: blue_sky.admin.observation_admin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: blue_sky.admin
+    :members:
+    :undoc-members:
+    :show-inheritance:

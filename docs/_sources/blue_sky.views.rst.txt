@@ -1,0 +1,22 @@
+blue\_sky\.views package
+========================
+
+Submodules
+----------
+
+blue\_sky\.views\.home\_view module
+-----------------------------------
+
+.. automodule:: blue_sky.views.home_view
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: blue_sky.views
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,17 @@
+blue\_sky\.management package
+=============================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    blue_sky.management.commands
+
+Module contents
+---------------
+
+.. automodule:: blue_sky.management
+    :members:
+    :undoc-members:
+    :show-inheritance:
