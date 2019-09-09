@@ -1,9 +1,9 @@
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from .mock_execution_strategy import MockExecutionStrategy
 from django_fsm import can_proceed
 import logging
 import copy
 
-class MockQC(ExecutionStrategy):
+class MockQC(MockExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_q_c')
 
     _base_input_dict = {
@@ -38,10 +38,11 @@ class MockQC(ExecutionStrategy):
         else:
             if (observation_object.object_state ==
                 observation_object.__class__.STATE.OBSERVATION_QC_PASSED):
-                MockQC._log.warn('{} is already in state {}'.format(
-                    observation_object,
+                MockQC._log.warning(
+                    '%s is already in state %s',
+                    str(observation_object),
                     observation_object.__class__.STATE.OBSERVATION_QC_PASSED
-                ))
+                )
 
 
     def on_finishing(self, observation_object, results, task):

@@ -1,10 +1,10 @@
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from .mock_execution_strategy import MockExecutionStrategy
 from blue_sky.models import Observation
 from django_fsm import can_proceed
 import logging
 import copy
 
-class MockPreprocess(ExecutionStrategy):
+class MockPreprocess(MockExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_preprocess')
 
     _base_input_dict = {
@@ -16,6 +16,8 @@ class MockPreprocess(ExecutionStrategy):
     }
 
     def can_transition(self, enqueued_object, from_node):
+        del from_node
+
         return enqueued_object.__class__ == Observation
 
     def check_input_state(self, observation_object):
@@ -30,7 +32,11 @@ class MockPreprocess(ExecutionStrategy):
             MockPreprocess._log.error(msg)
             raise Exception(msg)
 
-    def get_input(self, observation_object, storage_directory, task):
+    def get_input(self, enqueued_object, storage_directory, task):
+        observation_object = enqueued_object
+        del storage_directory  # unused arg
+        del task  # unused arg
+
         self.check_input_state(observation_object)
         inp = copy.deepcopy(MockPreprocess._base_input_dict)
     
@@ -38,14 +44,5 @@ class MockPreprocess(ExecutionStrategy):
 
         return inp
 
-    def get_of_create_task_storage_directory(self):
+    def get_or_create_task_storage_directory(self, task):
         return '.'
-
-    def get_output_file(self, task_obj):
-        return None
-
-    def on_finishing(self, observation_object, results, task):
-        #self.check_key(results, 'arg2')
-        #observation.start_processing()
-        #observation.save()
-        pass

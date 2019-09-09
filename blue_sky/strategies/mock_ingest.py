@@ -45,6 +45,9 @@ class MockIngest(IngestStrategy):
         return 'mock_workflow'
 
     def create_enqueued_object(self, message, tags=None):
+        if tags is None or len(tags) == 0:
+            tags = ['observation']
+
         if 'observation' in tags:
             # Reuses an existing object if arg1 is the same
             obs, _ = Observation.objects.update_or_create(
@@ -60,13 +63,18 @@ class MockIngest(IngestStrategy):
                     'object_state': Observation.STATE.OBSERVATION_PENDING
                 }
             )
+
             return obs, None
+
         elif 'calibration' in tags:
             cal = Calibration.objects.create(
                 object_state=Calibration.STATE.CALIBRATION_PENDING,
                 offset=message['offset']
             )
+
             return cal, None
+        else:
+            raise Exception('tags not recognized {}'.format(tags))
 
 
     def generate_response(self, ingested_obj):

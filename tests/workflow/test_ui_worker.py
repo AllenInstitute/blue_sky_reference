@@ -70,7 +70,7 @@ def celery_worker_parameters():
 
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 @patch('workflow_engine.workflow_controller.run_workflow_node_jobs_signature')
 def test_create_job(
     mock_start_helper,

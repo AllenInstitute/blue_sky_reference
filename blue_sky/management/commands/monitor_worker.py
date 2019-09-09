@@ -67,5 +67,5 @@ class Command(BaseCommand):
             'worker',
             '--concurrency=1',
             '--heartbeat-interval=30',
-            '-Q', 'at_em_broadcast', # settings.MONITOR_MESSAGE_QUEUE_NAME,
+            '-Q', 'at_em_broadcast',
             '-n', 'monitor@' + app_name])

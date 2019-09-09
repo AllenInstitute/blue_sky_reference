@@ -34,7 +34,7 @@ def test_run_task(wait_strat):
     wait_strat.run_task(task)
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_finish_task(
     wait_strat,
     task_with_storage_directory,

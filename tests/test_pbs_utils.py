@@ -43,7 +43,7 @@ def pu():
     return PbsUtils()
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_generate_script(pu):
     ex = Mock()
     ex.remote_queue = 'pbs'
@@ -68,56 +68,56 @@ def test_generate_script(pu):
     assert re.search(
         '^#PBS -q emconnectome$',
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         '^#PBS -l vmem=192g,nodes=1:ppn=32$',
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         '^#PBS -l walltime=5:00:00$',
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         '^#PBS -N Mock Task$',
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         '^#PBS -o mock.log$',
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         '^run.sh arg1 arg2 arg3$',
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         "^source activate kingsnake$",
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         "^export THIS=that$",
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
         "^export ABC=xyz$",
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
     assert re.search(
-        "^export PATH=/least/resistance:\$PATH$",
+        r"^export PATH=/least/resistance:\$PATH$",
         generated_script,
-        re.MULTILINE
+        re.RegexFlag.MULTILINE
     )
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_generate_spark_script(pu):
     ex = Mock()
     ex.remote_queue = 'spark_cluster'

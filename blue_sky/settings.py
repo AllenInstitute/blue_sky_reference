@@ -45,7 +45,6 @@ UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 UI_PORT = 9001
 FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/flower/'
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/rabbitmq/'
-ADMIN_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/admin'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
 STANBOL_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/stanbol/'
 
@@ -91,8 +90,8 @@ WORKFLOW_VERSION = 0.1
 
 MILLISECONDS_BETWEEN_REFRESH = 10000
 # MILLISECONDS_BETWEEN_REFRESH = 1000
-MOAB_CHECK_SECONDS = 45.0
-DASHBOARD_UPDATE_SECONDS = 60.0
+MOAB_CHECK_SECONDS = 45000.0
+DASHBOARD_UPDATE_SECONDS = 60000.0
 MONITOR_TASK_MODULES=[]
 
 # Application definition

@@ -1,17 +1,16 @@
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from .mock_execution_strategy import MockExecutionStrategy
 from blue_sky.models import Observation
 import logging
 import copy
 
-class MockCompleteGroup(ExecutionStrategy):
+class MockCompleteGroup(MockExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_complete_group')
 
     _base_input_dict = {}
 
-    def get_objects_for_queue(self, job):
+    def transform_objects_for_queue(self, observation):
         objects = set()
 
-        observation = job.enqueued_object
         groups = observation.groups.all()
 
         for grp in groups:

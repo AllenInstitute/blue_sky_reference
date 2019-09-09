@@ -52,7 +52,7 @@ def test_transition(pending_observation):
     assert obs.object_state == Observation.STATE.OBSERVATION_PROCESSING
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_illegal_transition(pending_observation):
     obs = pending_observation
 

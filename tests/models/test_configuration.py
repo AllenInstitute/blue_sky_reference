@@ -41,7 +41,7 @@ import os
 from workflow_engine.workflow_config import WorkflowConfig
 from workflow_engine.models.workflow_node import WorkflowNode
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_configuration():
     yaml_text = TEST_CONFIG_YAML_TWO_NODES
 

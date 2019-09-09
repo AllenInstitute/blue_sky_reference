@@ -42,21 +42,21 @@ from workflow_engine.views import record_view
 def rf():
     return django.test.RequestFactory()
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_record_info(rf):
     request = rf.get('/workflow_engine/executables/2')
     response = record_view.get_record_info(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_check_unique(rf):
     request = rf.get('/workflow_engine/executables/2')
     response = record_view.check_unique(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_search_data(rf):
     request = rf.get('/workflow_engine/executables/2')
     response = record_view.get_search_data(request)

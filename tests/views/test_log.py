@@ -42,7 +42,7 @@ from workflow_engine.views import log_view
 def rf():
     return django.test.RequestFactory()
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_logs(rf):
     request = rf.get('/workflow_engine/logs')
     response = log_view.logs(request)

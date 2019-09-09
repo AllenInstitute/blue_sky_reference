@@ -1,9 +1,9 @@
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from .mock_execution_strategy import MockExecutionStrategy
 from blue_sky.models.calibration import Calibration
 import logging
 import copy
 
-class MockCalibrate(ExecutionStrategy):
+class MockCalibrate(MockExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_calibrate')
 
     _base_input_dict = {
@@ -20,12 +20,9 @@ class MockCalibrate(ExecutionStrategy):
     def get_input(self, enqueued_object, storage_directory, task):
         inp = copy.deepcopy(MockCalibrate._base_input_dict)
     
-        inp['arg1'] = 7  # settings.ARG_1
+        inp['arg1'] = 7
 
-        return inp 
+        return inp
 
-    def on_finishing(self, calibration_object, results, task):
-        # self.check_key(results, 'arg2')
-        # observation.start_processing()
-        # observation.save()
-        pass
+    def on_finishing(self, calibration, results, task):
+        calibration.done()

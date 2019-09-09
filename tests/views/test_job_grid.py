@@ -38,7 +38,7 @@ from workflow_engine.views.job_grid \
     import JobGrid
 
 @pytest.mark.skipif(True, reason='needs fixtures')
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_generate_grid():
     grid = JobGrid()
     grid.query_workflow_objects()

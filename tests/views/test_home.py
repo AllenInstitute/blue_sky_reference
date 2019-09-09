@@ -42,7 +42,7 @@ from workflow_engine.views import home_view
 def rf():
     return django.test.RequestFactory()
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_index(rf):
     request = rf.get('/workflow_engine/executables/2')
     page = 2

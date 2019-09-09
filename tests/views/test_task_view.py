@@ -42,7 +42,7 @@ from workflow_engine.views import task_view
 def rf():
     return django.test.RequestFactory()
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_tasks_page(rf):
     request = rf.get('/workflow_engine/tasks/2')
     page = 2
@@ -50,42 +50,42 @@ def test_tasks_page(rf):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_tasks(rf):
     request = rf.get('/workflow_engine/tasks')
     response = task_view.tasks(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_tasks_show_data(rf):
     request = rf.get('/workflow_engine/tasks')
     response = task_view.get_tasks_show_data(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_queue_task(rf):
     request = rf.get('/workflow_engine/tasks')
     response = task_view.queue_task(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_kill_task(rf):
     request = rf.get('/workflow_engine/tasks')
     response = task_view.kill_task(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_task_status(rf):
     request = rf.get('/workflow_engine/tasks')
     response = task_view.get_task_status(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_download_bash(rf):
     request = rf.get('/workflow_engine/tasks')
     response = task_view.download_bash(request)

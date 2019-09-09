@@ -77,7 +77,7 @@ def celery_worker_parameters():
     return celery_worker_parameters_helper('result')
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_process_running(
     result_celery_app,
     celery_worker,
@@ -93,7 +93,7 @@ def test_process_running(
     assert str(outpt) == 'set running for task 5'
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def xtest_process_finished_execution(
     result_celery_app,
     celery_worker,
@@ -106,7 +106,7 @@ def xtest_process_finished_execution(
     assert not result.failed()
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def xtest_process_failed_execution_task_not_found(
     result_celery_app,
     celery_worker,
@@ -118,7 +118,7 @@ def xtest_process_failed_execution_task_not_found(
     assert outpt == 'Task 1 not found'
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def xtest_process_failed_execution_15_second_window(
     result_celery_app,
     celery_worker,

@@ -38,7 +38,7 @@ import os
 from workflow_engine.models.executable import Executable
 from django.db import transaction
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_executable():
     executable = Executable()
     

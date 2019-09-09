@@ -1,17 +1,17 @@
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from .mock_execution_strategy import MockExecutionStrategy
 from blue_sky.models import Observation
+from django_fsm import can_proceed
 import logging
 import copy
 
-class MockProcessGroupedObservations(ExecutionStrategy):
+class MockProcessGroupedObservations(MockExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_group_assignment')
 
     _base_input_dict = {}
 
-    def get_objects_for_queue(self, job):
+    def transform_objects_for_queue(self, observation):
         objects = set()
 
-        observation = job.enqueued_object
         groups = observation.groups.all()
 
         for grp in groups:
@@ -28,8 +28,15 @@ class MockProcessGroupedObservations(ExecutionStrategy):
 
         inp['arg1'] = str(observation)
 
-        return inp 
+        return inp
 
+    # TODO: should work on group assignment?
     def on_finishing(self, observation, results, task):
-        observation.done()
-        observation.save()
+        if can_proceed(observation.done):
+            observation.done()
+            observation.save()
+        else:
+            MockProcessGroupedObservations._log.warning(
+                'cannot transition to done %s',
+                str(observation)
+            )

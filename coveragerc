@@ -1,0 +1,5 @@
+[run]
+include = 
+    */workflow_engine/*
+    */workflow_client/*
+parallel = True

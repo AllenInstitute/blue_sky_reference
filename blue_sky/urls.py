@@ -14,14 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
+from django.urls import path, re_path
 from workflow_engine.views import home_view
 
 
 app_name = 'blue_sky'
 
 urlpatterns = [
-    url(r'^$', home_view.index, name='index'),
-    url(r'^workflow_engine/', include('workflow_engine.urls')),
-    url(r'^admin/', admin.site.urls),
+    path('', home_view.index, name='index'),
+    path('workflow_engine/', include('workflow_engine.urls')),
 ]

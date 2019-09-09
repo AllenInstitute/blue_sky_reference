@@ -42,49 +42,50 @@ from workflow_engine.views import job_view
 def rf():
     return django.test.RequestFactory()
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_job(rf):
     request = rf.get('/workflow_engine/jobs')
     response = job_view.jobs(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_jobs_page(rf):
     request = rf.get('/workflow_engine/jobs/2')
     response = job_view.jobs_page(request, 2)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_queue_job(rf):
     request = rf.get('/workflow_engine/jobs/2')
     response = job_view.queue_job(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_kill_job(rf):
     request = rf.get('/workflow_engine/jobs/2')
     response = job_view.kill_job(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_job_status(rf):
-    request = rf.get('/workflow_engine/jobs/2')
+    job_id = 2
+    request = rf.get('/workflow_engine/jobs/{}'.format(job_id))
     response = job_view.get_job_status(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_job_show_data(rf):
     request = rf.get('/workflow_engine/jobs/2')
     response = job_view.get_job_show_data(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_run_all_jobs(rf):
     request = rf.get('/workflow_engine/jobs/2')
     response = job_view.run_all_jobs(request)

@@ -44,14 +44,14 @@ from django.utils.six import BytesIO
 def rf():
     return django.test.RequestFactory()
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_workflows(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.workflows(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_workflow_run_jobs(rf):
     request = rf.get('/workflow_engine/workflows/run_jobs')
     response = workflow_view.run_jobs(request)
@@ -60,42 +60,42 @@ def test_workflow_run_jobs(rf):
     assert json_data['success'] is False
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_workflow_status(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.get_workflow_status(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_head_workflow_node_id(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.get_head_workflow_node_id(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_node_info(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.get_node_info(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_update_workflow_node(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.update_workflow_node(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_workflow_info(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.get_workflow_info(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_update_workflow(rf):
     request = rf.get('/workflow_engine/workflows')
     response = workflow_view.update_workflow(request)

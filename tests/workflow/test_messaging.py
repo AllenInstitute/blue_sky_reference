@@ -128,7 +128,7 @@ def combined_celery_app(celery_app):
     return celery_app
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_create_job(
         #mock_enqueue_next_queue,
         combined_celery_app,

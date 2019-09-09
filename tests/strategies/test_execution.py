@@ -138,10 +138,10 @@ def test_run_task(
     task_with_storage_directory):
 
     with patch('workflow_engine'
-               '.celery'
-               '.moab_tasks'
-               '.submit_moab_task'
-               '.apply_async') as mock_rat:
+               '.strategies'
+               '.execution_strategy'
+               '.submit_moab_task_signature'
+               '.delay') as mock_rat:
         with patch(
             "builtins.open",
             mock_open()):
@@ -150,6 +150,7 @@ def test_run_task(
     mock_rat.assert_called()
 
 
+@pytest.mark.django_db(transaction=True)
 def test_kill_pbs_task(
     celery_worker,
     ex_strat,
@@ -162,7 +163,7 @@ def test_kill_pbs_task(
     assert mock_celery_task.delay.called_once_with(5)
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_run_asynchronous_task(
     ex_strat,
     mock_celery_task,
@@ -178,14 +179,15 @@ def test_run_asynchronous_task(
     wf.save()
     wns = WorkflowNode.objects.filter(
         workflow=wf)
-    jb = Job(id=123,
-             enqueued_object_id=obs.id,
-             run_state_id=0,
+    jb = Job(enqueued_object_id=obs.id,
+             run_state_id=Runnable.get_run_state_id_for(
+                Runnable.STATE.PENDING),
              running_state=Runnable.STATE.PENDING,
              workflow_node=wns[0])
     jb.save()
     tsk = Task(job=jb,
-               run_state_id=0,
+               run_state_id=Runnable.get_run_state_id_for(
+                   Runnable.STATE.PENDING),
                running_state=Runnable.STATE.PENDING,
                enqueued_task_object_type=ContentType.objects.get_for_model(
                    Observation

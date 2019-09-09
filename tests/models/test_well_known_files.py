@@ -42,7 +42,7 @@ from tests.workflow.workflow_fixtures \
     import run_states, workflow_node_1, task_5, \
     running_task_5, mock_executable
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_well_known_file(running_task_5):
     job = Mock()
     job.id = 1234

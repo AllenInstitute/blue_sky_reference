@@ -39,9 +39,12 @@ def test_skip_execution(in_strat):
 def test_create_enqueued_object(in_strat):
     dictionary = Mock()
 
-    default_obj = in_strat.create_enqueued_object(dictionary)
-    
+    default_obj, default_start_node = in_strat.create_enqueued_object(
+        dictionary
+    )
+
     assert default_obj is None
+    assert default_start_node is None
 
 
 def test_generate_response(in_strat):

@@ -4,7 +4,7 @@ from django.test import Client
 from tests.strategy_fixtures import task_with_storage_directory # noqa # pylint: disable=unused-import
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_executable_admin(client):
     usr = User.objects.create_user(
         'test_user', 'test@example.org', 'test_pass')
@@ -18,7 +18,7 @@ def test_executable_admin(client):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_job_admin(client):
     usr = User.objects.create_user(
         'test_user', 'test@example.org', 'test_pass')
@@ -32,7 +32,7 @@ def test_job_admin(client):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_task_admin(client):
     usr = User.objects.create_user(
         'test_user', 'test@example.org', 'test_pass')
@@ -46,7 +46,7 @@ def test_task_admin(client):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_workflow_admin(client):
     usr = User.objects.create_user(
         'test_user', 'test@example.org', 'test_pass')
@@ -60,7 +60,7 @@ def test_workflow_admin(client):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_workflow_node_admin(client):
     usr = User.objects.create_user(
         'test_user', 'test@example.org', 'test_pass')
@@ -74,7 +74,7 @@ def test_workflow_node_admin(client):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_job_queue_admin(client):
     usr = User.objects.create_user(
         'test_user', 'test@example.org', 'test_pass')
@@ -88,7 +88,7 @@ def test_job_queue_admin(client):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_configuration_admin(client):
     usr = User.objects.create_user(
         'test_user', 'test@example.org', 'test_pass')

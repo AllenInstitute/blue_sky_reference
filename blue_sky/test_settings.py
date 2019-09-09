@@ -128,7 +128,7 @@ DATABASES = {
     'OPTIONS': {
         'NAME': '',
         'ENGINE': '',
-        'timeout': 20
+        'timeout': 40
     }
 }
 

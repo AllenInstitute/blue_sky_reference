@@ -73,7 +73,7 @@ def celery_worker_parameters():
     return celery_worker_parameters_helper('workflow')
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_wait_strategy(
         workflow_celery_app,
         celery_worker,

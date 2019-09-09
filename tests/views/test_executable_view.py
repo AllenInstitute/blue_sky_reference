@@ -42,7 +42,7 @@ from workflow_engine.views import executable_view
 def rf():
     return django.test.RequestFactory()
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_executables_page(rf):
     request = rf.get('/workflow_engine/executables/2')
     page = 2
@@ -50,14 +50,14 @@ def test_executables_page(rf):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_executables(rf):
     request = rf.get('/workflow_engine/executables')
     response = executable_view.executables(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_get_executable_names(rf):
     request = rf.get('/workflow_engine/executables')
     response = executable_view.get_executable_names(request)

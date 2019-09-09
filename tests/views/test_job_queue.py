@@ -59,7 +59,7 @@ def content_payload_to_dict(r):
     return p2
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_job_queues_show_data(rf):
     yaml_text = TEST_CONFIG_YAML_TWO_NODES
 
@@ -85,14 +85,14 @@ def test_job_queues_show_data(rf):
         'description', 'enqueued object type'])
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_job_queues(rf):
     request = rf.get('/workflow_engine/jobs')
     response = job_queue_view.job_queues(request)
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_job_queues_page(rf):
     request = rf.get('/workflow_engine/jobs')
     page = 2

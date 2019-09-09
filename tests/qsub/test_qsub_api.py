@@ -181,9 +181,12 @@ Job Id: 6293200.qmaster2.corp.alleninstitute.org
 #     assert df[df['workflow_state'] != 'QUEUED'].empty
 #     assert len(df) == len(task_status_dict_queued)
 # 
+_WORKFLOW_STATE_DICTS = {}
+_MOCK_USER = 'svc_vol_assem'
+
 @pytest.fixture
 def workflow_state_dicts():
-    return {}
+    return _WORKFLOW_STATE_DICTS
 
 
 @pytest.fixture
@@ -196,11 +199,14 @@ def task_qstat_dict():
 
 @pytest.fixture
 def mock_user():
-    return 'mock_svc_vol_assem'
+    return _MOCK_USER
 
 
 @pytest.fixture
 def mock_qstat_query(mock_user, task_qstat_dict):
+    return mock_qstat_query_helper(mock_user, task_qstat_dict)
+
+def mock_qstat_query_helper(mock_user, task_qstat_dict):
     mock_moab_dict_array = [{
             'name': str(i),
             'id': '9876543{}.qmaster2.alleninstitute.org'.format(i),
@@ -222,7 +228,7 @@ def test_parse_qstat_full_output():
 
 
 @patch('workflow_engine.worker.qsub.qsub_api.qstat_query',
-       mock_qstat_query(mock_user(), workflow_state_dicts()))
+       mock_qstat_query_helper(_MOCK_USER, _WORKFLOW_STATE_DICTS))
 def test_query_qstat_moab_state(mock_user, workflow_state_dicts):
     moab_state_df = query_qstat_moab_state(workflow_state_dicts)
 
@@ -231,7 +237,7 @@ def test_query_qstat_moab_state(mock_user, workflow_state_dicts):
 
 
 @patch('workflow_engine.worker.qsub.qsub_api.qstat_query',
-       mock_qstat_query(mock_user(), workflow_state_dicts()))
+       mock_qstat_query_helper(_MOCK_USER, _WORKFLOW_STATE_DICTS))
 def test_query_and_combine_qstat_states(
     mock_user, workflow_state_dicts):
     combined_df = query_and_combine_qstat_states(

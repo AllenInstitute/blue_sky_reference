@@ -73,18 +73,18 @@ def celery_worker_parameters():
     return celery_worker_parameters_helper('ingest')
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_ingest(
         ingest_celery_app,
         celery_worker,
-        workflow_node_1,):
+        workflow_node_1):
     message = {
         'arg1': 5,
         'arg2': "Whatever",
         'arg3': "Something"
     }
 
-    tags = ['sunday']
+    tags = ['observation']
 
     result = signatures.ingest_signature.delay('analyze', message, tags)
     assert not result.failed()

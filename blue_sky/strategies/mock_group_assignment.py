@@ -1,4 +1,4 @@
-from workflow_engine.strategies.execution_strategy import ExecutionStrategy
+from .mock_execution_strategy import MockExecutionStrategy
 from blue_sky.models.observation_group import ObservationGroup
 from blue_sky.models.group_assignment import GroupAssignment
 from django_fsm import can_proceed
@@ -6,13 +6,12 @@ import logging
 import copy
 
 
-class MockGroupAssignment(ExecutionStrategy):
+class MockGroupAssignment(MockExecutionStrategy):
     _log = logging.getLogger('blue_sky.mock_group_assignment')
 
     _base_input_dict = {}
 
-    def get_objects_for_queue(self, job):
-        observation = job.enqueued_object
+    def transform_objects_for_queue(self, observation):
         tens = int(observation.arg1) // 10
 
         group_label = 'Group {}'.format(tens)
@@ -23,7 +22,7 @@ class MockGroupAssignment(ExecutionStrategy):
                 'object_state': ObservationGroup.STATE.GROUP_INCOMPLETE
             })
 
-        group_assign, _ = GroupAssignment.objects.get_or_create(
+        GroupAssignment.objects.get_or_create(
             observation=observation,
             group=group)
 
@@ -43,11 +42,10 @@ class MockGroupAssignment(ExecutionStrategy):
         else:
             if (observation_object.object_state ==
                 observation_object.__class__.STATE.OBSERVATION_GROUPED):
-                MockGroupAssignment._log.warn(
-                    '{} is already in state {}'.format(
-                        observation_object,
-                        observation_object.__class__.STATE.OBSERVATION_GROUPED
-                    )
+                MockGroupAssignment._log.warning(
+                    '%s is already in state %s',
+                    str(observation_object),
+                    observation_object.__class__.STATE.OBSERVATION_GROUPED
                 )
 
     def on_finishing(self, observation_object, results, task):

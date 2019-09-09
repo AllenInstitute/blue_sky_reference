@@ -61,8 +61,7 @@ def workflow_config():
 def test_workflow_config(workflow_config):
     assert workflow_config is not None
 
-# @transaction.atomic
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 @pytest.mark.parametrize(
     "yaml_text", [
         (TEST_CONFIG_YAML_ONE_NODE),
@@ -125,6 +124,6 @@ def test_from_yaml_file(workflow_config,
             print(''.join(line))
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 def test_archive_all_workflows():
     WorkflowConfig.archive_all_workflows()

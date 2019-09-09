@@ -112,7 +112,7 @@ def moab_status_celery_app(celery_app):
 
     return celery_app
 
-@pytest.mark.django_db
+@pytest.mark.django_db(transaction=True)
 @patch('workflow_client.nb_utils.moab_api.moab_query')
 def test_check_moab_status(
     mock_moab_query,

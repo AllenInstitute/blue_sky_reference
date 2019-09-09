@@ -27,7 +27,10 @@ class Observation(Enqueueable, Stateful, models.Model):
         through='GroupAssignment')
     calibration = models.ForeignKey(
         'Calibration',
-        null=True, blank=True)
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
 
 
     def __str__(self):
