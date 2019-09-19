@@ -3,7 +3,7 @@ import sys
 from setuptools import find_packages, setup
 from setuptools.command.test import test as TestCommand
 
-VERSION = os.environ.get('VERSION', '0.121.X')
+VERSION = os.environ.get('VERSION', '0.121.0')
 RELEASE = os.environ.get('RELEASE', '.dev')
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
@@ -44,7 +44,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 setup(
-    name='blue_sky_test',
+    name='blue_sky_reference',
     version='%s%s' % (VERSION, RELEASE),
     packages=prepend_find_packages('blue_sky'),
     package_data={'': ['*.conf', '*.cfg', '*.json', '*.env', '*.sh', '*.txt', 'Makefile'] },
@@ -63,15 +63,13 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.11',
+        'Framework :: Django :: 2.22',
         'Intended Audience :: Developers',
         'License :: Allen Institute Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],

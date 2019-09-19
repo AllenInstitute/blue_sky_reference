@@ -49,7 +49,6 @@ from tests.workflow_configurations import (
 )
 from workflow_client.client_settings import configure_worker_app
 from tests.workflow.workflow_fixtures import (
-    run_states,      # noqa # pylint: disable=unused-import
     workflow_node_1, # noqa # pylint: disable=unused-import
     obs,             # noqa # pylint: disable=unused-import
     mock_executable  # noqa # pylint: disable=unused-import
@@ -107,9 +106,7 @@ def celery_includes():
 @pytest.fixture
 @patch('workflow_client.client_settings.get_message_broker_url',
         Mock(return_value='memory://'))
-def combined_celery_app(
-    celery_app,
-    run_states):
+def combined_celery_app(celery_app):
     configure_worker_app(
         celery_app,
         'blue_sky',

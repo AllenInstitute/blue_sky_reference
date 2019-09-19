@@ -6,22 +6,6 @@ from django.contrib.contenttypes.models import ContentType
 
 
 @pytest.fixture
-def run_states():
-    rs = {}
-    for s in [
-        'PENDING',
-        'QUEUED',
-        'RUNNING',
-        'FINISHED_EXECUTION',
-        'FAILED_EXECUTION',
-        'SUCCESS',
-        'FAILED']:
-        rs[s], _ = RunState.objects.update_or_create(
-            name=s)
-    return rs
-
-
-@pytest.fixture
 def obs():
     (o, _) = Observation.objects.update_or_create(
         arg1='5',
@@ -33,7 +17,7 @@ def obs():
 
 
 @pytest.fixture
-def waiting_task(run_states):
+def waiting_task():
     workflow, _ = Workflow.objects.update_or_create(
         id=1,
         name="analyze",
@@ -59,23 +43,14 @@ def waiting_task(run_states):
         id=9,
         defaults = {
             'enqueued_object': waiter_obs,
-            'run_state_id': Runnable.get_run_state_id_for(
-                Runnable.STATE.PENDING),
             'running_state': Runnable.STATE.PENDING,
             'workflow_node': workflow_node})
-#     task, _ = Task.objects.update_or_create(
-#         id=8,
-#         job=job,
-#         defaults={
-#             'full_executable': 'mock_task',
-#             'run_state': run_states['PENDING'],
-#             'start_run_time': timezone.now()})
 
     return job
 
 
 @pytest.fixture
-def task_5(run_states):
+def task_5():
     xcute,_ = Executable.objects.get_or_create(
         name='Mock Executable',
         defaults={
@@ -109,8 +84,6 @@ def task_5(run_states):
         id=2,
         defaults = {
             'enqueued_object_id': obs.id,
-            'run_state_id': Runnable.get_run_state_id_for(
-                Runnable.STATE.PENDING),
             'running_state': Runnable.STATE.PENDING,
             'workflow_node': workflow_node})
     task, _ = Task.objects.update_or_create(
@@ -119,8 +92,6 @@ def task_5(run_states):
         defaults={
             'enqueued_task_object_id': obs.id,
             'full_executable': 'mock_task',
-            'run_state_id': Runnable.get_run_state_id_for(
-                Runnable.STATE.PENDING),
             'running_state': Runnable.STATE.PENDING,
             'start_run_time': timezone.now()})
 
@@ -140,8 +111,7 @@ def mock_executable():
     return ex
 
 @pytest.fixture
-def workflow_node_1(run_states,
-                    mock_executable):
+def workflow_node_1(mock_executable):
     workflow, _ = Workflow.objects.update_or_create(
         id=1,
         name='analyze',
@@ -163,8 +133,7 @@ def workflow_node_1(run_states,
 
 
 @pytest.fixture
-def running_task_5(run_states,
-                   mock_executable):
+def running_task_5(mock_executable):
     workflow, _ = Workflow.objects.update_or_create(
         id=1)
     job_queue, _ = JobQueue.objects.update_or_create(
@@ -182,8 +151,6 @@ def running_task_5(run_states,
         id=2,
         defaults = {
             'enqueued_object_id': 56,
-            'run_state_id': Runnable.get_run_state_id_for(
-                Runnable.STATE.RUNNING),
             'running_state': Runnable.STATE.RUNNING,
             'workflow_node': workflow_node,
             'start_run_time': timezone.now()})
@@ -192,8 +159,6 @@ def running_task_5(run_states,
         job=job,
         defaults={
             'full_executable': 'mock_task',
-            'run_state_id': Runnable.get_run_state_id_for(
-                Runnable.STATE.RUNNING),
             'running_state': Runnable.STATE.RUNNING,
             'start_run_time': timezone.now()})
 
@@ -201,7 +166,6 @@ def running_task_5(run_states,
 
 # circular imports
 from workflow_engine.models import (
-    RunState,
     Task,
     Job,
     JobQueue,

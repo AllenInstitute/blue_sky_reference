@@ -42,7 +42,6 @@ from tests.signature_fixtures import (
     mock_celery_task  # noqa # pylint: disable=unused-import
 )
 from tests.workflow.workflow_fixtures import (
-    run_states,      # noqa # pylint: disable=unused-import
     task_5,          # noqa # pylint: disable=unused-import
     obs             # noqa # pylint: disable=unused-import
 )

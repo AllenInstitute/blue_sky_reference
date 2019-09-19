@@ -34,7 +34,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import patch
+# from mock import patch
 # from celery.contrib.pytest import celery_app, celery_worker
 #from workflow_client.client_settings import configure_worker_app
 from blue_sky.models import Observation
@@ -43,7 +43,6 @@ from blue_sky.models import Observation
 import workflow_engine.celery.signatures as signatures
 
 from tests.workflow.workflow_fixtures import (
-    run_states,   # noqa # pylint: disable=unused-import
     waiting_task  # noqa # pylint: disable=unused-import
 )
 

@@ -37,10 +37,12 @@ import pytest
 from workflow_engine.models.well_known_file import WellKnownFile
 from blue_sky.models.observation import Observation
 from mock import patch, Mock
-from workflow_engine.models.task import Task
-from tests.workflow.workflow_fixtures \
-    import run_states, workflow_node_1, task_5, \
-    running_task_5, mock_executable
+from tests.workflow.workflow_fixtures import (
+    workflow_node_1,  # noqa # pylint: disable=unused-import
+    task_5,           # noqa # pylint: disable=unused-import
+    running_task_5,   # noqa # pylint: disable=unused-import
+    mock_executable   # noqa # pylint: disable=unused-import
+)
 
 @pytest.mark.django_db(transaction=True)
 def test_well_known_file(running_task_5):

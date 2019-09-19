@@ -38,7 +38,6 @@ import workflow_engine.celery.signatures as signatures
 
 # Workflow Fixtures
 from tests.workflow.workflow_fixtures import (
-    run_states,           # noqa # pylint: disable=unused-import
     task_5,
     running_task_5,       # noqa # pylint: disable=unused-import
     mock_executable       # noqa # pylint: disable=unused-import

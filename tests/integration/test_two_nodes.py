@@ -37,17 +37,19 @@ import pytest
 from mock import Mock, patch, mock_open
 from django.test import Client
 from django.contrib.auth.models import User
-from celery.contrib.pytest import celery_app, celery_worker
+from celery.contrib.pytest import (
+    celery_app,    # noqa # pylint: disable=unused-import
+    celery_worker  # noqa # pylint: disable=unused-import
+)
 import shutil
 import os
 from workflow_engine.celery import signatures
-from workflow_client.tasks import circus_signatures
+# from workflow_client.tasks import circus_signatures
 from tests.workflow_configurations import (
     TEST_CONFIG_YAML_TWO_NODES,
 )
 from workflow_client.client_settings import configure_worker_app
 from tests.workflow.workflow_fixtures import (
-    run_states,      # noqa # pylint: disable=unused-import
     workflow_node_1, # noqa # pylint: disable=unused-import
     obs,             # noqa # pylint: disable=unused-import
     mock_executable  # noqa # pylint: disable=unused-import
@@ -103,9 +105,7 @@ def celery_includes():
 @pytest.fixture
 @patch('workflow_client.client_settings.get_message_broker_url',
         Mock(return_value='memory://'))
-def combined_celery_app(
-    celery_app,
-    run_states):
+def combined_celery_app(celery_app):
     configure_worker_app(
         celery_app,
         'blue_sky',

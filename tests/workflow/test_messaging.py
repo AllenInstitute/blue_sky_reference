@@ -42,7 +42,6 @@ from workflow_client.simple_router import SimpleRouter
 import time
 from workflow_client.client_settings import configure_worker_app
 from tests.workflow.workflow_fixtures import (
-    run_states,
     workflow_node_1,
     obs,
     mock_executable

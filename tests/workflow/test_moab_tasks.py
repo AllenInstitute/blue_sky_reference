@@ -42,7 +42,6 @@ from tests.nb_utils.test_moab_api import (
 )
 from workflow_engine.celery.signatures import check_moab_status_signature
 from tests.workflow.workflow_fixtures import (
-    run_states,
     task_5,
     running_task_5,
     obs,

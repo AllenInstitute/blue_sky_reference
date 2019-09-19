@@ -54,7 +54,6 @@ from workflow_client.simple_router import SimpleRouter
 from datetime import timedelta
 from django.utils import timezone
 from tests.workflow.workflow_fixtures import (
-    run_states,
     task_5,
     running_task_5,
     mock_executable

@@ -42,7 +42,6 @@ import workflow_engine.celery.signatures as signatures
 from blue_sky.models.observation import Observation
 
 from tests.workflow.workflow_fixtures import (
-    run_states,      # noqa # pylint: disable=unused-import
     workflow_node_1, # noqa # pylint: disable=unused-import
     task_5,          # noqa # pylint: disable=unused-import
     running_task_5,  # noqa # pylint: disable=unused-import

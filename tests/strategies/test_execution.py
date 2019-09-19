@@ -14,9 +14,6 @@ from workflow_engine.strategies import ExecutionStrategy
 from tests.workflow_configurations import (
     TEST_CONFIG_YAML_TWO_NODES,
 )
-from tests.workflow.workflow_fixtures import (
-    run_states,      # noqa # pylint: disable=unused-import
-)
 from tests.signature_fixtures import (
     ENQUEUE_NEXT,
     SUBMIT_MOCK,
@@ -166,8 +163,7 @@ def test_kill_pbs_task(
 @pytest.mark.django_db(transaction=True)
 def test_run_asynchronous_task(
     ex_strat,
-    mock_celery_task,
-    run_states):
+    mock_celery_task):
     WorkflowConfig.create_workflow_from_string(
         TEST_CONFIG_YAML_TWO_NODES
     )
@@ -180,14 +176,10 @@ def test_run_asynchronous_task(
     wns = WorkflowNode.objects.filter(
         workflow=wf)
     jb = Job(enqueued_object_id=obs.id,
-             run_state_id=Runnable.get_run_state_id_for(
-                Runnable.STATE.PENDING),
              running_state=Runnable.STATE.PENDING,
              workflow_node=wns[0])
     jb.save()
     tsk = Task(job=jb,
-               run_state_id=Runnable.get_run_state_id_for(
-                   Runnable.STATE.PENDING),
                running_state=Runnable.STATE.PENDING,
                enqueued_task_object_type=ContentType.objects.get_for_model(
                    Observation
