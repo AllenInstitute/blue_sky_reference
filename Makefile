@@ -37,6 +37,10 @@ pytest_pep8:
 pytest_lite:
 	find -L . -name "test_*.py" -exec py.test --assert=reinterp --junitxml=test-reports/test.xml {} \+
 
+prospector:
+	prospector > htmlcov/pylint.txt || exit 0
+	grep import htmlcov/pylint.txt > htmlcov/pylint_imports.txt
+
 pylint:
 	pylint --disable=C workflow_engine | tee htmlcov/pylint.txt || exit 0
 	grep import-error htmlcov/pylint.txt | tee htmlcov/pylint_imports.txt

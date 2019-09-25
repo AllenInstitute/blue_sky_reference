@@ -34,3 +34,7 @@ RUN \
  chmod -R go+rw /home/${BLUE_SKY_USERNAME}
 
 COPY ./jupyter_notebook_config.json ./jupyter_notebook_config.py /home/blue_sky_user/.jupyter/
+
+COPY ./install_app_dirs.sh .
+RUN chmod +x install_app_dirs.sh
+

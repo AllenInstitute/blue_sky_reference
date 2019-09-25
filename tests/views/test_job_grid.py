@@ -34,7 +34,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_engine.views.job_grid \
+from blue_sky.views.job_grid \
     import JobGrid
 
 @pytest.mark.skipif(True, reason='needs fixtures')
