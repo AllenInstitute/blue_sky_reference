@@ -19,6 +19,7 @@ services:
     volumes:
     - "./pg_data:/var/lib/postgresl/data"
     - "./initdb/initbluesky.sql:/docker-entrypoint-initdb.d/01_initbluesky.sql"
+    - "./initdb/initmarmotta.sql:/docker-entrypoint-initdb.d/02_initmarmotta.sql"
     expose:
     - "5432"
     ports:
@@ -68,12 +69,20 @@ services:
     - "/local1/git/blue_sky/config/static:/var/www/static"
     - "/local1/git/blue_sky/config/logs:/var/www/logs"
   stanbol:
-    image: manuellr/apache-stanbol
+    image: alleninstitute/stanbol
     hostname: stanbol
     expose:
       - 8080
     ports:
       - 7070:8080
+    volumes:
+      - ./vocabulary:/data/vocabulary:shared
+  stanbol_data:
+    image: alleninstitute/stanbol
+    command: echo "Data only container for the Apache Stanbol container."
+    volumes:
+      - /var/log/supervisord
+      - ./vocabulary:/data/vocabulary:shared
   marmotta:
     image: apache/marmotta
     hostname: marmotta
@@ -88,26 +97,26 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - PG_VERSION=9.4
-#  mongodb:
-#    image: mongo
-#    hostname: mongodb
-#    expose:
-#      - 8080
-#      - 8081
-#      - 27017
-#      - 27018
-#      - 27019
-#    ports:
-#      - 8181:8080
-#  webprotege:
-#    image: skyplabs/webprotege
-#    hostname: webprotege
-#    expose:
-#      - 8080
-#    ports:
-#      - 8282:8080
-#    volumes:
-#      - ./webprotege:/srv/webprotege
-#      - ./webprotege/webprotege.properties:/etc/webprotege/webprotege.properties
-#    depends_on:
-#      - mongodb
+  mongodb:
+    image: mongo
+    hostname: mongodb
+    expose:
+      - 8080
+      - 8081
+      - 27017
+      - 27018
+      - 27019
+    ports:
+      - 8181:8080
+  webprotege:
+    image: skyplabs/webprotege
+    hostname: webprotege
+    expose:
+      - 8080
+    ports:
+      - 8282:8080
+    #volumes:
+    #  #- ./webprotege:/srv/webprotege
+    #  #- ./webprotege/webprotege.properties:/etc/webprotege/webprotege.properties
+    depends_on:
+     - mongodb

@@ -35,16 +35,18 @@
 #
 import pytest
 from mock import Mock, patch
-from celery.contrib.pytest import celery_app, celery_worker
+from celery.contrib.pytest import (
+    celery_app,    # noqa # pylint: disable=unused-import
+    celery_worker  # noqa # pylint: disable=unused-import
+)
 import shutil
-from workflow_engine.celery import signatures
+from workflow_client import signatures
 from workflow_client.simple_router import SimpleRouter
-import time
 from workflow_client.client_settings import configure_worker_app
 from tests.workflow.workflow_fixtures import (
-    workflow_node_1,
-    obs,
-    mock_executable
+    workflow_node_1,  # noqa # pylint: disable=unused-import
+    obs,              # noqa # pylint: disable=unused-import
+    mock_executable   # noqa # pylint: disable=unused-import
 )
 import logging
 
@@ -55,13 +57,6 @@ _log = logging.getLogger('tests.workflow.test_messaging')
 @pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
-
-@pytest.fixture(scope='module')
-def celery_config():
-    return {
-        'broker_url': 'memory://',
-        'result_backend': 'rpc'
-    }
 
 
 @pytest.fixture(scope='module')
@@ -116,8 +111,6 @@ _mock_submit_job.apply_async = Mock(
     side_effect=send_running_and_finished)
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
 def combined_celery_app(celery_app):
     configure_worker_app(
         celery_app,

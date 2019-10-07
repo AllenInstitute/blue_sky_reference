@@ -34,11 +34,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-#from mock import Mock, patch
-#from celery.contrib.pytest import celery_app, celery_worker
-#from workflow_client.simple_router import SimpleRouter
-#from workflow_client.client_settings import configure_worker_app
-import workflow_engine.celery.signatures as signatures
+import workflow_client.signatures as signatures
 from blue_sky.models.observation import Observation
 
 from tests.workflow.workflow_fixtures import (
@@ -54,7 +50,6 @@ from workflow_engine.celery.ingest_tasks import (
 # Message queue fixtures
 from tests.celery_fixtures import (
     celery_enable_logging,           # noqa # pylint: disable=unused-import
-    celery_config,                   # noqa # pylint: disable=unused-import
     use_celery_app_trap,             # noqa # pylint: disable=unused-import
     celery_worker_parameters_helper,
     celery_includes_helper,

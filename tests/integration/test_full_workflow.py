@@ -34,16 +34,18 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import Mock, patch, mock_open
+from mock import patch, mock_open
 from django.test import Client
 from django.contrib.auth.models import User
 from celery import group
-from celery.contrib.pytest import celery_app, celery_worker
+from celery.contrib.pytest import (
+    celery_app,    # noqa # pylint: disable=unused-import
+    celery_worker  # noqa # pylint: disable=unused-import
+)
 import shutil
 import os
 from time import sleep
-from workflow_engine.celery import signatures
-from workflow_client.tasks import circus_signatures
+from workflow_client import signatures
 from tests.workflow_configurations import (
     TEST_CONFIG_YAML_FULL_WORKFLOW,
 )
@@ -62,17 +64,12 @@ from workflow_engine.models import (
 # Message queue fixtures
 from tests.celery_fixtures import (
     celery_enable_logging,           # noqa # pylint: disable=unused-import
-    celery_config,                   # noqa # pylint: disable=unused-import
     use_celery_app_trap,             # noqa # pylint: disable=unused-import
     celery_includes_helper,
     ingest_celery_app,             # noqa # pylint: disable=unused-import
 )
 from django.db.models import Count
 from django_pandas.io import read_frame
-# from workflow_engine.celery.mock_tasks import (
-#     submit_mock_task
-# )
-
 import logging
 from workflow_client.simple_router import SimpleRouter
 
@@ -84,7 +81,12 @@ _log = logging.getLogger('tests.integration.test_full_workflow')
 def celery_worker_parameters():
     router = SimpleRouter('blue_sky')
 
-    queues = [ 'ingest@blue_sky', 'workflow@blue_sky', 'mock@blue_sky', 'result@blue_sky' ]
+    queues = [
+        'ingest@blue_sky',
+        'workflow@blue_sky',
+        'mock@blue_sky',
+        'result@blue_sky'
+    ]
 
     return {
         'queues': queues,
@@ -104,8 +106,6 @@ def celery_includes():
 
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
 def combined_celery_app(celery_app):
     configure_worker_app(
         celery_app,
@@ -160,9 +160,9 @@ def test_send_ingest(
                 'arg3': 'Wilco'
             },
             ['observation']
-        )) for arg1 in range(10)).delay()
+        )) for arg1 in range(1)).delay()
 
-    processing_count = 9
+    processing_count = 1
     running_count = 1
 
     while (processing_count > 0):
@@ -205,15 +205,16 @@ def test_send_ingest(
                     job_df.running_state.isin(['RUNNING'])
                 ].total.sum()
     
-                _log.info("JOB_DF: {}".format(job_df))
+                _log.info("JOB_DF: %s", str(job_df))
             except:
                 _log.info("database locked")
 
 
     ingest_responses.ready()
-    outpt = ingest_responses.get()
+    outpts = ingest_responses.get()
 
-    #assert 'observation_id' in outpt and outpt['observation_id'] > 0
+    for outpt in outpts:
+        assert 'observation_id' in outpt and outpt['observation_id'] > 0
 
     #_log.info(outpt)
 
@@ -224,7 +225,7 @@ def test_send_ingest(
     assert outpt is not None
 
     #assert Job.objects.order_by('id').last().running_state == 'SUCCESS'
-    assert True
+    #assert True
 #     assert outpt == 'None'
 #  
 #     assert False

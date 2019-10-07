@@ -34,11 +34,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-import workflow_engine.celery.signatures as signatures
+import workflow_client.signatures as signatures
 
 # Workflow Fixtures
 from tests.workflow.workflow_fixtures import (
-    task_5,
+    task_5,               # noqa # pylint: disable=unused-import
     running_task_5,       # noqa # pylint: disable=unused-import
     mock_executable       # noqa # pylint: disable=unused-import
 )
@@ -47,7 +47,6 @@ from tests.workflow.workflow_fixtures import (
 # Message queue fixtures
 from tests.celery_fixtures import (
     celery_enable_logging,           # noqa # pylint: disable=unused-import
-    celery_config,                   # noqa # pylint: disable=unused-import
     use_celery_app_trap,             # noqa # pylint: disable=unused-import
     celery_worker_parameters_helper,
     celery_includes_helper,
@@ -82,10 +81,8 @@ def test_process_running(
     celery_worker,
     task_5):
 
-    mock_cluster_process_id = 12345
-
-    task_5.job.set_queued_state(mock_cluster_process_id, quiet=True)
-    task_5.set_queued_state(mock_cluster_process_id, quiet=True)
+    task_5.job.set_queued_state(quiet=True)
+    task_5.set_queued_state(quiet=True)
     result = signatures.process_running_signature.delay(5)
     assert not result.failed()
     outpt = result.wait(10)

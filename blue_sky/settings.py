@@ -52,10 +52,11 @@ CONFIG_DIR = '/blue_sky/config'
 BLUE_SKY_SETTINGS = '/blue_sky/config/blue_sky_settings.yml'
 WORKFLOW_CONFIG_YAML = CONFIG_DIR + '/workflow_config.yml'
 
-QMASTER_HOST = 'hpc-login.corp.alleninstitute.org'
-QMASTER_PORT = 22
-QMASTER_USERNAME = 'timf'
-QMASTER_PASSWORD = CONFIG_DIR + 'crd'
+MOAB_ENDPOINT = 'http://qmaster2.corp.alleninstitute.org:8080/mws/rest'
+MOAB_AUTH = 'user:pass'
+MOAB_GROUP = 'lab_b'
+MOAB_TIMEOUT = 180
+
 
 CHANNEL_LAYERS = {
     "default": {

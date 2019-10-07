@@ -34,7 +34,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from mock import Mock, patch, mock_open
+from mock import patch, mock_open
 from django.test import Client
 from django.contrib.auth.models import User
 from celery.contrib.pytest import (
@@ -43,8 +43,7 @@ from celery.contrib.pytest import (
 )
 import shutil
 import os
-from workflow_engine.celery import signatures
-# from workflow_client.tasks import circus_signatures
+from workflow_client import signatures
 from tests.workflow_configurations import (
     TEST_CONFIG_YAML_TWO_NODES,
 )
@@ -63,14 +62,10 @@ from workflow_engine.models import (
 # Message queue fixtures
 from tests.celery_fixtures import (
     celery_enable_logging,           # noqa # pylint: disable=unused-import
-    celery_config,                   # noqa # pylint: disable=unused-import
     use_celery_app_trap,             # noqa # pylint: disable=unused-import
     celery_includes_helper,
     ingest_celery_app,             # noqa # pylint: disable=unused-import
 )
-# from workflow_engine.celery.mock_tasks import (
-#     submit_mock_task
-# )
 
 import logging
 from workflow_client.simple_router import SimpleRouter
@@ -83,7 +78,12 @@ _log = logging.getLogger('tests.integration.test_two_nodes')
 def celery_worker_parameters():
     router = SimpleRouter('blue_sky')
 
-    queues = [ 'ingest@blue_sky', 'workflow@blue_sky', 'mock@blue_sky', 'result@blue_sky' ]
+    queues = [
+        'ingest@blue_sky',
+        'workflow@blue_sky',
+        'mock@blue_sky',
+        'result@blue_sky'
+    ]
 
     return {
         'queues': queues,
@@ -103,8 +103,6 @@ def celery_includes():
 
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
 def combined_celery_app(celery_app):
     configure_worker_app(
         celery_app,

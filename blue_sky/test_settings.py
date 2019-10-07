@@ -37,10 +37,10 @@ ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
 JOB_GRID_CLASS=None
 
-QMASTER_HOST = 'example.org'
-QMASTER_PORT = 1234
-QMASTER_USERNAME = 'mock_user'
-QMASTER_PASSWORD = 'crd'
+MOAB_ENDPOINT = 'http://qmaster2.corp.alleninstitute.org:8080/mws/rest'
+MOAB_AUTH = 'user:pass'
+MOAB_GROUP = 'lab_b'
+MOAB_TIMEOUT = 180
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/

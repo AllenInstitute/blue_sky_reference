@@ -37,20 +37,21 @@ import pytest
 from workflow_client.simple_router import SimpleRouter
 from workflow_client.client_settings import configure_worker_app
 from tests.nb_utils.test_moab_api import (
-    moab_dict,
-    task_status_dict_queued
+    moab_dict,               # noqa # pylint: disable=unused-import
+    task_status_dict_queued  # noqa # pylint: disable=unused-import
 )
-from workflow_engine.celery.signatures import check_moab_status_signature
+from workflow_client.signatures import check_moab_status_signature
 from tests.workflow.workflow_fixtures import (
-    task_5,
-    running_task_5,
-    obs,
-    mock_executable
+    task_5,          # noqa # pylint: disable=unused-import
+    running_task_5,  # noqa # pylint: disable=unused-import
+    obs,             # noqa # pylint: disable=unused-import
+    mock_executable  # noqa # pylint: disable=unused-import
 )
-
-from django.test.utils import override_settings
-from celery.contrib.pytest import celery_app, celery_worker
-from mock import Mock, patch
+from celery.contrib.pytest import (
+    celery_app,    # noqa # pylint: disable=unused-import
+    celery_worker  # noqa # pylint: disable=unused-import
+)
+from mock import patch
 import os
 
 _MOAB_ID_OFFSET = 20
@@ -58,14 +59,6 @@ _MOAB_ID_OFFSET = 20
 @pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
-
-
-@pytest.fixture(scope='module')
-def celery_config():
-    return {
-        'broker_url': 'memory://',
-        'result_backend': 'rpc'
-    }
 
 
 @pytest.fixture(scope='module')
@@ -104,8 +97,6 @@ def mock_moab_result():
     } for i in [2, 4] ]
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
-        Mock(return_value='memory://'))
 def moab_status_celery_app(celery_app):
     configure_worker_app(celery_app, 'blue_sky', 'moab_status')
 

@@ -8,7 +8,11 @@ BSWE_DIR = /local1/git/blue_sky_workflow_engine
 APP_NAME=blue_sky
 APP_DIR=/local1/git/$(APP_NAME)
 APP_DEPLOY_DIR=/local1/app_dirs
-MOUNTS  = -v $(CONDA_ENVS):/conda_envs -v $(BSWE_DIR):/source/blue_sky_workflow_engine -v $(APP_DIR):/source/$(APP_NAME) -v $(APP_DEPLOY_DIR):/app_dir
+EXTERNAL_CONDA_ENVS_SCRIPT=/external_conda_envs.sh
+EXTRA_MOUNTS = -v /local1/git/EM_aligner_python:/source/EM_aligner_python:shared
+MOUNTS  = -v $(CONDA_ENVS):/conda_envs:shared -v $(BSWE_DIR):/source/blue_sky_workflow_engine:shared -v $(APP_DIR):/source/$(APP_NAME):shared -v $(APP_DEPLOY_DIR):/app_dir:shared $(EXTRA_MOUNTS)
+PWD=.
+EXTERNAL_CONDA_ENVS_MOUNTS=$(MOUNTS) -v $(PWD)$(EXTERNAL_CONDA_ENVS_SCRIPT):$(EXTERNAL_CONDA_ENVS_SCRIPT)
 PYTHONPATH = --env PYTHONPATH=/app_dir
 PYTEST = /bin/bash -c "source activate /conda_envs/py_37; pytest"
 USER_FLAG = -u blue_sky_user
@@ -20,6 +24,9 @@ build:
 
 conda_envs:
 	docker run -e APP_NAME=$(APP_NAME) $(USER_FLAG) $(MOUNTS) -it alleninstitute/blue_sky_base /create_conda_envs.sh
+
+external_conda_envs: FORCE
+	docker run -e APP_NAME=$(APP_NAME) $(USER_FLAG) $(EXTERNAL_CONDA_ENVS_MOUNTS) -it alleninstitute/blue_sky_base /bin/bash $(EXTERNAL_CONDA_ENVS_SCRIPT)
 
 install_app_dirs:
 	docker run -e APP_NAME=$(APP_NAME) $(USER_FLAG) $(MOUNTS) -it alleninstitute/blue_sky_base /install_app_dirs.sh

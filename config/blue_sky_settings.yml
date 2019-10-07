@@ -1,8 +1,20 @@
-MESSAGE_QUEUE_HOST: ibs-timf-ux1.corp.alleninstitute.org
-MESSAGE_QUEUE_PORT: 9008
-MESSAGE_QUEUE_USER: blue_sky_user
-MESSAGE_QUEUE_PASSWORD: blue_sky_user
-MESSAGE_QUEUE_VHOST: /
-CELERY_MESSAGE_QUEUE_NAME: celery_blue_sky
-DEFAULT_MESSAGE_QUEUE_NAME: 'null'
-WORKFLOW_CONFIG_YAML: /blue_sky/config/workflow_config.yml
+broker_url: memory://
+result_backend: rpc://
+result_persistent: false
+task_serializer: json
+result_serializer: json
+result_expires: 3600
+broker_connection_timeout: 10
+broker_connection_retry: false
+soft_time_limit: 600
+time_limit: 2400
+accept_content: ['json']
+worker_prefetch_multiplier: 1
+timezone: US/Pacific
+enable_utc: true
+task_queue_max_priority: 10
+broker_transport_options:
+    max_retries: 3
+    interval_start: 0
+    interval_step: 10
+    interval_max: 30

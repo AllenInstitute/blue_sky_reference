@@ -45,7 +45,7 @@ from workflow_engine.celery.result_tasks import (
     process_running
 )
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
-from workflow_engine.celery.signatures import (
+from workflow_client.signatures import (
     process_running_signature,
     process_finished_execution_signature,
     process_failed_execution_signature
@@ -67,14 +67,6 @@ _log = logging.getLogger('test.workflow.test_result_worker')
 @pytest.fixture(scope='module')
 def celery_enable_logging():
     return True
-
-
-@pytest.fixture(scope='module')
-def celery_config():
-    return {
-        'broker_url': 'memory://',
-        'result_backend': 'rpc'
-    }
 
 
 @pytest.fixture(scope='module')

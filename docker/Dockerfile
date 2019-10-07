@@ -17,7 +17,7 @@ RUN apt-get update; \
 COPY ./create_conda_envs.sh .
 RUN chmod +x create_conda_envs.sh
 
-ARG BLUE_SKY_USERID=1066
+ARG BLUE_SKY_USERID=17842
 ARG BLUE_SKY_USERNAME=blue_sky_user
 
 RUN \
