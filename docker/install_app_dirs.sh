@@ -11,11 +11,12 @@ if [ -z "${APP_NAME}" ]; then
     APP_NAME=blue_sky
 fi
 
+cd /source/blue_sky_workflow_engine && make sdist
+cd /source/${APP_NAME} && make sdist
+
 mkdir -p ${ENV_BASE}
 
-source activate ${PY_37} && \
-  (cd /source/blue_sky_workflow_engine && make sdist) && \
-  (cd /source/${APP_NAME} && make sdist) && \
-  (yes | ${PIP_INSTALL} --upgrade --no-dependencies --target /app_dir /source/blue_sky_workflow_engine/dist/*.tar.gz) && \
-  (yes | ${PIP_INSTALL} --upgrade --no-dependencies --target /app_dir /source/${APP_NAME}/dist/*.tar.gz)
+source activate ${PY_37}
+yes | ${PIP_INSTALL} --upgrade --no-dependencies /source/blue_sky_workflow_engine/dist/*.tar.gz
+yes | ${PIP_INSTALL} --upgrade --no-dependencies /source/${APP_NAME}/dist/*.tar.gz
 

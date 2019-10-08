@@ -4,7 +4,7 @@ services:
     restart: on-failure:3
     image: nginx:1.15.3
     volumes:
-    - "./nginx-sw.conf:/etc/nginx/nginx.conf:ro"
+    - "./semweb/nginx.conf:/etc/nginx/nginx.conf:ro"
     - "/local1/git/blue_sky/config/static:/var/www/static"
     ports:
     - "9001:80"
@@ -40,13 +40,13 @@ services:
     - "9008:5672"
     - "9000:15672"
   blue_sky:
-    #image: alleninstitute/at_em_imaging_workflow:timf
-    image: alleninstitute/blue_sky_base
+    image: alleninstitute/blue_sky_base:timf
     user: blue_sky_user
     environment:
-    - PYTHONPATH=/green:/source/blue_sky:/source/blue_sky_workflow_engine:/app_dirs
+    #- PYTHONPATH=/green:/source/blue_sky:/source/blue_sky_workflow_engine:/app_dirs
+    - PYTHONPATH=/home/blue_sky_user/work
     - DJANGO_SETTINGS_MODULE=settings
-    - BLUE_SKY_SETTINGS=/green/blue_sky_settings.yml
+    - BLUE_SKY_SETTINGS=/home/blue_sky_user/work/blue_sky_settings.yml
     - BLUE_GREEN=green
     command: bash -c "while :; do sleep 3600; done"
     expose:
@@ -62,12 +62,13 @@ services:
     volumes:
     - "/local1/git/blue_sky/config/data:/data:shared"
     - "/allen:/allen:shared"
-    - "/local1/conda_envs/0.121.0:/conda_envs"
-    - "/local1/app_dirs:/app_dirs:ro"
-    - "/local1/git/blue_sky_workflow_engine:/source/blue_sky_workflow_engine"
-    - "/local1/git/blue_sky:/source/blue_sky"
-    - "/local1/git/blue_sky/config/static:/var/www/static"
-    - "/local1/git/blue_sky/config/logs:/var/www/logs"
+    - "/local1/conda_envs/0.121.0:/conda_envs:shared"
+    #- "/local1/app_dirs:/app_dirs:ro"
+    - ./semweb:/home/blue_sky_user/work
+    #- "/local1/git/blue_sky_workflow_engine:/source/blue_sky_workflow_engine:shared"
+    #- "/local1/git/blue_sky:/source/blue_sky:shared"
+    - "/local1/git/blue_sky/config/static:/var/www/static:shared"
+    - "/local1/git/blue_sky/config/logs:/var/www/logs:shared"
   stanbol:
     image: alleninstitute/stanbol
     hostname: stanbol
@@ -97,6 +98,8 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - PG_VERSION=9.4
+    volumes:
+      - ./marmotta_import:/var/marmotta/import:shared
   mongodb:
     image: mongo
     hostname: mongodb

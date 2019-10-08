@@ -19,3 +19,4 @@ database.db
 /config/static/**
 /config/webprotege/
 /config/crd
+/.eggs/

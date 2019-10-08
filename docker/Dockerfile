@@ -38,3 +38,5 @@ COPY ./jupyter_notebook_config.json ./jupyter_notebook_config.py /home/blue_sky_
 COPY ./install_app_dirs.sh .
 RUN chmod +x install_app_dirs.sh
 
+
+

@@ -14,4 +14,5 @@ conda create -q --yes --prefix=${RENDER_MODULES} python=2.7
 source activate ${RENDER_MODULES}
 yes | ${PIP_INSTALL} -r /source/render_modules/requirements.txt)
 yes | ${PIP_INSTALL} --upgrade /source/render_modules
+yes | ${PIP_INSTALL} --upgrade /source/EM_aligner_python  # TODO: move out of engine
 
