@@ -1,5 +1,5 @@
 from kombu import Exchange, Queue, binding
-from workflow_client.client_settings \
+from workflow_engine.client_settings \
     import load_settings_yaml, config_object
 
 

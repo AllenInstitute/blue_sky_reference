@@ -35,7 +35,7 @@
 #
 import pytest
 from blue_sky.models import Observation
-import workflow_client.signatures as signatures
+import workflow_engine.signatures as signatures
 from tests.workflow.workflow_fixtures import (
     waiting_task  # noqa # pylint: disable=unused-import
 )

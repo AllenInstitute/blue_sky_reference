@@ -105,7 +105,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'workflow_engine',
-    'workflow_client',
     'django_celery_results',
     'blue_sky',
     'django_extensions'
@@ -230,11 +229,6 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-        'workflow_client': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
-            'propagate': True,
-        },
         'celery': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
@@ -247,5 +241,3 @@ LOGGING = {
         }
     }
 }
-
-CELERYD_HIJACK_ROOT_LOGGER = True

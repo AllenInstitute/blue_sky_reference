@@ -34,13 +34,13 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-from workflow_client.simple_router import SimpleRouter
-from workflow_client.client_settings import configure_worker_app
+from workflow_engine.simple_router import SimpleRouter
+from workflow_engine.client_settings import configure_worker_app
 from tests.nb_utils.test_moab_api import (
     moab_dict,               # noqa # pylint: disable=unused-import
     task_status_dict_queued  # noqa # pylint: disable=unused-import
 )
-from workflow_client.signatures import check_moab_status_signature
+from workflow_engine.signatures import check_moab_status_signature
 from tests.workflow.workflow_fixtures import (
     task_5,          # noqa # pylint: disable=unused-import
     running_task_5,  # noqa # pylint: disable=unused-import
@@ -103,7 +103,7 @@ def moab_status_celery_app(celery_app):
     return celery_app
 
 @pytest.mark.django_db(transaction=True)
-@patch('workflow_client.nb_utils.moab_api.moab_query')
+@patch('workflow_engine.nb_utils.moab_api.moab_query')
 def test_check_moab_status(
     mock_moab_query,
     moab_status_celery_app,

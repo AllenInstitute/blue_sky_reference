@@ -35,7 +35,7 @@
 #
 import pytest
 from mock import Mock
-from workflow_client.pbs_utils import PbsUtils
+from workflow_engine.pbs_utils import PbsUtils
 import re
 
 @pytest.fixture

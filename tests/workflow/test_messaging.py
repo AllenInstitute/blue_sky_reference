@@ -40,9 +40,9 @@ from celery.contrib.pytest import (
     celery_worker  # noqa # pylint: disable=unused-import
 )
 import shutil
-from workflow_client import signatures
-from workflow_client.simple_router import SimpleRouter
-from workflow_client.client_settings import configure_worker_app
+from workflow_engine import signatures
+from workflow_engine.simple_router import SimpleRouter
+from workflow_engine.client_settings import configure_worker_app
 from tests.workflow.workflow_fixtures import (
     workflow_node_1,  # noqa # pylint: disable=unused-import
     obs,              # noqa # pylint: disable=unused-import

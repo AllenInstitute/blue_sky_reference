@@ -45,11 +45,11 @@ from celery.contrib.pytest import (
 import shutil
 import os
 from time import sleep
-from workflow_client import signatures
+from workflow_engine import signatures
 from tests.workflow_configurations import (
     TEST_CONFIG_YAML_FULL_WORKFLOW,
 )
-from workflow_client.client_settings import configure_worker_app
+from workflow_engine.client_settings import configure_worker_app
 from tests.workflow.workflow_fixtures import (
     workflow_node_1, # noqa # pylint: disable=unused-import
     obs,             # noqa # pylint: disable=unused-import
@@ -71,7 +71,7 @@ from tests.celery_fixtures import (
 from django.db.models import Count
 from django_pandas.io import read_frame
 import logging
-from workflow_client.simple_router import SimpleRouter
+from workflow_engine.simple_router import SimpleRouter
 
 
 _log = logging.getLogger('tests.integration.test_full_workflow')

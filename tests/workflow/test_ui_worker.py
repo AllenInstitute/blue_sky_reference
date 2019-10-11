@@ -35,7 +35,7 @@
 #
 import pytest
 from mock import patch
-from workflow_client import signatures
+from workflow_engine import signatures
 from tests.signature_fixtures import (
     mock_celery_task  # noqa # pylint: disable=unused-import
 )

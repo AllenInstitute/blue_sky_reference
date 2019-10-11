@@ -47,7 +47,7 @@ MESSAGE_QUEUE_PASSWORD: blue_sky_test_user
     with patch("builtins.open",
                mock_open(read_data=cfg_string)):
         with patch('os.getenv', Mock(return_value='/path/to/settings.yml')):
-            from workflow_client.client_settings import load_settings_yaml
+            from workflow_engine.client_settings import load_settings_yaml
 
             settings = load_settings_yaml()
 

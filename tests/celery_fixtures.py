@@ -1,6 +1,6 @@
 from celery.contrib.pytest import celery_app  # noqa # pylint: disable=unused-import
-from workflow_client.simple_router import SimpleRouter
-from workflow_client.client_settings import configure_worker_app
+from workflow_engine.simple_router import SimpleRouter
+from workflow_engine.client_settings import configure_worker_app
 import pytest
 
 

@@ -34,7 +34,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 import pytest
-import workflow_client.signatures as signatures
+import workflow_engine.signatures as signatures
 from blue_sky.models.observation import Observation
 
 from tests.workflow.workflow_fixtures import (

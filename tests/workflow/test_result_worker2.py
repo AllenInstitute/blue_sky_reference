@@ -38,19 +38,19 @@ from mock import Mock, patch
 from celery.contrib.pytest import celery_app, celery_worker
 import time
 from django.test.utils import override_settings
-from workflow_client.client_settings import configure_worker_app
+from workflow_engine.client_settings import configure_worker_app
 from workflow_engine.celery.result_tasks import (
     process_finished_execution,
     process_failed_execution,
     process_running
 )
 from workflow_engine.strategies.execution_strategy import ExecutionStrategy
-from workflow_client.signatures import (
+from workflow_engine.signatures import (
     process_running_signature,
     process_finished_execution_signature,
     process_failed_execution_signature
 )
-from workflow_client.simple_router import SimpleRouter
+from workflow_engine.simple_router import SimpleRouter
 from datetime import timedelta
 from django.utils import timezone
 from tests.workflow.workflow_fixtures import (
@@ -92,7 +92,7 @@ def celery_includes():
     ]
 
 @pytest.fixture
-@patch('workflow_client.client_settings.get_message_broker_url',
+@patch('workflow_engine.client_settings.get_message_broker_url',
         Mock(return_value='memory://'))
 def result_celery_app(celery_app):
     configure_worker_app(celery_app, 'blue_sky', 'result')
