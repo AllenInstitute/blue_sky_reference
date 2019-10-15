@@ -23,7 +23,6 @@ Welcome to the Blue Sky Workflow Engine
    authors
    glossary
    Source Documentation <workflow_engine>
-   Client Documentation <workflow_client>
    Demo App Documentation <blue_sky>
    Github Profile <https://github.com/AllenInstitute/BlueSkyWorkflowEngine>
    

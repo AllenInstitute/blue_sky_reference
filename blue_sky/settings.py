@@ -15,7 +15,6 @@ import os
 APP_PACKAGE = 'blue_sky'
 
 JOB_GRID_CLASS=None
-MONITOR_TASK_MODULES=[]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -93,7 +92,6 @@ MILLISECONDS_BETWEEN_REFRESH = 10000
 # MILLISECONDS_BETWEEN_REFRESH = 1000
 MOAB_CHECK_SECONDS = 45000.0
 DASHBOARD_UPDATE_SECONDS = 60000.0
-MONITOR_TASK_MODULES=[]
 
 # Application definition
 
@@ -103,7 +101,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.stticfiles',
     'workflow_engine',
     'django_celery_results',
     'blue_sky',

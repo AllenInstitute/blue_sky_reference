@@ -25,14 +25,14 @@ pypi_deploy:
 	python setup.py sdist upload --repository local
 
 pytest_lax:
-	pytest -s --cov=workflow_engine,workflow_client --cov-report html --cov-append --junitxml=test-reports/test.xml
+	pytest -s --cov=workflow_engine --cov-report html --cov-append --junitxml=test-reports/test.xml
 
 pytest: pytest_lax
 
 test: pytest
 
 pytest_pep8:
-	find -L . -name "test_*.py" -exec py.test --cov-config coveragerc --cov=workflow_client --cov=workflow_engine --cov-report html --junitxml=test-reports/test.xml {} \+
+	find -L . -name "test_*.py" -exec py.test --cov-config coveragerc --cov=workflow_engine --cov-report html --junitxml=test-reports/test.xml {} \+
 
 pytest_lite:
 	find -L . -name "test_*.py" -exec py.test --assert=reinterp --junitxml=test-reports/test.xml {} \+
@@ -60,7 +60,6 @@ fsm_figures:
 	python -m manage graph_transitions -o doc_template/aibs_sphinx/static/observation_group_states.png blue_sky.ObservationGroup
 
 doc: FORCE
-	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o $(DOCDIR) $(BSWE_DIR)/workflow_client
 	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o $(DOCDIR) $(BSWE_DIR)/workflow_engine
 	sphinx-apidoc -d 4 -H "Blue Sky Workflow Engine" -A "Allen Institute for Brain Science" -V $(VERSION) -R $(VERSION)$(RELEASE) --full -o $(DOCDIR) blue_sky
 	cp doc_template/*.rst doc_template/conf.py $(DOCDIR)
