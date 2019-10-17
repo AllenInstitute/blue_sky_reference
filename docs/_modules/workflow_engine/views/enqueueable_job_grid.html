@@ -1,0 +1,551 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>workflow_engine.views.enqueueable_job_grid &#8212; Blue Sky Workflow Engine  documentation</title>
+    <link rel="stylesheet" href="../../../_static/aibs_sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+<link href="http://www.brain-map.org/assets/stylesheets/portal.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="http://www.brain-map.org/assets/javascripts/portal.js" type="text/javascript"></script>
+<script src="http://www.brain-map.org/assets/javascripts/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var _pSupressBrowserFlashWarning = true;
+    var _pTabId = "pHome";
+    var _pMoreProjectsId = "pMoreProjects";
+    var _pImagePath = "http://www.brain-map.org/assets/images/";
+    var _pSiteWarnings = function() {
+        this.show_warning() = {};
+    }
+</script>
+<script type="text/javascript">
+    function initialize() {
+        /*** do your stuff, then initialize the portal plugin ***/
+        _pPortalOnLoad();
+    }
+</script>
+<style>
+  #header_content > a {
+  display: inline-block;
+  width: 250px;
+  height: 75px;
+  background-image:url("/_static/external_assets/images/Brain_Atlas_Logotype_SDK.png") !important;
+  background-size: 235px 37px;
+  background-position: 0px 20px;
+  background-repeat: no-repeat;
+  }
+</style>
+
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalHeader.js"></script>
+<link rel="stylesheet" type="text/css" href="/_static/external_assets/stylesheets/common_layout.css" />
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for workflow_engine.views.enqueueable_job_grid</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="k">import</span> <span class="n">ContentType</span>
+<span class="kn">from</span> <span class="nn">workflow_engine.mixins</span> <span class="k">import</span> <span class="n">Enqueueable</span>
+<span class="kn">from</span> <span class="nn">workflow_engine.models</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">Job</span><span class="p">,</span>
+    <span class="n">JobQueue</span><span class="p">,</span>
+    <span class="n">Workflow</span><span class="p">,</span>
+    <span class="n">WorkflowNode</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">django_pandas.io</span> <span class="k">import</span> <span class="n">read_frame</span>
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
+
+
+<div class="viewcode-block" id="EnqueueableJobGrid"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid">[docs]</a><span class="k">class</span> <span class="nc">EnqueueableJobGrid</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Queries for a subset of enqueued objects (rows), workflow nodes (columns)</span>
+<span class="sd">    and Jobs (grid entries) with information to display a grid view of progress</span>
+<span class="sd">    through the workflow. While this class may be used alone for simple workflows,</span>
+<span class="sd">    a complex job grid with multiple enqueued object types should subclass it.</span>
+
+<span class="sd">    See also the :class:`workflow_engine.views.faster_job_grid.FasterJobGrid`</span>
+<span class="sd">    view for how to call it and the job_grid.js javascript client for rendering.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Dataframes representing partial calculations are saved as data members</span>
+<span class="sd">    so they can be printed for debugging. This may change in the future.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">RUN_STATE_LETTERS</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;PENDING&quot;</span><span class="p">:</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;QUEUED&quot;</span><span class="p">:</span> <span class="s1">&#39;q&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;RUNNING&quot;</span><span class="p">:</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FINISHED_EXECUTION&quot;</span><span class="p">:</span> <span class="s1">&#39;n&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;SUCCESS&quot;</span><span class="p">:</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FAILED&quot;</span><span class="p">:</span> <span class="s1">&#39;f&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;FAILED_EXECUTION&quot;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;PROCESS_KILLED&quot;</span><span class="p">:</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="sd">&#39;&#39;&#39;single letter codes used to keep user interface and messages dense.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">SERIALIZE_COLUMNS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;z_index&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;object_state_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;workflow_node&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;letter_code&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;job_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;enqueued_object_type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;start&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;end&#39;</span>
+    <span class="p">]</span>
+    <span class="sd">&#39;&#39;&#39;ordered list of columns from the annotated job dataframe to send.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_range</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Set up data members to hold partial job grid calculation results.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        order: list of strings</span>
+<span class="sd">            Ordered list of job queue names</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_classes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model_classes</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model_types</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_classes</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">row_range</span> <span class="o">=</span> <span class="n">row_range</span>
+        <span class="k">if</span> <span class="n">order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_node_order</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_id_order</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enqueued_object_row_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotated_enqueued_object_row_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_df</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotated_job_df</span> <span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow_node_df</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.get_model_types"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_model_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_model_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_classes</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Convert model classes to strings using the content type framework.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_types</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ContentType</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_for_model</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">model_classes</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_types</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.get_node_order"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_node_order">[docs]</a>    <span class="k">def</span> <span class="nf">get_node_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Override with a specific list of job queue names.</span>
+<span class="sd">        These will be used in order as the columns of the job grid.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of string</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">j</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">JobQueue</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="EnqueueableJobGrid.get_model_classes"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_model_classes">[docs]</a>    <span class="k">def</span> <span class="nf">get_model_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Models to be queried for display in the grid.</span>
+<span class="sd">        Override to provide a specific list of model classes.</span>
+<span class="sd">        They must implement :class:`workflow_engine.mixins.enqueueable.Enqueueable`</span>
+<span class="sd"> </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of Model</span>
+<span class="sd">            model classes that implement Enqueueable</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        By default, immediate subclasses of Enqueueable </span>
+<span class="sd">        will be included, but not leaf descendant classes.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">Enqueueable</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span> </div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.get_workflow_names"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_workflow_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_workflow_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">Workflow</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.query_node_id_order"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_node_id_order">[docs]</a>    <span class="k">def</span> <span class="nf">query_node_id_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get a list of workflow node ids corresponding to the grid columns</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of int</span>
+<span class="sd">            workflow node ids</span>
+
+<span class="sd">        Note</span>
+<span class="sd">        ----</span>
+<span class="sd">        Despite the name, the query in this method doesn&#39;t sort the nodes.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">workflow_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_workflow_names</span><span class="p">()</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_id_order</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">n</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="n">WorkflowNode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">workflow__name__in</span><span class="o">=</span><span class="n">workflow_names</span><span class="p">,</span>
+                <span class="n">job_queue__name</span><span class="o">=</span><span class="n">job_queue_name</span>
+            <span class="p">)</span> <span class="k">for</span> <span class="n">job_queue_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_id_order</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.query_job_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_job_df">[docs]</a>    <span class="k">def</span> <span class="nf">query_job_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Initial query of job information.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">            Jobs with generic enqueued object, run state and time information</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Do not override.</span>
+<span class="sd">        This dataframe will be combined with others.</span>
+<span class="sd">        Final ordering will be done elsewhere using Pandas rather than the database.</span>
+<span class="sd">        TODO: add a filter clause on the rows.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_df</span> <span class="o">=</span> <span class="n">read_frame</span><span class="p">(</span>
+            <span class="n">Job</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">enqueued_object_type__model__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model_types</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;enqueued_object_type__model&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;workflow_node__id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;running_state&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;start_run_time&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;end_run_time&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="c1"># don&#39;t have to sort in the database if we do it in pandas</span>
+                <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;workflow_node_id&#39;</span><span class="p">,</span>  <span class="c1"># sort by order later</span>
+                <span class="s1">&#39;running_state&#39;</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">job_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;job_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;enqueued_object_type&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;workflow_node&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;run_state&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;start&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;end&#39;</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.build_run_state_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.build_run_state_df">[docs]</a>    <span class="k">def</span> <span class="nf">build_run_state_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Helper dataframe to cross-reference run state name, index and lestters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dataframe</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Do not override</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">run_state_letters_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">EnqueueableJobGrid</span><span class="o">.</span><span class="n">RUN_STATE_LETTERS</span><span class="p">,</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span>
+        <span class="p">)</span>
+        <span class="n">run_state_letters_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">run_state_letters_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;run_state&#39;</span><span class="p">,</span> <span class="s1">&#39;letter_code&#39;</span><span class="p">]</span>
+
+        <span class="n">run_state_names_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">Job</span><span class="o">.</span><span class="n">get_run_state_names</span><span class="p">()))</span>
+        <span class="p">)</span>
+        <span class="n">run_state_names_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;run_state_id&#39;</span><span class="p">,</span> <span class="s1">&#39;run_state&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span> <span class="o">=</span> <span class="n">run_state_names_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">run_state_letters_df</span><span class="p">,</span>
+            <span class="n">on</span><span class="o">=</span><span class="s1">&#39;run_state&#39;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.query_enqueued_object_row_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_enqueued_object_row_df">[docs]</a>    <span class="k">def</span> <span class="nf">query_enqueued_object_row_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get the row objects for the job grid.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dataframe of enqueued object ids, types and row coordinate</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Different enqueued object types may need to be mapped to a row differently.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">row_dfs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">model_clz</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model_classes</span><span class="p">():</span>
+            <span class="n">row_df</span> <span class="o">=</span> <span class="n">read_frame</span><span class="p">(</span>
+                <span class="n">model_clz</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+                    <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+                    <span class="c1"># TODO: figure out how to get the z_index here.</span>
+                    <span class="s1">&#39;object_state&#39;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                    <span class="n">id__gte</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">row_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">id__lte</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">row_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">row_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;object_state&#39;</span>
+            <span class="p">]</span>
+            <span class="n">row_df</span> <span class="o">=</span> <span class="n">row_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+                <span class="n">z_index</span><span class="o">=</span><span class="n">row_df</span><span class="p">[</span><span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">],</span> <span class="c1"># TODO: need real row coord</span>
+                <span class="n">enqueued_object_type</span><span class="o">=</span><span class="n">ContentType</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_for_model</span><span class="p">(</span>
+                    <span class="n">model_clz</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">row_dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_df</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">enqueued_object_row_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">row_dfs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enqueued_object_row_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.query_object_state_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_object_state_df">[docs]</a>    <span class="k">def</span> <span class="nf">query_object_state_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Do not override.</span>
+<span class="sd">        Not sure what will happen for models that do not mixin Stateful.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_state_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">read_frame</span><span class="p">(</span>
+                    <span class="n">clz</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+                        <span class="s1">&#39;object_state&#39;</span><span class="p">,</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">clz</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_classes</span>
+            <span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_state_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_state_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">([</span><span class="s1">&#39;object_state_id&#39;</span><span class="p">,</span> <span class="s1">&#39;object_state&#39;</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_state_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.generate_grid_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.generate_grid_df">[docs]</a>    <span class="k">def</span> <span class="nf">generate_grid_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotated_enqueued_object_row_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">job_df</span><span class="p">,</span>
+            <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;enqueued_object_type&#39;</span><span class="p">,</span> <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">],</span>
+            <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object_state_df</span><span class="p">,</span>
+            <span class="n">on</span><span class="o">=</span><span class="s1">&#39;object_state&#39;</span><span class="p">,</span>
+            <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.annotate_enqueued_object_row_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.annotate_enqueued_object_row_df">[docs]</a>    <span class="k">def</span> <span class="nf">annotate_enqueued_object_row_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Override to add extra information about enqueued objects</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotated_enqueued_object_row_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">enqueued_object_row_df</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotated_enqueued_object_row_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.annotate_job_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.annotate_job_df">[docs]</a>    <span class="k">def</span> <span class="nf">annotate_job_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotated_job_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span><span class="p">,</span>
+           <span class="n">on</span><span class="o">=</span><span class="s1">&#39;run_state&#39;</span><span class="p">,</span>
+           <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotated_job_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.query_workflow_node_df"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_workflow_node_df">[docs]</a>    <span class="k">def</span> <span class="nf">query_workflow_node_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Get a set of workflow nodes as a dataframe for the grid columns</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow_node_df</span> <span class="o">=</span> <span class="n">read_frame</span><span class="p">(</span>
+            <span class="n">WorkflowNode</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;job_queue__name&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">id__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_id_order</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow_node_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;workflow_node_id&#39;</span><span class="p">,</span> <span class="s1">&#39;workflow_node&#39;</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_node_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.build_serializable_dict"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.build_serializable_dict">[docs]</a>    <span class="k">def</span> <span class="nf">build_serializable_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Build up the partial dataframes into a sorted and annotated dataframe that is</span>
+<span class="sd">        easy to serialize and render by a javascript client.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_node_id_order</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_job_df</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_run_state_df</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_enqueued_object_row_df</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotate_enqueued_object_row_df</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_object_state_df</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_grid_df</span><span class="p">()</span>
+        <span class="n">annotated_job_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotate_job_df</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query_workflow_node_df</span><span class="p">()</span>
+
+        <span class="n">serial_df</span> <span class="o">=</span> <span class="n">annotated_job_df</span><span class="p">[</span>
+            <span class="n">EnqueueableJobGrid</span><span class="o">.</span><span class="n">SERIALIZE_COLUMNS</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">serial_df</span> <span class="o">=</span> <span class="n">serial_df</span><span class="p">[</span>
+            <span class="p">(</span><span class="n">serial_df</span><span class="o">.</span><span class="n">z_index</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> 
+            <span class="p">(</span><span class="n">serial_df</span><span class="o">.</span><span class="n">z_index</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">row_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">serial_df</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.serialize_grid_dict"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.serialize_grid_dict">[docs]</a>    <span class="k">def</span> <span class="nf">serialize_grid_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serial_dataframe</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Create json with data needed serialize and display a job grid.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">serial_json</span> <span class="o">=</span> <span class="n">serial_dataframe</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">serial_json</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">serial_json</span>
+
+        <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;run_states_by_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span>
+            <span class="s1">&#39;run_state_id&#39;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+
+        <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;run_states_by_letter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span>
+            <span class="s1">&#39;letter_code&#39;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+
+        <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workflow_node_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span>
+                <span class="s1">&#39;workflow_node_id&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;node_order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_id_order</span>
+
+        <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object_state_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span>
+                <span class="s1">&#39;object_state_id&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">payload</span></div>
+
+<div class="viewcode-block" id="EnqueueableJobGrid.get_dict"><a class="viewcode-back" href="../../../workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">serial_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_serializable_dict</span><span class="p">()</span>
+
+        <span class="c1"># return self.serialize_grid_dict(serial_df)</span>
+        <span class="n">serial_json</span> <span class="o">=</span> <span class="n">serial_df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;split&#39;</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">serial_json</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">serial_json</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;run_states_by_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;run_state_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;run_states_by_letter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_state_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;letter_code&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+        <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workflow_node_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;workflow_node_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s1">&#39;node_order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_id_order</span>
+        <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object_state_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;object_state_id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">payload</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../customizing.html">Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../strategies.html">Strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../messaging.html">Blue Sky Messaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../develop.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../workflow_engine.html">Source Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.management.html">workflow_engine.management package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.models.html">workflow_engine.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.views.html">workflow_engine.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../blue_sky.html">Demo App Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.admin.html">blue_sky.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.models.html">blue_sky.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.strategies.html">blue_sky.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.views.html">blue_sky.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AllenInstitute/BlueSkyWorkflowEngine">Github Profile</a></li>
+</ul>
+
+<h3> Questions </h3>
+<p class="questions">
+  Send any questions using the <a href="http://alleninstitute.org/contact_us/index.html">Send Us a Message</a> link below, 
+  or submit your question to <a href="http://stackoverflow.com/">StackOverflow</a> using with the 'allen-sdk' tag.
+</p>
+
+<p class="questions">
+  If you encounter any problems using the AllenSDK, please create an issue on <a href="http://github.com/alleninstitute/allensdk/issues/">Github's issue tracker</a>.
+</p>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    </div>
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalFooter.js"></script>
+
+
+  </body>
+</html>

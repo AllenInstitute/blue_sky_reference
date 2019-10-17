@@ -68,7 +68,7 @@
             
   <h1>Source code for workflow_engine.admin.job_admin</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="k">import</span> <span class="n">admin</span>
-<span class="kn">from</span> <span class="nn">workflow_engine.workflow_controller</span> <span class="k">import</span> <span class="n">WorkflowController</span>
+<span class="kn">from</span> <span class="nn">workflow_engine</span> <span class="k">import</span> <span class="n">signatures</span>
 <span class="kn">from</span> <span class="nn">workflow_engine.models</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">Task</span><span class="p">,</span>
 <span class="p">)</span>
@@ -81,7 +81,7 @@
         <span class="s2">&quot;Kill jobs&quot;</span>
 
     <span class="k">for</span> <span class="n">job</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
-        <span class="n">job</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span></div>
+        <span class="n">signatures</span><span class="o">.</span><span class="n">kill_job_signature</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="set_killed"><a class="viewcode-back" href="../../../workflow_engine.admin.html#workflow_engine.admin.job_admin.set_killed">[docs]</a><span class="k">def</span> <span class="nf">set_killed</span><span class="p">(</span><span class="n">modeladmin</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
@@ -93,19 +93,17 @@
 
 
 <div class="viewcode-block" id="start_jobs"><a class="viewcode-back" href="../../../workflow_engine.admin.html#workflow_engine.admin.job_admin.start_jobs">[docs]</a><span class="k">def</span> <span class="nf">start_jobs</span><span class="p">(</span><span class="n">modeladmin</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
-    <span class="n">start_jobs</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> \
-        <span class="s2">&quot;Start jobs&quot;</span>
+    <span class="n">start_jobs</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Start jobs&quot;</span>
 
     <span class="n">job_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">]</span>
-    <span class="n">WorkflowController</span><span class="o">.</span><span class="n">set_jobs_for_run_by_id</span><span class="p">(</span><span class="n">job_ids</span><span class="p">)</span></div>
+    <span class="n">signatures</span><span class="o">.</span><span class="n">run_jobs_by_id_signature</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">job_ids</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="enqueue_next"><a class="viewcode-back" href="../../../workflow_engine.admin.html#workflow_engine.admin.job_admin.enqueue_next">[docs]</a><span class="k">def</span> <span class="nf">enqueue_next</span><span class="p">(</span><span class="n">modeladmin</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
-    <span class="n">enqueue_next</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> \
-        <span class="s2">&quot;Enqueue next queue&quot;</span>
+    <span class="n">enqueue_next</span><span class="o">.</span><span class="n">short_description</span> <span class="o">=</span> <span class="s2">&quot;Enqueue next queue&quot;</span>
 
     <span class="k">for</span> <span class="n">job_item</span> <span class="ow">in</span> <span class="n">queryset</span><span class="p">:</span>
-        <span class="n">WorkflowController</span><span class="o">.</span><span class="n">enqueue_next_queue_by_job_id</span><span class="p">(</span><span class="n">job_item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+        <span class="n">signatures</span><span class="o">.</span><span class="n">enqueue_next_queue_signature</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">job_item</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="raise_priority"><a class="viewcode-back" href="../../../workflow_engine.admin.html#workflow_engine.admin.job_admin.raise_priority">[docs]</a><span class="k">def</span> <span class="nf">raise_priority</span><span class="p">(</span><span class="n">modeladmin</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
@@ -249,33 +247,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.strategies.html">blue_sky.strategies package</a></li>

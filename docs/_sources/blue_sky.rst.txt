@@ -7,7 +7,6 @@ Subpackages
 .. toctree::
 
     blue_sky.admin
-    blue_sky.celery
     blue_sky.migrations
     blue_sky.models
     blue_sky.strategies
@@ -24,10 +23,26 @@ blue\_sky\.apps module
     :undoc-members:
     :show-inheritance:
 
+blue\_sky\.demo\_job\_grid module
+---------------------------------
+
+.. automodule:: blue_sky.demo_job_grid
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 blue\_sky\.settings module
 --------------------------
 
 .. automodule:: blue_sky.settings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+blue\_sky\.settings\_timf module
+--------------------------------
+
+.. automodule:: blue_sky.settings_timf
     :members:
     :undoc-members:
     :show-inheritance:

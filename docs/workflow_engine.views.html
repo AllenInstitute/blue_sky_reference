@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="workflow_engine.worker package" href="workflow_engine.worker.html" />
+    <link rel="next" title="blue_sky package" href="blue_sky.html" />
     <link rel="prev" title="workflow_engine.strategies package" href="workflow_engine.strategies.html" /> 
   </head>
   <body>
@@ -96,6 +96,221 @@
 <dd></dd></dl>
 
 </div>
+<div class="section" id="module-workflow_engine.views.enqueueable_job_grid">
+<span id="workflow-engine-views-enqueueable-job-grid-module"></span><h2>workflow_engine.views.enqueueable_job_grid module<a class="headerlink" href="#module-workflow_engine.views.enqueueable_job_grid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid">
+<em class="property">class </em><code class="descclassname">workflow_engine.views.enqueueable_job_grid.</code><code class="descname">EnqueueableJobGrid</code><span class="sig-paren">(</span><em>row_range</em>, <em>order=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Queries for a subset of enqueued objects (rows), workflow nodes (columns)
+and Jobs (grid entries) with information to display a grid view of progress
+through the workflow. While this class may be used alone for simple workflows,
+a complex job grid with multiple enqueued object types should subclass it.</p>
+<p>See also the <code class="xref py py-class docutils literal"><span class="pre">workflow_engine.views.faster_job_grid.FasterJobGrid</span></code>
+view for how to call it and the job_grid.js javascript client for rendering.</p>
+<p class="rubric">Notes</p>
+<p>Dataframes representing partial calculations are saved as data members
+so they can be printed for debugging. This may change in the future.</p>
+<dl class="attribute">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.RUN_STATE_LETTERS">
+<code class="descname">RUN_STATE_LETTERS</code><em class="property"> = {'FAILED': 'f', 'FAILED_EXECUTION': 'x', 'FINISHED_EXECUTION': 'n', 'PENDING': 'p', 'PROCESS_KILLED': 'k', 'QUEUED': 'q', 'RUNNING': 'r', 'SUCCESS': 's'}</em><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.RUN_STATE_LETTERS" title="Permalink to this definition">¶</a></dt>
+<dd><p>single letter codes used to keep user interface and messages dense.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.SERIALIZE_COLUMNS">
+<code class="descname">SERIALIZE_COLUMNS</code><em class="property"> = ['z_index', 'object_state_id', 'workflow_node', 'letter_code', 'job_id', 'enqueued_object_type', 'enqueued_object_id', 'start', 'end']</em><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.SERIALIZE_COLUMNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>ordered list of columns from the annotated job dataframe to send.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.annotate_enqueued_object_row_df">
+<code class="descname">annotate_enqueued_object_row_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.annotate_enqueued_object_row_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.annotate_enqueued_object_row_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override to add extra information about enqueued objects</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.annotate_job_df">
+<code class="descname">annotate_job_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.annotate_job_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.annotate_job_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.build_run_state_df">
+<code class="descname">build_run_state_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.build_run_state_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.build_run_state_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper dataframe to cross-reference run state name, index and lestters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>Dataframe</dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Do not override</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.build_serializable_dict">
+<code class="descname">build_serializable_dict</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.build_serializable_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.build_serializable_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build up the partial dataframes into a sorted and annotated dataframe that is
+easy to serialize and render by a javascript client.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.generate_grid_df">
+<code class="descname">generate_grid_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.generate_grid_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.generate_grid_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_dict">
+<code class="descname">get_dict</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.get_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_model_classes">
+<code class="descname">get_model_classes</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.get_model_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_model_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models to be queried for display in the grid.
+Override to provide a specific list of model classes.
+They must implement <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.enqueueable.Enqueueable" title="workflow_engine.mixins.enqueueable.Enqueueable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.enqueueable.Enqueueable</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>list of Model</dt>
+<dd><p class="first last">model classes that implement Enqueueable</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>By default, immediate subclasses of Enqueueable 
+will be included, but not leaf descendant classes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_model_types">
+<code class="descname">get_model_types</code><span class="sig-paren">(</span><em>self</em>, <em>model_classes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.get_model_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_model_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert model classes to strings using the content type framework.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_node_order">
+<code class="descname">get_node_order</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.get_node_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_node_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override with a specific list of job queue names.
+These will be used in order as the columns of the job grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>list of string</dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_workflow_names">
+<code class="descname">get_workflow_names</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.get_workflow_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.get_workflow_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_enqueued_object_row_df">
+<code class="descname">query_enqueued_object_row_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.query_enqueued_object_row_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_enqueued_object_row_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the row objects for the job grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>dataframe of enqueued object ids, types and row coordinate</dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Different enqueued object types may need to be mapped to a row differently.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_job_df">
+<code class="descname">query_job_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.query_job_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_job_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial query of job information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>DataFrame</dt>
+<dd><p class="first last">Jobs with generic enqueued object, run state and time information</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Do not override.
+This dataframe will be combined with others.
+Final ordering will be done elsewhere using Pandas rather than the database.
+TODO: add a filter clause on the rows.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_node_id_order">
+<code class="descname">query_node_id_order</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.query_node_id_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_node_id_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of workflow node ids corresponding to the grid columns</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>list of int</dt>
+<dd><p class="first last">workflow node ids</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_object_state_df">
+<code class="descname">query_object_state_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.query_object_state_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_object_state_df" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Notes</p>
+<p>Do not override.
+Not sure what will happen for models that do not mixin Stateful.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_workflow_node_df">
+<code class="descname">query_workflow_node_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.query_workflow_node_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.query_workflow_node_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a set of workflow nodes as a dataframe for the grid columns</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.serialize_grid_dict">
+<code class="descname">serialize_grid_dict</code><span class="sig-paren">(</span><em>self</em>, <em>serial_dataframe</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/enqueueable_job_grid.html#EnqueueableJobGrid.serialize_grid_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid.serialize_grid_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create json with data needed serialize and display a job grid.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-workflow_engine.views.executable_view">
 <span id="workflow-engine-views-executable-view-module"></span><h2>workflow_engine.views.executable_view module<a class="headerlink" href="#module-workflow_engine.views.executable_view" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
@@ -151,60 +366,6 @@
 <dt id="workflow_engine.views.ingest_view.ingest">
 <code class="descclassname">workflow_engine.views.ingest_view.</code><code class="descname">ingest</code><span class="sig-paren">(</span><em>request</em>, <em>workflow_name=None</em>, <em>tag=None</em>, <em>format=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/ingest_view.html#ingest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.ingest_view.ingest" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</div>
-<div class="section" id="module-workflow_engine.views.job_grid">
-<span id="workflow-engine-views-job-grid-module"></span><h2>workflow_engine.views.job_grid module<a class="headerlink" href="#module-workflow_engine.views.job_grid" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="workflow_engine.views.job_grid.JobGrid">
-<em class="property">class </em><code class="descclassname">workflow_engine.views.job_grid.</code><code class="descname">JobGrid</code><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.extra_columns">
-<code class="descname">extra_columns</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.extra_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.extra_columns" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.filter_workflow_nodes">
-<code class="descname">filter_workflow_nodes</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.filter_workflow_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.filter_workflow_nodes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.generate_grid">
-<code class="descname">generate_grid</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.generate_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.generate_grid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.index_field">
-<code class="descname">index_field</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.index_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.index_field" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.query_enqueued_objects">
-<code class="descname">query_enqueued_objects</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.query_enqueued_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.query_enqueued_objects" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.query_workflow_objects">
-<code class="descname">query_workflow_objects</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.query_workflow_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.query_workflow_objects" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.sort_columns">
-<code class="descname">sort_columns</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.sort_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.sort_columns" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.sort_workflow_nodes">
-<code class="descname">sort_workflow_nodes</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.sort_workflow_nodes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.sort_workflow_nodes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.views.job_grid.JobGrid.sorted_node_names">
-<code class="descname">sorted_node_names</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/job_grid.html#JobGrid.sorted_node_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.job_grid.JobGrid.sorted_node_names" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
 
 </div>
 <div class="section" id="module-workflow_engine.views.job_queue_view">
@@ -264,26 +425,6 @@
 <dt id="workflow_engine.views.log_view.logs">
 <code class="descclassname">workflow_engine.views.log_view.</code><code class="descname">logs</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/log_view.html#logs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.log_view.logs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-</div>
-<div class="section" id="module-workflow_engine.views.monitor_view">
-<span id="workflow-engine-views-monitor-view-module"></span><h2>workflow_engine.views.monitor_view module<a class="headerlink" href="#module-workflow_engine.views.monitor_view" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="workflow_engine.views.monitor_view.MonitorView">
-<em class="property">class </em><code class="descclassname">workflow_engine.views.monitor_view.</code><code class="descname">MonitorView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/views/monitor_view.html#MonitorView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.views.monitor_view.MonitorView" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">rest_pandas.views.PandasView</span></code></p>
-<dl class="attribute">
-<dt id="workflow_engine.views.monitor_view.MonitorView.queryset">
-<code class="descname">queryset</code><a class="headerlink" href="#workflow_engine.views.monitor_view.MonitorView.queryset" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.views.monitor_view.MonitorView.serializer_class">
-<code class="descname">serializer_class</code><a class="headerlink" href="#workflow_engine.views.monitor_view.MonitorView.serializer_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="workflow_engine.serializers.html#workflow_engine.serializers.task_monitor_serializer.TaskMonitorSerializer" title="workflow_engine.serializers.task_monitor_serializer.TaskMonitorSerializer"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.serializers.task_monitor_serializer.TaskMonitorSerializer</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
 
 </div>
 <div class="section" id="module-workflow_engine.views.record_view">
@@ -487,33 +628,31 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

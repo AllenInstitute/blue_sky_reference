@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="blue_sky.models package" href="blue_sky.models.html" />
-    <link rel="prev" title="blue_sky.celery package" href="blue_sky.celery.html" /> 
+    <link rel="prev" title="blue_sky.admin package" href="blue_sky.admin.html" /> 
   </head>
   <body>
 <link href="http://www.brain-map.org/assets/stylesheets/portal.css" media="screen" rel="stylesheet" type="text/css" />
@@ -116,6 +116,25 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-blue_sky.migrations.0003_calibration_observation_association">
+<span id="blue-sky-migrations-0003-calibration-observation-association-module"></span><h2>blue_sky.migrations.0003_calibration_observation_association module<a class="headerlink" href="#module-blue_sky.migrations.0003_calibration_observation_association" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.migrations.0003_calibration_observation_association.Migration">
+<em class="property">class </em><code class="descclassname">blue_sky.migrations.0003_calibration_observation_association.</code><code class="descname">Migration</code><span class="sig-paren">(</span><em>name</em>, <em>app_label</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/migrations/0003_calibration_observation_association.html#Migration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.migrations.0003_calibration_observation_association.Migration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.migrations.migration.Migration</span></code></p>
+<dl class="attribute">
+<dt id="blue_sky.migrations.0003_calibration_observation_association.Migration.dependencies">
+<code class="descname">dependencies</code><em class="property"> = [('blue_sky', '0002_auto_20190717_1429')]</em><a class="headerlink" href="#blue_sky.migrations.0003_calibration_observation_association.Migration.dependencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.migrations.0003_calibration_observation_association.Migration.operations">
+<code class="descname">operations</code><em class="property"> = [&lt;AddField  model_name='observation', name='calibration', field=&lt;django.db.models.fields.related.ForeignKey&gt;&gt;]</em><a class="headerlink" href="#blue_sky.migrations.0003_calibration_observation_association.Migration.operations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-blue_sky.migrations">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-blue_sky.migrations" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -135,33 +154,31 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

@@ -148,6 +148,14 @@ workflow\_engine\.migrations\.0018\_running\_state module
     :undoc-members:
     :show-inheritance:
 
+workflow\_engine\.migrations\.0019\_drop\_run\_state\_model module
+------------------------------------------------------------------
+
+.. automodule:: workflow_engine.migrations.0019_drop_run_state_model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

@@ -153,11 +153,6 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;job </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Job.get_color_class"><a class="viewcode-back" href="../../../workflow_engine.models.html#workflow_engine.models.job.Job.get_color_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_color_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;color_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">color</span></div>
-
 <div class="viewcode-block" id="Job.get_enqueued_object_display"><a class="viewcode-back" href="../../../workflow_engine.models.html#workflow_engine.models.job.Job.get_enqueued_object_display">[docs]</a>    <span class="k">def</span> <span class="nf">get_enqueued_object_display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
@@ -192,14 +187,6 @@
 
         <span class="k">return</span> <span class="n">has_failed</span></div>
 
-<div class="viewcode-block" id="Job.can_rerun"><a class="viewcode-back" href="../../../workflow_engine.models.html#workflow_engine.models.job.Job.can_rerun">[docs]</a>    <span class="k">def</span> <span class="nf">can_rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">run_state_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">run_state_name</span> <span class="o">==</span> <span class="s1">&#39;PENDING&#39;</span> <span class="ow">or</span>
-                <span class="n">run_state_name</span> <span class="o">==</span> <span class="s1">&#39;FAILED&#39;</span> <span class="ow">or</span>
-                <span class="n">run_state_name</span> <span class="o">==</span> <span class="s1">&#39;SUCCESS&#39;</span> <span class="ow">or</span>
-                <span class="n">run_state_name</span> <span class="o">==</span> <span class="s1">&#39;PROCESS_KILLED&#39;</span> <span class="ow">or</span>
-                <span class="n">run_state_name</span> <span class="o">==</span> <span class="s1">&#39;FAILED_EXECUTION&#39;</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Job.get_strategy"><a class="viewcode-back" href="../../../workflow_engine.models.html#workflow_engine.models.job.Job.get_strategy">[docs]</a>    <span class="k">def</span> <span class="nf">get_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_node</span><span class="o">.</span><span class="n">get_strategy</span><span class="p">()</span></div>
 
@@ -227,7 +214,10 @@
 
 <div class="viewcode-block" id="Job.prep_job"><a class="viewcode-back" href="../../../workflow_engine.models.html#workflow_engine.models.job.Job.prep_job">[docs]</a>    <span class="k">def</span> <span class="nf">prep_job</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">strategy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_strategy</span><span class="p">()</span>
-        <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;got strategy: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">strategy</span><span class="p">))</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;got strategy: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">strategy</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">strategy</span><span class="o">.</span><span class="n">prep_job</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Job.all_tasks_finished"><a class="viewcode-back" href="../../../workflow_engine.models.html#workflow_engine.models.job.Job.all_tasks_finished">[docs]</a>    <span class="k">def</span> <span class="nf">all_tasks_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -268,33 +258,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.strategies.html">blue_sky.strategies package</a></li>

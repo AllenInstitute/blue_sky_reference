@@ -123,6 +123,11 @@
 
 <div class="viewcode-block" id="WorkflowConfig.from_yaml"><a class="viewcode-back" href="../../workflow_engine.html#workflow_engine.workflow_config.WorkflowConfig.from_yaml">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Load workflow from a YAML file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            y (str): path to workflow definition file</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="n">definition</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeLoader</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">parse_yaml_definition</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span></div>
 
@@ -392,33 +397,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.strategies.html">blue_sky.strategies package</a></li>

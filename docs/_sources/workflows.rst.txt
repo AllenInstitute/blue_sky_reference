@@ -36,25 +36,6 @@ The pbs_processor and pbs_walltime entries are directives that are used in creat
             pbs_processor: 'nodes=1:ppn=1'
             pbs_walltime: 'walltime=0:10:00'
 
-Run States
-~~~~~~~~~~
-
-.. note::
-
-    The run_states section is deprecated. Leave it verbatim as below for now.
-
-.. code-block:: yaml
-
-    run_states:
-        - "PENDING"
-        - "QUEUED"
-        - "RUNNING"
-        - "FINISHED_EXECUTION"
-        - "FAILED_EXECUTION"
-        - "FAILED"
-        - "SUCCESS"
-        - "PROCESS_KILLED"
-
 
 Workflows
 ~~~~~~~~~

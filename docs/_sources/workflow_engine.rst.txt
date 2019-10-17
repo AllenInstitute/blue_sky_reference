@@ -8,13 +8,14 @@ Subpackages
 
     workflow_engine.admin
     workflow_engine.celery
+    workflow_engine.ingest
+    workflow_engine.management
     workflow_engine.migrations
     workflow_engine.mixins
     workflow_engine.models
-    workflow_engine.serializers
+    workflow_engine.process
     workflow_engine.strategies
     workflow_engine.views
-    workflow_engine.worker
 
 Submodules
 ----------
@@ -27,18 +28,26 @@ workflow\_engine\.apps module
     :undoc-members:
     :show-inheritance:
 
-workflow\_engine\.blue\_sky\_state\_machine module
---------------------------------------------------
-
-.. automodule:: workflow_engine.blue_sky_state_machine
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 workflow\_engine\.celeryconfig module
 -------------------------------------
 
 .. automodule:: workflow_engine.celeryconfig
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+workflow\_engine\.circus\_logger module
+---------------------------------------
+
+.. automodule:: workflow_engine.circus_logger
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+workflow\_engine\.client\_settings module
+-----------------------------------------
+
+.. automodule:: workflow_engine.client_settings
     :members:
     :undoc-members:
     :show-inheritance:
@@ -67,6 +76,22 @@ workflow\_engine\.log\_holder module
     :undoc-members:
     :show-inheritance:
 
+workflow\_engine\.mini\_response module
+---------------------------------------
+
+.. automodule:: workflow_engine.mini_response
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+workflow\_engine\.pbs\_utils module
+-----------------------------------
+
+.. automodule:: workflow_engine.pbs_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 workflow\_engine\.provenance module
 -----------------------------------
 
@@ -75,18 +100,18 @@ workflow\_engine\.provenance module
     :undoc-members:
     :show-inheritance:
 
-workflow\_engine\.state\_machine\_yaml module
----------------------------------------------
+workflow\_engine\.signatures module
+-----------------------------------
 
-.. automodule:: workflow_engine.state_machine_yaml
+.. automodule:: workflow_engine.signatures
     :members:
     :undoc-members:
     :show-inheritance:
 
-workflow\_engine\.ui\_server module
------------------------------------
+workflow\_engine\.simple\_router module
+---------------------------------------
 
-.. automodule:: workflow_engine.ui_server
+.. automodule:: workflow_engine.simple_router
     :members:
     :undoc-members:
     :show-inheritance:

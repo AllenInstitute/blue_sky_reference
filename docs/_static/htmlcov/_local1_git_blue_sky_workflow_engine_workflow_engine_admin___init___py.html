@@ -92,7 +92,7 @@
 <p id="n23" class="pln"><a href="#n23">23</a></p>
 <p id="n24" class="pln"><a href="#n24">24</a></p>
 <p id="n25" class="pln"><a href="#n25">25</a></p>
-<p id="n26" class="pln"><a href="#n26">26</a></p>
+<p id="n26" class="stm run hide_run"><a href="#n26">26</a></p>
 <p id="n27" class="stm run hide_run"><a href="#n27">27</a></p>
 <p id="n28" class="stm run hide_run"><a href="#n28">28</a></p>
 <p id="n29" class="stm run hide_run"><a href="#n29">29</a></p>
@@ -102,7 +102,6 @@
 <p id="n33" class="stm run hide_run"><a href="#n33">33</a></p>
 <p id="n34" class="stm run hide_run"><a href="#n34">34</a></p>
 <p id="n35" class="stm run hide_run"><a href="#n35">35</a></p>
-<p id="n36" class="stm run hide_run"><a href="#n36">36</a></p>
 
             </td>
             <td class="text">
@@ -131,17 +130,16 @@
 <p id="t23" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t24" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t25" class="pln"><span class="com"># Register your models here.</span><span class="strut">&nbsp;</span></p>
-<p id="t26" class="pln"><span class="com"># admin.site.register(Datafix)</span><span class="strut">&nbsp;</span></p>
-<p id="t27" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Executable</span><span class="op">,</span> <span class="nam">ExecutableAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t28" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">FileRecord</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t29" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Job</span><span class="op">,</span> <span class="nam">JobAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t30" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">JobQueue</span><span class="op">,</span> <span class="nam">JobQueueAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t31" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">WellKnownFile</span><span class="op">,</span> <span class="nam">WellKnownFileAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t32" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Task</span><span class="op">,</span> <span class="nam">TaskAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t33" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Workflow</span><span class="op">,</span> <span class="nam">WorkflowAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t34" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">WorkflowNode</span><span class="op">,</span> <span class="nam">WorkflowNodeAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t35" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">WorkflowEdge</span><span class="op">,</span> <span class="nam">WorkflowEdgeAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t36" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Configuration</span><span class="op">,</span> <span class="nam">ConfigurationAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t26" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Executable</span><span class="op">,</span> <span class="nam">ExecutableAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t27" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">FileRecord</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t28" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Job</span><span class="op">,</span> <span class="nam">JobAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t29" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">JobQueue</span><span class="op">,</span> <span class="nam">JobQueueAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t30" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">WellKnownFile</span><span class="op">,</span> <span class="nam">WellKnownFileAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t31" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Task</span><span class="op">,</span> <span class="nam">TaskAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t32" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Workflow</span><span class="op">,</span> <span class="nam">WorkflowAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t33" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">WorkflowNode</span><span class="op">,</span> <span class="nam">WorkflowNodeAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t34" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">WorkflowEdge</span><span class="op">,</span> <span class="nam">WorkflowEdgeAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t35" class="stm run hide_run"><span class="nam">admin</span><span class="op">.</span><span class="nam">site</span><span class="op">.</span><span class="nam">register</span><span class="op">(</span><span class="nam">Configuration</span><span class="op">,</span> <span class="nam">ConfigurationAdmin</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 
             </td>
         </tr>
@@ -152,7 +150,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.4</a>,
-            created at 2019-09-06 15:40
+            created at 2019-10-15 00:14
         </p>
     </div>
 </div>

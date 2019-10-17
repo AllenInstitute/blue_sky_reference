@@ -28,6 +28,14 @@ blue\_sky\.strategies\.mock\_complete\_group module
     :undoc-members:
     :show-inheritance:
 
+blue\_sky\.strategies\.mock\_execution\_strategy module
+-------------------------------------------------------
+
+.. automodule:: blue_sky.strategies.mock_execution_strategy
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 blue\_sky\.strategies\.mock\_group\_assignment module
 -----------------------------------------------------
 

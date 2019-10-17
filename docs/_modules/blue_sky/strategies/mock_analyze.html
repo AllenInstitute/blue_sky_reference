@@ -85,6 +85,16 @@
     <span class="p">}</span>
 
 <div class="viewcode-block" id="MockAnalyze.must_wait"><a class="viewcode-back" href="../../../blue_sky.strategies.html#blue_sky.strategies.mock_analyze.MockAnalyze.must_wait">[docs]</a>    <span class="k">def</span> <span class="nf">must_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enqueued_object</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Hold processing of a :class:`~blue_sky.models.observation.Observation`</span>
+<span class="sd">        unless the associated :class:`~blue_sky.models.calibration.Calibration`</span>
+<span class="sd">        is done processing.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            enqueued_object (Model): :class:`~blue_sky.models.observation.Observation` or :class:`~blue_sky.models.calibration.Calibration` associated with Observations</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            boolean: whether to pause the progression of the Observation through the workflow.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">enqueued_object</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">Calibration</span> <span class="ow">or</span>
             <span class="n">enqueued_object</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">Observation</span> <span class="ow">and</span>
             <span class="p">(</span><span class="n">enqueued_object</span><span class="o">.</span><span class="n">calibration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span>
@@ -95,6 +105,15 @@
             <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="MockAnalyze.transform_objects_for_queue"><a class="viewcode-back" href="../../../blue_sky.strategies.html#blue_sky.strategies.mock_analyze.MockAnalyze.transform_objects_for_queue">[docs]</a>    <span class="k">def</span> <span class="nf">transform_objects_for_queue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enqueued_object</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;If an incoming object is an Observation, pass it along.</span>
+<span class="sd">        If it is a Calibration, find the associated Observations.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            enqueued_object (Model): :class:`~blue_sky.models.observation.Observation` or :class:`~blue_sky.models.calibration.Calibration` associated with Observations</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list of Observation: either the incoming enqueued object or derived from an enqueued calibration object.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="n">enqueued_object</span><span class="o">.</span><span class="vm">__class__</span> <span class="ow">is</span> <span class="n">Calibration</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
                 <span class="n">enqueued_object</span><span class="o">.</span><span class="n">observation_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
@@ -126,6 +145,13 @@
         <span class="k">return</span> <span class="n">inp</span> </div>
 
 <div class="viewcode-block" id="MockAnalyze.on_finishing"><a class="viewcode-back" href="../../../blue_sky.strategies.html#blue_sky.strategies.mock_analyze.MockAnalyze.on_finishing">[docs]</a>    <span class="k">def</span> <span class="nf">on_finishing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Change the :term:`object state` from processing to QC.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            observation (Observation): the enqueued object</span>
+<span class="sd">            results (dict): unused</span>
+<span class="sd">            task (Task): unused</span>
+<span class="sd">        &#39;&#39;&#39;</span>
         <span class="c1">#self.check_key(results, &#39;arg2&#39;)</span>
 
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="n">observation</span><span class="o">.</span><span class="n">stop_processing</span><span class="p">):</span>
@@ -154,33 +180,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.strategies.html">blue_sky.strategies package</a></li>

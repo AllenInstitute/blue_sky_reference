@@ -312,7 +312,7 @@
 <p id="t41" class="pln">    <span class="nam">Job</span><span class="strut">&nbsp;</span></p>
 <p id="t42" class="pln"><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t43" class="stm mis"><span class="key">from</span> <span class="nam">workflow_engine</span><span class="op">.</span><span class="nam">import_class</span> <span class="key">import</span> <span class="nam">import_class</span><span class="strut">&nbsp;</span></p>
-<p id="t44" class="stm mis"><span class="key">from</span> <span class="nam">workflow_client</span><span class="op">.</span><span class="nam">client_settings</span> <span class="key">import</span> <span class="nam">configure_worker_app</span><span class="strut">&nbsp;</span></p>
+<p id="t44" class="stm mis"><span class="key">from</span> <span class="nam">workflow_engine</span><span class="op">.</span><span class="nam">client_settings</span> <span class="key">import</span> <span class="nam">configure_worker_app</span><span class="strut">&nbsp;</span></p>
 <p id="t45" class="stm mis"><span class="key">import</span> <span class="nam">pandas</span> <span class="key">as</span> <span class="nam">pd</span><span class="strut">&nbsp;</span></p>
 <p id="t46" class="stm mis"><span class="key">import</span> <span class="nam">itertools</span> <span class="key">as</span> <span class="nam">it</span><span class="strut">&nbsp;</span></p>
 <p id="t47" class="stm mis"><span class="key">from</span> <span class="nam">datetime</span> <span class="key">import</span> <span class="nam">datetime</span><span class="strut">&nbsp;</span></p>
@@ -352,7 +352,7 @@
 <p id="t81" class="stm mis"><span class="key">def</span> <span class="nam">count_node_jobs_in_state</span><span class="op">(</span><span class="nam">node</span><span class="op">,</span> <span class="nam">run_state</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t82" class="stm mis">    <span class="key">return</span> <span class="nam">Job</span><span class="op">.</span><span class="nam">objects</span><span class="op">.</span><span class="nam">filter</span><span class="op">(</span><span class="strut">&nbsp;</span></p>
 <p id="t83" class="pln">        <span class="nam">workflow_node__job_queue__name</span><span class="op">=</span><span class="nam">node</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
-<p id="t84" class="pln">        <span class="nam">run_state__name</span><span class="op">=</span><span class="nam">run_state</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
+<p id="t84" class="pln">        <span class="nam">running_state</span><span class="op">=</span><span class="nam">run_state</span><span class="op">,</span><span class="strut">&nbsp;</span></p>
 <p id="t85" class="pln">        <span class="nam">archived</span><span class="op">=</span><span class="key">False</span><span class="op">)</span><span class="op">.</span><span class="nam">count</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t86" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t87" class="pln"><span class="strut">&nbsp;</span></p>
@@ -478,7 +478,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.4</a>,
-            created at 2019-09-06 15:40
+            created at 2019-10-15 00:14
         </p>
     </div>
 </div>

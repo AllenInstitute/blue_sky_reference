@@ -71,20 +71,34 @@
   <div class="section" id="glossary">
 <h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
 <dl class="glossary docutils">
+<dt id="term-celery-task">celery task</dt>
+<dd>a message handler</dd>
 <dt id="term-configuration">configuration</dt>
 <dd>a databased json object optionally associated with an object that uses
 the configurable mixin.</dd>
+<dt id="term-directed-acyclic-graph">directed acyclic graph</dt>
+<dd>the abstract form of a workflow. Often abbreviated DAG.</dd>
 <dt id="term-enqueued-object">enqueued object</dt>
 <dd>a database object that can be directly assigned to workflow jobs.</dd>
+<dt id="term-flower">flower</dt>
+<dd>a tool to monitor celery messaging.</dd>
+<dt id="term-finite-state-machine">finite state machine</dt>
+<dd>an abstraction defined by states and transitions between states.
+The django_fsm package is used to implement workflow and object
+state transitions in the workflow engine.</dd>
 <dt id="term-job">job</dt>
 <dd>a specific enqueued object running on a workflow node.</dd>
+<dt id="term-object-state">object state</dt>
+<dd>an optional field on an application model to track state using a
+finite state machine</dd>
 <dt id="term-strategy">strategy</dt>
 <dd>a python module that creates and handles a job’s input and output and
 updates the database with respect to a specific enqueued object.</dd>
 <dt id="term-storage-directory">storage directory</dt>
 <dd>a path specific to an enqueued object or task that may be used by a strategy.</dd>
 <dt id="term-task">task</dt>
-<dd>a job may run as one or more tasks on a compute cluster</dd>
+<dd>a job may run as one or more tasks on a compute cluster.
+Blue sky tasks are a distinct concept from celery messaging tasks.</dd>
 <dt id="term-well-known-file">well known file</dt>
 <dd>a databased representation of an external file associated with an object
 that uses the has_well_known_file mixin.</dd>
@@ -92,6 +106,10 @@ that uses the has_well_known_file mixin.</dd>
 <dd>a series of manual or automated processing steps with a dependency relationship</dd>
 <dt id="term-workflow-node">workflow node</dt>
 <dd>one processing step for an enqueued object in a workflow</dd>
+<dt id="term-workflow-state">workflow state</dt>
+<dd>the state of a job or task that may be run on a compute cluster
+PENDING, QUEUED,RUNNING, FINISHED_EXECUTION, SUCCESS, FAILED,
+FAILED_EXECUTION and PROCESS_KILLED are possible states.</dd>
 </dl>
 </div>
 
@@ -109,33 +127,31 @@ that uses the has_well_known_file mixin.</dd>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

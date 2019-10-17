@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="workflow_engine.serializers package" href="workflow_engine.serializers.html" />
+    <link rel="next" title="workflow_engine.process package" href="workflow_engine.process.html" />
     <link rel="prev" title="workflow_engine.mixins package" href="workflow_engine.mixins.html" /> 
   </head>
   <body>
@@ -181,149 +181,6 @@ object the first time, the query is executed.</p>
 <dt id="workflow_engine.models.configuration.Configuration.updated_at">
 <code class="descname">updated_at</code><a class="headerlink" href="#workflow_engine.models.configuration.Configuration.updated_at" title="Permalink to this definition">¶</a></dt>
 <dd><p>Timestamp info, automatically set</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-workflow_engine.models.datafix">
-<span id="workflow-engine-models-datafix-module"></span><h2>workflow_engine.models.datafix module<a class="headerlink" href="#module-workflow_engine.models.datafix" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="workflow_engine.models.datafix.Datafix">
-<em class="property">class </em><code class="descclassname">workflow_engine.models.datafix.</code><code class="descname">Datafix</code><span class="sig-paren">(</span><em>id</em>, <em>name</em>, <em>timestamp</em>, <em>run_at</em>, <em>created_at</em>, <em>updated_at</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
-<dl class="exception">
-<dt id="workflow_engine.models.datafix.Datafix.DoesNotExist">
-<em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.DoesNotExist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
-</dd></dl>
-
-<dl class="exception">
-<dt id="workflow_engine.models.datafix.Datafix.MultipleObjectsReturned">
-<em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
-</dd></dl>
-
-<dl class="staticmethod">
-<dt id="workflow_engine.models.datafix.Datafix.create_datafix">
-<em class="property">static </em><code class="descname">create_datafix</code><span class="sig-paren">(</span><em>name</em>, <em>module</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.create_datafix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.create_datafix" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="staticmethod">
-<dt id="workflow_engine.models.datafix.Datafix.create_datafix_records_if_needed">
-<em class="property">static </em><code class="descname">create_datafix_records_if_needed</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.create_datafix_records_if_needed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.create_datafix_records_if_needed" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.datafix.Datafix.create_file">
-<code class="descname">create_file</code><span class="sig-paren">(</span><em>self</em>, <em>use_workflow_engine</em>, <em>module</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.create_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.create_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.datafix.Datafix.created_at">
-<code class="descname">created_at</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.created_at" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.datafix.Datafix.get_extension">
-<em class="property">classmethod </em><code class="descname">get_extension</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.get_extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_extension" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.datafix.Datafix.get_module_datafix_path">
-<em class="property">classmethod </em><code class="descname">get_module_datafix_path</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.get_module_datafix_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_module_datafix_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.datafix.Datafix.get_module_path">
-<em class="property">classmethod </em><code class="descname">get_module_path</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.get_module_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_module_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.datafix.Datafix.get_module_strategy_path">
-<em class="property">classmethod </em><code class="descname">get_module_strategy_path</code><span class="sig-paren">(</span><em>module</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.get_module_strategy_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_module_strategy_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.datafix.Datafix.get_next_by_created_at">
-<code class="descname">get_next_by_created_at</code><span class="sig-paren">(</span><em>self</em>, <em>*</em>, <em>field=&lt;django.db.models.fields.DateTimeField: created_at&gt;</em>, <em>is_next=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_next_by_created_at" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.datafix.Datafix.get_next_by_updated_at">
-<code class="descname">get_next_by_updated_at</code><span class="sig-paren">(</span><em>self</em>, <em>*</em>, <em>field=&lt;django.db.models.fields.DateTimeField: updated_at&gt;</em>, <em>is_next=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_next_by_updated_at" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.datafix.Datafix.get_previous_by_created_at">
-<code class="descname">get_previous_by_created_at</code><span class="sig-paren">(</span><em>self</em>, <em>*</em>, <em>field=&lt;django.db.models.fields.DateTimeField: created_at&gt;</em>, <em>is_next=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_previous_by_created_at" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.datafix.Datafix.get_previous_by_updated_at">
-<code class="descname">get_previous_by_updated_at</code><span class="sig-paren">(</span><em>self</em>, <em>*</em>, <em>field=&lt;django.db.models.fields.DateTimeField: updated_at&gt;</em>, <em>is_next=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_previous_by_updated_at" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.datafix.Datafix.get_workflow_datafix_path">
-<em class="property">classmethod </em><code class="descname">get_workflow_datafix_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.get_workflow_datafix_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_workflow_datafix_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.datafix.Datafix.get_workflow_path">
-<em class="property">classmethod </em><code class="descname">get_workflow_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.get_workflow_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.get_workflow_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.datafix.Datafix.id">
-<code class="descname">id</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.id" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.datafix.Datafix.name">
-<code class="descname">name</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.datafix.Datafix.objects">
-<code class="descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.objects" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.datafix.Datafix.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>self</em>, <em>module</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.datafix.Datafix.run_at">
-<code class="descname">run_at</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.run_at" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.datafix.Datafix.run_datafix">
-<code class="descname">run_datafix</code><span class="sig-paren">(</span><em>self</em>, <em>datafix_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/datafix.html#Datafix.run_datafix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.run_datafix" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.datafix.Datafix.timestamp">
-<code class="descname">timestamp</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.datafix.Datafix.updated_at">
-<code class="descname">updated_at</code><a class="headerlink" href="#workflow_engine.models.datafix.Datafix.updated_at" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
 </dd></dl>
 
 </dd></dl>
@@ -730,7 +587,7 @@ object the first time, the query is executed.</p>
 <span id="workflow-engine-models-job-module"></span><h2>workflow_engine.models.job module<a class="headerlink" href="#module-workflow_engine.models.job" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="workflow_engine.models.job.Job">
-<em class="property">class </em><code class="descclassname">workflow_engine.models.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>id</em>, <em>archived</em>, <em>run_state</em>, <em>running_state</em>, <em>start_run_time</em>, <em>end_run_time</em>, <em>duration</em>, <em>error_message</em>, <em>tags</em>, <em>created_at</em>, <em>updated_at</em>, <em>enqueued_object_type</em>, <em>enqueued_object_id</em>, <em>workflow_node</em>, <em>priority</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.job.Job" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">workflow_engine.models.job.</code><code class="descname">Job</code><span class="sig-paren">(</span><em>id</em>, <em>archived</em>, <em>running_state</em>, <em>start_run_time</em>, <em>end_run_time</em>, <em>duration</em>, <em>error_message</em>, <em>tags</em>, <em>created_at</em>, <em>updated_at</em>, <em>enqueued_object_type</em>, <em>enqueued_object_id</em>, <em>workflow_node</em>, <em>priority</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/job.html#Job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.job.Job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.archivable.Archivable" title="workflow_engine.mixins.archivable.Archivable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.archivable.Archivable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable" title="workflow_engine.mixins.runnable.Runnable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.runnable.Runnable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.tagable.Tagable" title="workflow_engine.mixins.tagable.Tagable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.tagable.Tagable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.timestamped.Timestamped" title="workflow_engine.mixins.timestamped.Timestamped"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.timestamped.Timestamped</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
 <dl class="exception">
 <dt id="workflow_engine.models.job.Job.DoesNotExist">
@@ -749,11 +606,6 @@ object the first time, the query is executed.</p>
 <code class="descname">all_tasks_finished</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/job.html#Job.all_tasks_finished"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.job.Job.all_tasks_finished" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if all tasks have finished.</p>
 </dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.job.Job.can_rerun">
-<code class="descname">can_rerun</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/job.html#Job.can_rerun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.job.Job.can_rerun" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="workflow_engine.models.job.Job.clear_error_message">
@@ -798,11 +650,6 @@ object the first time, the query is executed.</p>
 <dl class="method">
 <dt id="workflow_engine.models.job.Job.get_available_user_running_state_transitions">
 <code class="descname">get_available_user_running_state_transitions</code><span class="sig-paren">(</span><em>*moreargs</em>, <em>**morekwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#workflow_engine.models.job.Job.get_available_user_running_state_transitions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.job.Job.get_color_class">
-<code class="descname">get_color_class</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/job.html#Job.get_color_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.job.Job.get_color_class" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -883,19 +730,6 @@ object the first time, the query is executed.</p>
 <dt id="workflow_engine.models.job.Job.remove_tasks">
 <code class="descname">remove_tasks</code><span class="sig-paren">(</span><em>self</em>, <em>resused_tasks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/job.html#Job.remove_tasks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.job.Job.remove_tasks" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.job.Job.run_state">
-<code class="descname">run_state</code><a class="headerlink" href="#workflow_engine.models.job.Job.run_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal"><span class="pre">Child.parent</span></code> is a <code class="docutils literal"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
-</dd></dl>
 
 <dl class="attribute">
 <dt id="workflow_engine.models.job.Job.running_state">
@@ -1080,131 +914,11 @@ class built by <code class="docutils literal"><span class="pre">create_forward_m
 </dd></dl>
 
 </div>
-<div class="section" id="module-workflow_engine.models.run_state">
-<span id="workflow-engine-models-run-state-module"></span><h2>workflow_engine.models.run_state module<a class="headerlink" href="#module-workflow_engine.models.run_state" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="workflow_engine.models.run_state.RunState">
-<em class="property">class </em><code class="descclassname">workflow_engine.models.run_state.</code><code class="descname">RunState</code><span class="sig-paren">(</span><em>id</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
-<dl class="exception">
-<dt id="workflow_engine.models.run_state.RunState.DoesNotExist">
-<em class="property">exception </em><code class="descname">DoesNotExist</code><a class="headerlink" href="#workflow_engine.models.run_state.RunState.DoesNotExist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.ObjectDoesNotExist</span></code></p>
-</dd></dl>
-
-<dl class="exception">
-<dt id="workflow_engine.models.run_state.RunState.MultipleObjectsReturned">
-<em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#workflow_engine.models.run_state.RunState.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_failed_execution_state">
-<em class="property">classmethod </em><code class="descname">get_failed_execution_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_failed_execution_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_failed_execution_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_failed_state">
-<em class="property">classmethod </em><code class="descname">get_failed_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_failed_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_failed_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_finished_execution_state">
-<em class="property">classmethod </em><code class="descname">get_finished_execution_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_finished_execution_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_finished_execution_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_pending_state">
-<em class="property">classmethod </em><code class="descname">get_pending_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_pending_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_pending_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_process_killed_state">
-<em class="property">classmethod </em><code class="descname">get_process_killed_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_process_killed_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_process_killed_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_queued_state">
-<em class="property">classmethod </em><code class="descname">get_queued_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_queued_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_queued_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_running_state">
-<em class="property">classmethod </em><code class="descname">get_running_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_running_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_running_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.get_success_state">
-<em class="property">classmethod </em><code class="descname">get_success_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.get_success_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.get_success_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.run_state.RunState.id">
-<code class="descname">id</code><a class="headerlink" href="#workflow_engine.models.run_state.RunState.id" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.is_failed_type_state">
-<em class="property">classmethod </em><code class="descname">is_failed_type_state</code><span class="sig-paren">(</span><em>job_state_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.is_failed_type_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.is_failed_type_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="workflow_engine.models.run_state.RunState.is_running_type_state">
-<em class="property">classmethod </em><code class="descname">is_running_type_state</code><span class="sig-paren">(</span><em>job_state_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/run_state.html#RunState.is_running_type_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.run_state.RunState.is_running_type_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.run_state.RunState.job_set">
-<code class="descname">job_set</code><a class="headerlink" href="#workflow_engine.models.run_state.RunState.job_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal"><span class="pre">Parent.children</span></code> is a <code class="docutils literal"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.run_state.RunState.name">
-<code class="descname">name</code><a class="headerlink" href="#workflow_engine.models.run_state.RunState.name" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.run_state.RunState.objects">
-<code class="descname">objects</code><em class="property"> = &lt;django.db.models.manager.Manager object&gt;</em><a class="headerlink" href="#workflow_engine.models.run_state.RunState.objects" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.models.run_state.RunState.task_set">
-<code class="descname">task_set</code><a class="headerlink" href="#workflow_engine.models.run_state.RunState.task_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related objects manager on the reverse side of a
-many-to-one relation.</p>
-<p>In the example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal"><span class="pre">Parent.children</span></code> is a <code class="docutils literal"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
-<p>Most of the implementation is delegated to a dynamically defined manager
-class built by <code class="docutils literal"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
-</dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="module-workflow_engine.models.task">
 <span id="workflow-engine-models-task-module"></span><h2>workflow_engine.models.task module<a class="headerlink" href="#module-workflow_engine.models.task" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="workflow_engine.models.task.Task">
-<em class="property">class </em><code class="descclassname">workflow_engine.models.task.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>id</em>, <em>archived</em>, <em>run_state</em>, <em>running_state</em>, <em>start_run_time</em>, <em>end_run_time</em>, <em>duration</em>, <em>error_message</em>, <em>tags</em>, <em>created_at</em>, <em>updated_at</em>, <em>enqueued_task_object_type</em>, <em>enqueued_task_object_id</em>, <em>job</em>, <em>full_executable</em>, <em>log_file</em>, <em>input_file</em>, <em>output_file</em>, <em>pbs_file</em>, <em>pbs_id</em>, <em>retry_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">workflow_engine.models.task.</code><code class="descname">Task</code><span class="sig-paren">(</span><em>id</em>, <em>archived</em>, <em>running_state</em>, <em>start_run_time</em>, <em>end_run_time</em>, <em>duration</em>, <em>error_message</em>, <em>tags</em>, <em>created_at</em>, <em>updated_at</em>, <em>enqueued_task_object_type</em>, <em>enqueued_task_object_id</em>, <em>job</em>, <em>full_executable</em>, <em>log_file</em>, <em>input_file</em>, <em>output_file</em>, <em>pbs_file</em>, <em>pbs_id</em>, <em>retry_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.archivable.Archivable" title="workflow_engine.mixins.archivable.Archivable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.archivable.Archivable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable" title="workflow_engine.mixins.runnable.Runnable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.runnable.Runnable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.tagable.Tagable" title="workflow_engine.mixins.tagable.Tagable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.tagable.Tagable</span></code></a>, <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.timestamped.Timestamped" title="workflow_engine.mixins.timestamped.Timestamped"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.timestamped.Timestamped</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></code></p>
 <dl class="exception">
 <dt id="workflow_engine.models.task.Task.DoesNotExist">
@@ -1217,11 +931,6 @@ class built by <code class="docutils literal"><span class="pre">create_forward_m
 <em class="property">exception </em><code class="descname">MultipleObjectsReturned</code><a class="headerlink" href="#workflow_engine.models.task.Task.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.core.exceptions.MultipleObjectsReturned</span></code></p>
 </dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.task.Task.can_rerun">
-<code class="descname">can_rerun</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.can_rerun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.can_rerun" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="workflow_engine.models.task.Task.clear_error_message">
@@ -1302,11 +1011,6 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="workflow_engine.models.task.Task.get_color_class">
-<code class="descname">get_color_class</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.get_color_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.get_color_class" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="workflow_engine.models.task.Task.get_enqueued_job_object">
 <code class="descname">get_enqueued_job_object</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.get_enqueued_job_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.get_enqueued_job_object" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1382,11 +1086,6 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="workflow_engine.models.task.Task.get_umask">
-<code class="descname">get_umask</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.get_umask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.get_umask" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
 <dt id="workflow_engine.models.task.Task.has_pbs_executable">
 <code class="descname">has_pbs_executable</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.has_pbs_executable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.has_pbs_executable" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -1402,21 +1101,6 @@ object the first time, the query is executed.</p>
 <dd><p>A wrapper for a deferred-loading field. When the value is read from this
 object the first time, the query is executed.</p>
 </dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.task.Task.in_failed_state">
-<code class="descname">in_failed_state</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.in_failed_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.in_failed_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.task.Task.in_pending_state">
-<code class="descname">in_pending_state</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.in_pending_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.in_pending_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.task.Task.in_success_state">
-<code class="descname">in_success_state</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.in_success_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.in_success_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="method">
 <dt id="workflow_engine.models.task.Task.increment_retry_count">
@@ -1505,19 +1189,6 @@ object the first time, the query is executed.</p>
 object the first time, the query is executed.</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="workflow_engine.models.task.Task.run_state">
-<code class="descname">run_state</code><a class="headerlink" href="#workflow_engine.models.task.Task.run_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accessor to the related object on the forward side of a many-to-one or
-one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
-<p>In the example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><code class="docutils literal"><span class="pre">Child.parent</span></code> is a <code class="docutils literal"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="workflow_engine.models.task.Task.run_task">
 <code class="descname">run_task</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.run_task"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.run_task" title="Permalink to this definition">¶</a></dt>
@@ -1546,16 +1217,6 @@ one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
 <dl class="method">
 <dt id="workflow_engine.models.task.Task.set_pbs_id">
 <code class="descname">set_pbs_id</code><span class="sig-paren">(</span><em>self</em>, <em>pbs_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.set_pbs_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.set_pbs_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.task.Task.set_pending_state">
-<code class="descname">set_pending_state</code><span class="sig-paren">(</span><em>self</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.set_pending_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.set_pending_state" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="workflow_engine.models.task.Task.set_queued_state">
-<code class="descname">set_queued_state</code><span class="sig-paren">(</span><em>self</em>, <em>pbs_id=None</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/models/task.html#Task.set_queued_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.models.task.Task.set_queued_state" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2283,33 +1944,31 @@ class built by <code class="docutils literal"><span class="pre">create_forward_m
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

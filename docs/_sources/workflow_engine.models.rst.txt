@@ -12,14 +12,6 @@ workflow\_engine\.models\.configuration module
     :undoc-members:
     :show-inheritance:
 
-workflow\_engine\.models\.datafix module
-----------------------------------------
-
-.. automodule:: workflow_engine.models.datafix
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 workflow\_engine\.models\.enqueued\_proxy module
 ------------------------------------------------
 
@@ -56,14 +48,6 @@ workflow\_engine\.models\.job\_queue module
 -------------------------------------------
 
 .. automodule:: workflow_engine.models.job_queue
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-workflow\_engine\.models\.run\_state module
--------------------------------------------
-
-.. automodule:: workflow_engine.models.run_state
     :members:
     :undoc-members:
     :show-inheritance:

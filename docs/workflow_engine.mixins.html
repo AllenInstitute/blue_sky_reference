@@ -371,6 +371,11 @@ and use the name as the default string representation.</p>
 
 </dd></dl>
 
+<dl class="method">
+<dt id="workflow_engine.mixins.runnable.Runnable.can_rerun">
+<code class="descname">can_rerun</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.can_rerun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.can_rerun" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="workflow_engine.mixins.runnable.Runnable.duration">
 <code class="descname">duration</code><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.duration" title="Permalink to this definition">¶</a></dt>
@@ -426,6 +431,11 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="workflow_engine.mixins.runnable.Runnable.get_color_class">
+<code class="descname">get_color_class</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.get_color_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.get_color_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="workflow_engine.mixins.runnable.Runnable.get_duration">
 <code class="descname">get_duration</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.get_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.get_duration" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -436,11 +446,6 @@ object the first time, the query is executed.</p>
 <dd></dd></dl>
 
 <dl class="classmethod">
-<dt id="workflow_engine.mixins.runnable.Runnable.get_run_state_id_for">
-<em class="property">classmethod </em><code class="descname">get_run_state_id_for</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.get_run_state_id_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.get_run_state_id_for" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
 <dt id="workflow_engine.mixins.runnable.Runnable.get_run_state_names">
 <em class="property">classmethod </em><code class="descname">get_run_state_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.get_run_state_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.get_run_state_names" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -448,6 +453,21 @@ object the first time, the query is executed.</p>
 <dl class="method">
 <dt id="workflow_engine.mixins.runnable.Runnable.get_start_run_time">
 <code class="descname">get_start_run_time</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.get_start_run_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.get_start_run_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.mixins.runnable.Runnable.in_failed_state">
+<code class="descname">in_failed_state</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.in_failed_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.in_failed_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.mixins.runnable.Runnable.in_pending_state">
+<code class="descname">in_pending_state</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.in_pending_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.in_pending_state" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="workflow_engine.mixins.runnable.Runnable.in_success_state">
+<code class="descname">in_success_state</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.in_success_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.in_success_state" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
@@ -470,19 +490,6 @@ object the first time, the query is executed.</p>
 <dt id="workflow_engine.mixins.runnable.Runnable.reset_pending">
 <code class="descname">reset_pending</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.reset_pending"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.reset_pending" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transition directly to a default ready state</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.mixins.runnable.Runnable.run_state">
-<code class="descname">run_state</code><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.run_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>deprecated for running state</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="workflow_engine.mixins.runnable.Runnable.run_state_id">
-<code class="descname">run_state_id</code><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.run_state_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>A wrapper for a deferred-loading field. When the value is read from this
-object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -523,7 +530,7 @@ object the first time, the query is executed.</p>
 
 <dl class="method">
 <dt id="workflow_engine.mixins.runnable.Runnable.set_queued_state">
-<code class="descname">set_queued_state</code><span class="sig-paren">(</span><em>self</em>, <em>pbs_id=None</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.set_queued_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.set_queued_state" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_queued_state</code><span class="sig-paren">(</span><em>self</em>, <em>quiet=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/mixins/runnable.html#Runnable.set_queued_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.mixins.runnable.Runnable.set_queued_state" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -744,33 +751,31 @@ associated models that need <a class="reference external" href="https://docs.dja
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

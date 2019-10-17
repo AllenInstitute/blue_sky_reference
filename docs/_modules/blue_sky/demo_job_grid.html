@@ -1,0 +1,246 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>blue_sky.demo_job_grid &#8212; Blue Sky Workflow Engine  documentation</title>
+    <link rel="stylesheet" href="../../_static/aibs_sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+<link href="http://www.brain-map.org/assets/stylesheets/portal.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="http://www.brain-map.org/assets/javascripts/portal.js" type="text/javascript"></script>
+<script src="http://www.brain-map.org/assets/javascripts/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var _pSupressBrowserFlashWarning = true;
+    var _pTabId = "pHome";
+    var _pMoreProjectsId = "pMoreProjects";
+    var _pImagePath = "http://www.brain-map.org/assets/images/";
+    var _pSiteWarnings = function() {
+        this.show_warning() = {};
+    }
+</script>
+<script type="text/javascript">
+    function initialize() {
+        /*** do your stuff, then initialize the portal plugin ***/
+        _pPortalOnLoad();
+    }
+</script>
+<style>
+  #header_content > a {
+  display: inline-block;
+  width: 250px;
+  height: 75px;
+  background-image:url("/_static/external_assets/images/Brain_Atlas_Logotype_SDK.png") !important;
+  background-size: 235px 37px;
+  background-position: 0px 20px;
+  background-repeat: no-repeat;
+  }
+</style>
+
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalHeader.js"></script>
+<link rel="stylesheet" type="text/css" href="/_static/external_assets/stylesheets/common_layout.css" />
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for blue_sky.demo_job_grid</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">workflow_engine.views.enqueueable_job_grid</span> <span class="k">import</span> <span class="n">EnqueueableJobGrid</span>
+<span class="kn">from</span> <span class="nn">blue_sky.models</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">Observation</span><span class="p">,</span>
+    <span class="n">Calibration</span><span class="p">,</span>
+    <span class="n">ObservationGroup</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">django_pandas.io</span> <span class="k">import</span> <span class="n">read_frame</span>
+
+
+<div class="viewcode-block" id="DemoJobGrid"><a class="viewcode-back" href="../../blue_sky.html#blue_sky.demo_job_grid.DemoJobGrid">[docs]</a><span class="k">class</span> <span class="nc">DemoJobGrid</span><span class="p">(</span><span class="n">EnqueueableJobGrid</span><span class="p">):</span>
+    <span class="n">SERIALIZE_COLUMNS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;z_index&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;object_state_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;workflow_node&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;letter_code&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;job_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;enqueued_object_type&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;start&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;end&#39;</span>
+    <span class="p">]</span>
+    <span class="sd">&#39;&#39;&#39;ordered list of columns from the annotated job dataframe to send.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># TODO: get this from a workflow configuration object or request.</span>
+<div class="viewcode-block" id="DemoJobGrid.xget_node_order"><a class="viewcode-back" href="../../blue_sky.html#blue_sky.demo_job_grid.DemoJobGrid.xget_node_order">[docs]</a>    <span class="k">def</span> <span class="nf">xget_node_order</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Override with a specific list of job queue names.</span>
+<span class="sd">        These will be used in order as the columns of the job grid.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of string</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="c1"># TBD: currently renamed to use default</span>
+        <span class="p">]</span></div>
+
+    <span class="c1"># TODO: maybe limit this based on request</span>
+<div class="viewcode-block" id="DemoJobGrid.get_model_classes"><a class="viewcode-back" href="../../blue_sky.html#blue_sky.demo_job_grid.DemoJobGrid.get_model_classes">[docs]</a>    <span class="k">def</span> <span class="nf">get_model_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Models to be queried for display in the grid.</span>
+<span class="sd">        Override to provide a specific list of model classes.</span>
+<span class="sd">        They must implement :class:`workflow_engine.mixins.enqueueable.Enqueueable`</span>
+<span class="sd"> </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of Model</span>
+<span class="sd">            model classes that implement Enqueueable</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        By default, immediate subclasses of Enqueueable </span>
+<span class="sd">        will be included, but not leaf descendant classes.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">Observation</span><span class="p">,</span>
+            <span class="n">Calibration</span><span class="p">,</span>
+            <span class="n">ObservationGroup</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="DemoJobGrid.xquery_enqueued_object_row_df"><a class="viewcode-back" href="../../blue_sky.html#blue_sky.demo_job_grid.DemoJobGrid.xquery_enqueued_object_row_df">[docs]</a>    <span class="k">def</span> <span class="nf">xquery_enqueued_object_row_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Combine row dataframes across</span>
+<span class="sd">        EMMontageSet, ReferenceSet, Chunk and Load.</span>
+<span class="sd">        The sub dataframes all share the montage set z index</span>
+<span class="sd">        as the row coordinate</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enqueued_object_row_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">query_calibration_row_df</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">query_observation_row_df</span><span class="p">(),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">query_observation_group_df</span><span class="p">(),</span>
+            <span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;z_index&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enqueued_object_row_df</span></div>
+
+<div class="viewcode-block" id="DemoJobGrid.query_calibration_row_df"><a class="viewcode-back" href="../../blue_sky.html#blue_sky.demo_job_grid.DemoJobGrid.query_calibration_row_df">[docs]</a>    <span class="k">def</span> <span class="nf">query_calibration_row_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">calibration_row_df</span> <span class="o">=</span> <span class="n">read_frame</span><span class="p">(</span>
+            <span class="n">Calibration</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values</span><span class="p">(</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;object_state&#39;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                <span class="n">id__gte</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">row_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">id__lte</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">row_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> 
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">calibration_row_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">z_index</span><span class="o">=</span><span class="n">calibration_row_df</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="n">calibration_row_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;enqueued_object_id&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;z_index&#39;</span><span class="p">,</span>              <span class="c1"># TODO: change to row</span>
+            <span class="s2">&quot;object_state&quot;</span>
+        <span class="p">]</span>
+        <span class="n">calibration_row_df</span><span class="p">[</span><span class="s1">&#39;enqueued_object_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;calibration&#39;</span>
+
+        <span class="k">return</span> <span class="n">calibration_row_df</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../customizing.html">Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../strategies.html">Strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../messaging.html">Blue Sky Messaging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../develop.html">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../workflow_engine.html">Source Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.management.html">workflow_engine.management package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.models.html">workflow_engine.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.views.html">workflow_engine.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../blue_sky.html">Demo App Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../blue_sky.admin.html">blue_sky.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../blue_sky.models.html">blue_sky.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../blue_sky.strategies.html">blue_sky.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../blue_sky.views.html">blue_sky.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AllenInstitute/BlueSkyWorkflowEngine">Github Profile</a></li>
+</ul>
+
+<h3> Questions </h3>
+<p class="questions">
+  Send any questions using the <a href="http://alleninstitute.org/contact_us/index.html">Send Us a Message</a> link below, 
+  or submit your question to <a href="http://stackoverflow.com/">StackOverflow</a> using with the 'allen-sdk' tag.
+</p>
+
+<p class="questions">
+  If you encounter any problems using the AllenSDK, please create an issue on <a href="http://github.com/alleninstitute/allensdk/issues/">Github's issue tracker</a>.
+</p>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    </div>
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalFooter.js"></script>
+
+
+  </body>
+</html>

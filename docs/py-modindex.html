@@ -169,7 +169,17 @@
      <tr class="cg-2">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="blue_sky.admin.html#module-blue_sky.admin.calibration_admin"><code class="xref">blue_sky.admin.calibration_admin</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="blue_sky.admin.html#module-blue_sky.admin.observation_admin"><code class="xref">blue_sky.admin.observation_admin</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="blue_sky.admin.html#module-blue_sky.admin.observation_group_admin"><code class="xref">blue_sky.admin.observation_group_admin</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
@@ -179,27 +189,7 @@
      <tr class="cg-2">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="blue_sky.celery.html#module-blue_sky.celery"><code class="xref">blue_sky.celery</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-2">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="blue_sky.celery.html#module-blue_sky.celery.monitor_tasks"><code class="xref">blue_sky.celery.monitor_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-2">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="blue_sky.management.html#module-blue_sky.management"><code class="xref">blue_sky.management</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-2">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="blue_sky.management.commands.html#module-blue_sky.management.commands"><code class="xref">blue_sky.management.commands</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-2">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="blue_sky.management.commands.html#module-blue_sky.management.commands.monitor_worker"><code class="xref">blue_sky.management.commands.monitor_worker</code></a></td><td>
+       <a href="blue_sky.html#module-blue_sky.demo_job_grid"><code class="xref">blue_sky.demo_job_grid</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
@@ -215,6 +205,11 @@
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="blue_sky.migrations.html#module-blue_sky.migrations.0002_auto_20190717_1429"><code class="xref">blue_sky.migrations.0002_auto_20190717_1429</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="blue_sky.migrations.html#module-blue_sky.migrations.0003_calibration_observation_association"><code class="xref">blue_sky.migrations.0003_calibration_observation_association</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
@@ -269,6 +264,11 @@
      <tr class="cg-2">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="blue_sky.strategies.html#module-blue_sky.strategies.mock_execution_strategy"><code class="xref">blue_sky.strategies.mock_execution_strategy</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="blue_sky.strategies.html#module-blue_sky.strategies.mock_group_assignment"><code class="xref">blue_sky.strategies.mock_group_assignment</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
@@ -319,17 +319,17 @@
      <tr class="cg-2">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="blue_sky.views.html#module-blue_sky.views.demo_job_grid_view"><code class="xref">blue_sky.views.demo_job_grid_view</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="blue_sky.views.html#module-blue_sky.views.home_view"><code class="xref">blue_sky.views.home_view</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="blue_sky.html#module-blue_sky.wsgi"><code class="xref">blue_sky.wsgi</code></a></td><td>
-       <em></em></td></tr>
-     <tr>
-       <td></td>
-       <td>
-       <a href="workflow_engine.html#module-workflow_engine.blue_sky_state_machine"><code class="xref">workflow_engine.blue_sky_state_machine</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-c"><td></td><td>
@@ -343,72 +343,17 @@
      <tr class="cg-3">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.circus_status_tasks"><code class="xref">workflow_engine.celery.circus_status_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.error_handler"><code class="xref">workflow_engine.celery.error_handler</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.ingest_tasks"><code class="xref">workflow_engine.celery.ingest_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.local_tasks"><code class="xref">workflow_engine.celery.local_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.moab_beat"><code class="xref">workflow_engine.celery.moab_beat</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.moab_status_tasks"><code class="xref">workflow_engine.celery.moab_status_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.moab_tasks"><code class="xref">workflow_engine.celery.moab_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.mock_tasks"><code class="xref">workflow_engine.celery.mock_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.monitor_tasks"><code class="xref">workflow_engine.celery.monitor_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.pbs_tasks"><code class="xref">workflow_engine.celery.pbs_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.result_tasks"><code class="xref">workflow_engine.celery.result_tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.signatures"><code class="xref">workflow_engine.celery.signatures</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-3">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.celery.html#module-workflow_engine.celery.workflow_tasks"><code class="xref">workflow_engine.celery.workflow_tasks</code></a></td><td>
+       <a href="workflow_engine.celery.html#module-workflow_engine.celery.setup_logging_handler"><code class="xref">workflow_engine.celery.setup_logging_handler</code></a></td><td>
        <em></em></td></tr>
      <tr>
        <td></td>
        <td>
        <a href="workflow_engine.html#module-workflow_engine.celeryconfig"><code class="xref">workflow_engine.celeryconfig</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="workflow_engine.html#module-workflow_engine.client_settings"><code class="xref">workflow_engine.client_settings</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-f"><td></td><td>
@@ -426,6 +371,22 @@
        <td>
        <a href="workflow_engine.html#module-workflow_engine.import_class"><code class="xref">workflow_engine.import_class</code></a></td><td>
        <em></em></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-4" style="display: none" alt="-" /></td>
+       <td>
+       <a href="workflow_engine.ingest.html#module-workflow_engine.ingest"><code class="xref">workflow_engine.ingest</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-4">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.ingest.html#module-workflow_engine.ingest.ingest_client"><code class="xref">workflow_engine.ingest.ingest_client</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-4">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.ingest.html#module-workflow_engine.ingest.schemas"><code class="xref">workflow_engine.ingest.schemas</code></a></td><td>
+       <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-l"><td></td><td>
        <strong>l</strong></td><td></td></tr>
@@ -439,218 +400,229 @@
        <strong>m</strong></td><td></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-4" style="display: none" alt="-" /></td>
+              id="toggle-5" style="display: none" alt="-" /></td>
+       <td>
+       <a href="workflow_engine.management.html#module-workflow_engine.management"><code class="xref">workflow_engine.management</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-5">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.management.html#module-workflow_engine.management.manage"><code class="xref">workflow_engine.management.manage</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-6" style="display: none" alt="-" /></td>
        <td>
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations"><code class="xref">workflow_engine.migrations</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0001_initial"><code class="xref">workflow_engine.migrations.0001_initial</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0002_configuration"><code class="xref">workflow_engine.migrations.0002_configuration</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0003_improved_json_configuration"><code class="xref">workflow_engine.migrations.0003_improved_json_configuration</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0004_blank_admin_fields"><code class="xref">workflow_engine.migrations.0004_blank_admin_fields</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0005_blank_executable_fields"><code class="xref">workflow_engine.migrations.0005_blank_executable_fields</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0006_workflow_archive"><code class="xref">workflow_engine.migrations.0006_workflow_archive</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0007_delete_datafix"><code class="xref">workflow_engine.migrations.0007_delete_datafix</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0008_generic_task_job_relations"><code class="xref">workflow_engine.migrations.0008_generic_task_job_relations</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0009_workflow_edges"><code class="xref">workflow_engine.migrations.0009_workflow_edges</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0010_source_sink"><code class="xref">workflow_engine.migrations.0010_source_sink</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0011_enqueueable"><code class="xref">workflow_engine.migrations.0011_enqueueable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0012_enqueued_object_relation"><code class="xref">workflow_engine.migrations.0012_enqueued_object_relation</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0013_remove_task_object_class_string"><code class="xref">workflow_engine.migrations.0013_remove_task_object_class_string</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0014_remove_job_enqueued_object_class_string"><code class="xref">workflow_engine.migrations.0014_remove_job_enqueued_object_class_string</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0015_more_optional_admin_fields"><code class="xref">workflow_engine.migrations.0015_more_optional_admin_fields</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0016_archive_false_manager"><code class="xref">workflow_engine.migrations.0016_archive_false_manager</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0017_edge_order"><code class="xref">workflow_engine.migrations.0017_edge_order</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-4">
+     <tr class="cg-6">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0018_running_state"><code class="xref">workflow_engine.migrations.0018_running_state</code></a></td><td>
        <em></em></td></tr>
+     <tr class="cg-6">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.migrations.html#module-workflow_engine.migrations.0019_drop_run_state_model"><code class="xref">workflow_engine.migrations.0019_drop_run_state_model</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="workflow_engine.html#module-workflow_engine.mini_response"><code class="xref">workflow_engine.mini_response</code></a></td><td>
+       <em></em></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-5" style="display: none" alt="-" /></td>
+              id="toggle-7" style="display: none" alt="-" /></td>
        <td>
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins"><code class="xref">workflow_engine.mixins</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.archivable"><code class="xref">workflow_engine.mixins.archivable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.configurable"><code class="xref">workflow_engine.mixins.configurable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.enqueueable"><code class="xref">workflow_engine.mixins.enqueueable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.has_well_known_files"><code class="xref">workflow_engine.mixins.has_well_known_files</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.nameable"><code class="xref">workflow_engine.mixins.nameable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.runnable"><code class="xref">workflow_engine.mixins.runnable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.stateful"><code class="xref">workflow_engine.mixins.stateful</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.tagable"><code class="xref">workflow_engine.mixins.tagable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-5">
+     <tr class="cg-7">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.mixins.html#module-workflow_engine.mixins.timestamped"><code class="xref">workflow_engine.mixins.timestamped</code></a></td><td>
        <em></em></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-6" style="display: none" alt="-" /></td>
+              id="toggle-8" style="display: none" alt="-" /></td>
        <td>
        <a href="workflow_engine.models.html#module-workflow_engine.models"><code class="xref">workflow_engine.models</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.configuration"><code class="xref">workflow_engine.models.configuration</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.models.html#module-workflow_engine.models.datafix"><code class="xref">workflow_engine.models.datafix</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.enqueued_proxy"><code class="xref">workflow_engine.models.enqueued_proxy</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.executable"><code class="xref">workflow_engine.models.executable</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.file_record"><code class="xref">workflow_engine.models.file_record</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.job"><code class="xref">workflow_engine.models.job</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.job_queue"><code class="xref">workflow_engine.models.job_queue</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.models.html#module-workflow_engine.models.run_state"><code class="xref">workflow_engine.models.run_state</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.task"><code class="xref">workflow_engine.models.task</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.well_known_file"><code class="xref">workflow_engine.models.well_known_file</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.workflow"><code class="xref">workflow_engine.models.workflow</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.workflow_edge"><code class="xref">workflow_engine.models.workflow_edge</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-6">
+     <tr class="cg-8">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.models.html#module-workflow_engine.models.workflow_node"><code class="xref">workflow_engine.models.workflow_node</code></a></td><td>
@@ -661,54 +633,109 @@
      <tr>
        <td></td>
        <td>
+       <a href="workflow_engine.html#module-workflow_engine.pbs_utils"><code class="xref">workflow_engine.pbs_utils</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-9" style="display: none" alt="-" /></td>
+       <td>
+       <a href="workflow_engine.process.html#module-workflow_engine.process"><code class="xref">workflow_engine.process</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.html#module-workflow_engine.process.example"><code class="xref">workflow_engine.process.example</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.html#module-workflow_engine.process.workers"><code class="xref">workflow_engine.process.workers</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.html#module-workflow_engine.process.workers.ingest_tasks"><code class="xref">workflow_engine.process.workers.ingest_tasks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.moab.html#module-workflow_engine.process.workers.moab"><code class="xref">workflow_engine.process.workers.moab</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.moab.html#module-workflow_engine.process.workers.moab.moab_api"><code class="xref">workflow_engine.process.workers.moab.moab_api</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.moab.html#module-workflow_engine.process.workers.moab.moab_tasks"><code class="xref">workflow_engine.process.workers.moab.moab_tasks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.html#module-workflow_engine.process.workers.mock_tasks"><code class="xref">workflow_engine.process.workers.mock_tasks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.html#module-workflow_engine.process.workers.result_tasks"><code class="xref">workflow_engine.process.workers.result_tasks</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.html#module-workflow_engine.process.workers.ui_server"><code class="xref">workflow_engine.process.workers.ui_server</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-9">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.process.workers.html#module-workflow_engine.process.workers.workflow_tasks"><code class="xref">workflow_engine.process.workers.workflow_tasks</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
        <a href="workflow_engine.html#module-workflow_engine.provenance"><code class="xref">workflow_engine.provenance</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-s"><td></td><td>
        <strong>s</strong></td><td></td></tr>
      <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-7" style="display: none" alt="-" /></td>
+       <td></td>
        <td>
-       <a href="workflow_engine.serializers.html#module-workflow_engine.serializers"><code class="xref">workflow_engine.serializers</code></a></td><td>
+       <a href="workflow_engine.html#module-workflow_engine.signatures"><code class="xref">workflow_engine.signatures</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-7">
+     <tr>
        <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.serializers.html#module-workflow_engine.serializers.ingest_serializer"><code class="xref">workflow_engine.serializers.ingest_serializer</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-7">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.serializers.html#module-workflow_engine.serializers.task_monitor_serializer"><code class="xref">workflow_engine.serializers.task_monitor_serializer</code></a></td><td>
+       <td>
+       <a href="workflow_engine.html#module-workflow_engine.simple_router"><code class="xref">workflow_engine.simple_router</code></a></td><td>
        <em></em></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-8" style="display: none" alt="-" /></td>
+              id="toggle-10" style="display: none" alt="-" /></td>
        <td>
        <a href="workflow_engine.strategies.html#module-workflow_engine.strategies"><code class="xref">workflow_engine.strategies</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-8">
+     <tr class="cg-10">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.strategies.html#module-workflow_engine.strategies.base_strategy"><code class="xref">workflow_engine.strategies.base_strategy</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-8">
+     <tr class="cg-10">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.strategies.html#module-workflow_engine.strategies.execution_strategy"><code class="xref">workflow_engine.strategies.execution_strategy</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-8">
+     <tr class="cg-10">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.strategies.html#module-workflow_engine.strategies.ingest_strategy"><code class="xref">workflow_engine.strategies.ingest_strategy</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-8">
+     <tr class="cg-10">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.strategies.html#module-workflow_engine.strategies.input_config_mixin"><code class="xref">workflow_engine.strategies.input_config_mixin</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-8">
+     <tr class="cg-10">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.strategies.html#module-workflow_engine.strategies.wait_strategy"><code class="xref">workflow_engine.strategies.wait_strategy</code></a></td><td>
@@ -719,11 +746,6 @@
      <tr>
        <td></td>
        <td>
-       <a href="workflow_engine.html#module-workflow_engine.ui_server"><code class="xref">workflow_engine.ui_server</code></a></td><td>
-       <em></em></td></tr>
-     <tr>
-       <td></td>
-       <td>
        <a href="workflow_engine.html#module-workflow_engine.urls"><code class="xref">workflow_engine.urls</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
@@ -731,76 +753,71 @@
        <strong>v</strong></td><td></td></tr>
      <tr>
        <td><img src="_static/minus.png" class="toggler"
-              id="toggle-9" style="display: none" alt="-" /></td>
+              id="toggle-11" style="display: none" alt="-" /></td>
        <td>
        <a href="workflow_engine.views.html#module-workflow_engine.views"><code class="xref">workflow_engine.views</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.decorators"><code class="xref">workflow_engine.views.decorators</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
+       <td></td>
+       <td>&#160;&#160;&#160;
+       <a href="workflow_engine.views.html#module-workflow_engine.views.enqueueable_job_grid"><code class="xref">workflow_engine.views.enqueueable_job_grid</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.executable_view"><code class="xref">workflow_engine.views.executable_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.grid_view"><code class="xref">workflow_engine.views.grid_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.home_view"><code class="xref">workflow_engine.views.home_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.ingest_view"><code class="xref">workflow_engine.views.ingest_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.views.html#module-workflow_engine.views.job_grid"><code class="xref">workflow_engine.views.job_grid</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.job_queue_view"><code class="xref">workflow_engine.views.job_queue_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.job_view"><code class="xref">workflow_engine.views.job_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.log_view"><code class="xref">workflow_engine.views.log_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.views.html#module-workflow_engine.views.monitor_view"><code class="xref">workflow_engine.views.monitor_view</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.record_view"><code class="xref">workflow_engine.views.record_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.shared"><code class="xref">workflow_engine.views.shared</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.task_view"><code class="xref">workflow_engine.views.task_view</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-9">
+     <tr class="cg-11">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="workflow_engine.views.html#module-workflow_engine.views.workflow_view"><code class="xref">workflow_engine.views.workflow_view</code></a></td><td>
@@ -809,106 +826,9 @@
      <tr class="cap" id="cap-w"><td></td><td>
        <strong>w</strong></td><td></td></tr>
      <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-10" style="display: none" alt="-" /></td>
-       <td>
-       <a href="workflow_client.html#module-workflow_client"><code class="xref">workflow_client</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.html#module-workflow_client.celery_ingest"><code class="xref">workflow_client.celery_ingest</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.html#module-workflow_client.client_settings"><code class="xref">workflow_client.client_settings</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.ingest.html#module-workflow_client.ingest"><code class="xref">workflow_client.ingest</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.ingest.html#module-workflow_client.ingest.ingest_client"><code class="xref">workflow_client.ingest.ingest_client</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.nb_utils.html#module-workflow_client.nb_utils"><code class="xref">workflow_client.nb_utils</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.nb_utils.html#module-workflow_client.nb_utils.moab_api"><code class="xref">workflow_client.nb_utils.moab_api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.nb_utils.html#module-workflow_client.nb_utils.task_monitor"><code class="xref">workflow_client.nb_utils.task_monitor</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.html#module-workflow_client.pbs_utils"><code class="xref">workflow_client.pbs_utils</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.html#module-workflow_client.simple_router"><code class="xref">workflow_client.simple_router</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.tasks.html#module-workflow_client.tasks"><code class="xref">workflow_client.tasks</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.tasks.html#module-workflow_client.tasks.circus_signatures"><code class="xref">workflow_client.tasks.circus_signatures</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.tasks.html#module-workflow_client.tasks.circus_status"><code class="xref">workflow_client.tasks.circus_status</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.tasks.html#module-workflow_client.tasks.moab_status"><code class="xref">workflow_client.tasks.moab_status</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-10">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_client.tasks.html#module-workflow_client.tasks.task_status"><code class="xref">workflow_client.tasks.task_status</code></a></td><td>
-       <em></em></td></tr>
-     <tr>
        <td></td>
        <td>
        <a href="workflow_engine.html#module-workflow_engine"><code class="xref">workflow_engine</code></a></td><td>
-       <em></em></td></tr>
-     <tr>
-       <td><img src="_static/minus.png" class="toggler"
-              id="toggle-11" style="display: none" alt="-" /></td>
-       <td>
-       <a href="workflow_engine.worker.html#module-workflow_engine.worker"><code class="xref">workflow_engine.worker</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-11">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.worker.qsub.html#module-workflow_engine.worker.qsub"><code class="xref">workflow_engine.worker.qsub</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-11">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.worker.qsub.html#module-workflow_engine.worker.qsub.qsub_api"><code class="xref">workflow_engine.worker.qsub.qsub_api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-11">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="workflow_engine.worker.html#module-workflow_engine.worker.server_command"><code class="xref">workflow_engine.worker.server_command</code></a></td><td>
        <em></em></td></tr>
      <tr>
        <td></td>
@@ -951,33 +871,31 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

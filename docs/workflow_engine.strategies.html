@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="workflow_engine.views package" href="workflow_engine.views.html" />
-    <link rel="prev" title="workflow_engine.serializers package" href="workflow_engine.serializers.html" /> 
+    <link rel="prev" title="workflow_engine.process.workers.moab package" href="workflow_engine.process.workers.moab.html" /> 
   </head>
   <body>
 <link href="http://www.brain-map.org/assets/stylesheets/portal.css" media="screen" rel="stylesheet" type="text/css" />
@@ -500,7 +500,18 @@ but are not used to execute jobs.</p>
 <dl class="method">
 <dt id="workflow_engine.strategies.input_config_mixin.InputConfigMixin.get_workflow_node_input_template">
 <code class="descname">get_workflow_node_input_template</code><span class="sig-paren">(</span><em>self</em>, <em>task</em>, <em>name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/workflow_engine/strategies/input_config_mixin.html#InputConfigMixin.get_workflow_node_input_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#workflow_engine.strategies.input_config_mixin.InputConfigMixin.get_workflow_node_input_template" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>May be used to read a <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.configuration.Configuration" title="workflow_engine.models.configuration.Configuration"><code class="xref py py-class docutils literal"><span class="pre">Configuration</span></code></a>
+template from the database as a basis for a
+<a class="reference internal" href="#workflow_engine.strategies.execution_strategy.ExecutionStrategy" title="workflow_engine.strategies.execution_strategy.ExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">ExecutionStrategy</span></code></a>
+input json.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>task (Task) a <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.task.Task" title="workflow_engine.models.task.Task"><code class="xref py py-class docutils literal"><span class="pre">Task</span></code></a> associated
+with a <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.workflow_node.WorkflowNode" title="workflow_engine.models.workflow_node.WorkflowNode"><code class="xref py py-class docutils literal"><span class="pre">WorkflowNode</span></code></a></dd>
+<dt>Returns:</dt>
+<dd>dict: a nested dict that may be further filled in by a strategy.</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -563,33 +574,31 @@ but are not used to execute jobs.</p>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

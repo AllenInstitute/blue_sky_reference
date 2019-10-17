@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="blue_sky.admin package" href="blue_sky.admin.html" />
-    <link rel="prev" title="workflow_client.tasks package" href="workflow_client.tasks.html" /> 
+    <link rel="prev" title="workflow_engine.views package" href="workflow_engine.views.html" /> 
   </head>
   <body>
 <link href="http://www.brain-map.org/assets/stylesheets/portal.css" media="screen" rel="stylesheet" type="text/css" />
@@ -76,20 +76,17 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html#module-blue_sky.admin.calibration_admin">blue_sky.admin.calibration_admin module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html#module-blue_sky.admin.observation_admin">blue_sky.admin.observation_admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html#module-blue_sky.admin.observation_group_admin">blue_sky.admin.observation_group_admin module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html#module-blue_sky.admin">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html#module-blue_sky.celery.monitor_tasks">blue_sky.celery.monitor_tasks module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html#module-blue_sky.celery">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html#module-blue_sky.migrations.0001_initial">blue_sky.migrations.0001_initial module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html#module-blue_sky.migrations.0002_auto_20190717_1429">blue_sky.migrations.0002_auto_20190717_1429 module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html#module-blue_sky.migrations.0003_calibration_observation_association">blue_sky.migrations.0003_calibration_observation_association module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html#module-blue_sky.migrations">Module contents</a></li>
 </ul>
 </li>
@@ -107,6 +104,7 @@
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html#module-blue_sky.strategies.mock_analyze">blue_sky.strategies.mock_analyze module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html#module-blue_sky.strategies.mock_calibrate">blue_sky.strategies.mock_calibrate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html#module-blue_sky.strategies.mock_complete_group">blue_sky.strategies.mock_complete_group module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html#module-blue_sky.strategies.mock_execution_strategy">blue_sky.strategies.mock_execution_strategy module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html#module-blue_sky.strategies.mock_group_assignment">blue_sky.strategies.mock_group_assignment module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html#module-blue_sky.strategies.mock_ingest">blue_sky.strategies.mock_ingest module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html#module-blue_sky.strategies.mock_parametrized_analysis">blue_sky.strategies.mock_parametrized_analysis module</a></li>
@@ -119,6 +117,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.views.html">blue_sky.views package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.views.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.views.html#module-blue_sky.views.demo_job_grid_view">blue_sky.views.demo_job_grid_view module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.views.html#module-blue_sky.views.home_view">blue_sky.views.home_view module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.views.html#module-blue_sky.views">Module contents</a></li>
 </ul>
@@ -143,6 +142,78 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-blue_sky.demo_job_grid">
+<span id="blue-sky-demo-job-grid-module"></span><h2>blue_sky.demo_job_grid module<a class="headerlink" href="#module-blue_sky.demo_job_grid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.demo_job_grid.DemoJobGrid">
+<em class="property">class </em><code class="descclassname">blue_sky.demo_job_grid.</code><code class="descname">DemoJobGrid</code><span class="sig-paren">(</span><em>row_range</em>, <em>order=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/demo_job_grid.html#DemoJobGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.demo_job_grid.DemoJobGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="workflow_engine.views.html#workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid" title="workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.views.enqueueable_job_grid.EnqueueableJobGrid</span></code></a></p>
+<dl class="attribute">
+<dt id="blue_sky.demo_job_grid.DemoJobGrid.SERIALIZE_COLUMNS">
+<code class="descname">SERIALIZE_COLUMNS</code><em class="property"> = ['z_index', 'object_state_id', 'workflow_node', 'letter_code', 'job_id', 'enqueued_object_type', 'enqueued_object_id', 'start', 'end']</em><a class="headerlink" href="#blue_sky.demo_job_grid.DemoJobGrid.SERIALIZE_COLUMNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>ordered list of columns from the annotated job dataframe to send.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.demo_job_grid.DemoJobGrid.get_model_classes">
+<code class="descname">get_model_classes</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/demo_job_grid.html#DemoJobGrid.get_model_classes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.demo_job_grid.DemoJobGrid.get_model_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Models to be queried for display in the grid.
+Override to provide a specific list of model classes.
+They must implement <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.enqueueable.Enqueueable" title="workflow_engine.mixins.enqueueable.Enqueueable"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins.enqueueable.Enqueueable</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>list of Model</dt>
+<dd><p class="first last">model classes that implement Enqueueable</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>By default, immediate subclasses of Enqueueable 
+will be included, but not leaf descendant classes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.demo_job_grid.DemoJobGrid.query_calibration_row_df">
+<code class="descname">query_calibration_row_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/demo_job_grid.html#DemoJobGrid.query_calibration_row_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.demo_job_grid.DemoJobGrid.query_calibration_row_df" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.demo_job_grid.DemoJobGrid.xget_node_order">
+<code class="descname">xget_node_order</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/demo_job_grid.html#DemoJobGrid.xget_node_order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.demo_job_grid.DemoJobGrid.xget_node_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override with a specific list of job queue names.
+These will be used in order as the columns of the job grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>list of string</dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.demo_job_grid.DemoJobGrid.xquery_enqueued_object_row_df">
+<code class="descname">xquery_enqueued_object_row_df</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/demo_job_grid.html#DemoJobGrid.xquery_enqueued_object_row_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.demo_job_grid.DemoJobGrid.xquery_enqueued_object_row_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine row dataframes across
+EMMontageSet, ReferenceSet, Chunk and Load.
+The sub dataframes all share the montage set z index
+as the row coordinate</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-blue_sky.settings">
 <span id="blue-sky-settings-module"></span><h2>blue_sky.settings module<a class="headerlink" href="#module-blue_sky.settings" title="Permalink to this headline">¶</a></h2>
 <p>Django settings for blue_sky project.</p>
@@ -151,6 +222,9 @@
 <a class="reference external" href="https://docs.djangoproject.com/en/1.11/topics/settings/">https://docs.djangoproject.com/en/1.11/topics/settings/</a></p>
 <p>For the full list of settings and their values, see
 <a class="reference external" href="https://docs.djangoproject.com/en/1.11/ref/settings/">https://docs.djangoproject.com/en/1.11/ref/settings/</a></p>
+</div>
+<div class="section" id="blue-sky-settings-timf-module">
+<h2>blue_sky.settings_timf module<a class="headerlink" href="#blue-sky-settings-timf-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-blue_sky.test_settings">
 <span id="blue-sky-test-settings-module"></span><h2>blue_sky.test_settings module<a class="headerlink" href="#module-blue_sky.test_settings" title="Permalink to this headline">¶</a></h2>
@@ -217,33 +291,31 @@ Function views</p>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

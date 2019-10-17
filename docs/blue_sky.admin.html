@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="blue_sky.celery package" href="blue_sky.celery.html" />
+    <link rel="next" title="blue_sky.migrations package" href="blue_sky.migrations.html" />
     <link rel="prev" title="blue_sky package" href="blue_sky.html" /> 
   </head>
   <body>
@@ -72,6 +72,35 @@
 <h1>blue_sky.admin package<a class="headerlink" href="#blue-sky-admin-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-blue_sky.admin.calibration_admin">
+<span id="blue-sky-admin-calibration-admin-module"></span><h2>blue_sky.admin.calibration_admin module<a class="headerlink" href="#module-blue_sky.admin.calibration_admin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.admin.calibration_admin.CalibrationAdmin">
+<em class="property">class </em><code class="descclassname">blue_sky.admin.calibration_admin.</code><code class="descname">CalibrationAdmin</code><span class="sig-paren">(</span><em>model</em>, <em>admin_site</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/admin/calibration_admin.html#CalibrationAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.admin.calibration_admin.CalibrationAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></code></p>
+<dl class="attribute">
+<dt id="blue_sky.admin.calibration_admin.CalibrationAdmin.list_display">
+<code class="descname">list_display</code><em class="property"> = ('id', 'offset', 'object_state')</em><a class="headerlink" href="#blue_sky.admin.calibration_admin.CalibrationAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.calibration_admin.CalibrationAdmin.list_filter">
+<code class="descname">list_filter</code><em class="property"> = ('object_state',)</em><a class="headerlink" href="#blue_sky.admin.calibration_admin.CalibrationAdmin.list_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.calibration_admin.CalibrationAdmin.list_select_related">
+<code class="descname">list_select_related</code><em class="property"> = []</em><a class="headerlink" href="#blue_sky.admin.calibration_admin.CalibrationAdmin.list_select_related" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.calibration_admin.CalibrationAdmin.media">
+<code class="descname">media</code><a class="headerlink" href="#blue_sky.admin.calibration_admin.CalibrationAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-blue_sky.admin.observation_admin">
 <span id="blue-sky-admin-observation-admin-module"></span><h2>blue_sky.admin.observation_admin module<a class="headerlink" href="#module-blue_sky.admin.observation_admin" title="Permalink to this headline">¶</a></h2>
@@ -139,6 +168,50 @@
 <dd></dd></dl>
 
 </div>
+<div class="section" id="module-blue_sky.admin.observation_group_admin">
+<span id="blue-sky-admin-observation-group-admin-module"></span><h2>blue_sky.admin.observation_group_admin module<a class="headerlink" href="#module-blue_sky.admin.observation_group_admin" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.admin.observation_group_admin.ObservationGroupAdmin">
+<em class="property">class </em><code class="descclassname">blue_sky.admin.observation_group_admin.</code><code class="descname">ObservationGroupAdmin</code><span class="sig-paren">(</span><em>model</em>, <em>admin_site</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/admin/observation_group_admin.html#ObservationGroupAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.admin.observation_group_admin.ObservationGroupAdmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">django.contrib.admin.options.ModelAdmin</span></code></p>
+<dl class="attribute">
+<dt id="blue_sky.admin.observation_group_admin.ObservationGroupAdmin.actions">
+<code class="descname">actions</code><em class="property"> = [&lt;function reset_incomplete&gt;]</em><a class="headerlink" href="#blue_sky.admin.observation_group_admin.ObservationGroupAdmin.actions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.observation_group_admin.ObservationGroupAdmin.inlines">
+<code class="descname">inlines</code><em class="property"> = []</em><a class="headerlink" href="#blue_sky.admin.observation_group_admin.ObservationGroupAdmin.inlines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.observation_group_admin.ObservationGroupAdmin.list_display">
+<code class="descname">list_display</code><em class="property"> = ['id', 'label', 'object_state']</em><a class="headerlink" href="#blue_sky.admin.observation_group_admin.ObservationGroupAdmin.list_display" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.observation_group_admin.ObservationGroupAdmin.list_filter">
+<code class="descname">list_filter</code><em class="property"> = ['object_state']</em><a class="headerlink" href="#blue_sky.admin.observation_group_admin.ObservationGroupAdmin.list_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.observation_group_admin.ObservationGroupAdmin.list_select_related">
+<code class="descname">list_select_related</code><em class="property"> = []</em><a class="headerlink" href="#blue_sky.admin.observation_group_admin.ObservationGroupAdmin.list_select_related" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="blue_sky.admin.observation_group_admin.ObservationGroupAdmin.media">
+<code class="descname">media</code><a class="headerlink" href="#blue_sky.admin.observation_group_admin.ObservationGroupAdmin.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="blue_sky.admin.observation_group_admin.reset_incomplete">
+<code class="descclassname">blue_sky.admin.observation_group_admin.</code><code class="descname">reset_incomplete</code><span class="sig-paren">(</span><em>modeladmin</em>, <em>request</em>, <em>queryset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/admin/observation_group_admin.html#reset_incomplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.admin.observation_group_admin.reset_incomplete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="module-blue_sky.admin">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-blue_sky.admin" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -158,33 +231,31 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

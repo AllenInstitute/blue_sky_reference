@@ -89,6 +89,7 @@
 <span class="kn">from</span> <span class="nn">marshmallow.decorators</span> <span class="k">import</span> <span class="p">(</span><span class="n">PRE_DUMP</span><span class="p">,</span> <span class="n">POST_DUMP</span><span class="p">,</span> <span class="n">PRE_LOAD</span><span class="p">,</span> <span class="n">POST_LOAD</span><span class="p">,</span>
                                     <span class="n">VALIDATES</span><span class="p">,</span> <span class="n">VALIDATES_SCHEMA</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">marshmallow.utils</span> <span class="k">import</span> <span class="n">missing</span>
+<span class="kn">from</span> <span class="nn">marshmallow.warnings</span> <span class="k">import</span> <span class="n">RemovedInMarshmallow3Warning</span><span class="p">,</span> <span class="n">ChangedInMarshmallow3Warning</span>
 
 
 <span class="c1">#: Return type of :meth:`Schema.dump` including serialized data and errors</span>
@@ -264,7 +265,17 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;`exclude` must be a list or tuple.&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">strict</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s1">&#39;strict&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s1">&#39;dateformat&#39;</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The dateformat option is renamed to datetimeformat in marshmallow 3.&quot;</span><span class="p">,</span>
+                <span class="n">ChangedInMarshmallow3Warning</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dateformat</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s1">&#39;dateformat&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s1">&#39;json_module&#39;</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The json_module option is renamed to render_module in marshmallow 3.&quot;</span><span class="p">,</span>
+                <span class="n">ChangedInMarshmallow3Warning</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">json_module</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s1">&#39;json_module&#39;</span><span class="p">,</span> <span class="n">json</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">meta</span><span class="p">,</span> <span class="s1">&#39;skip_missing&#39;</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
@@ -404,7 +415,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">declared_fields</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_declared_fields</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">many</span> <span class="o">=</span> <span class="n">many</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">only</span> <span class="o">=</span> <span class="n">only</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span> <span class="o">=</span> <span class="n">exclude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">exclude</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prefix</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s1">&#39;The `prefix` argument is deprecated. Use a post_dump &#39;</span>
+                <span class="s1">&#39;method to insert a prefix instead.&#39;</span><span class="p">,</span>
+                <span class="n">RemovedInMarshmallow3Warning</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">strict</span> <span class="o">=</span> <span class="n">strict</span> <span class="k">if</span> <span class="n">strict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">strict</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ordered</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">ordered</span>
@@ -417,7 +434,7 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="s1">&#39;The `extra` argument is deprecated. Use a post_dump &#39;</span>
                 <span class="s1">&#39;method to add additional data instead.&#39;</span><span class="p">,</span>
-                <span class="ne">DeprecationWarning</span>
+                <span class="n">RemovedInMarshmallow3Warning</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra</span> <span class="o">=</span> <span class="n">extra</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span> <span class="ow">or</span> <span class="p">{}</span>
@@ -771,19 +788,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__apply_nested_option</span><span class="p">(</span><span class="s1">&#39;only&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span><span class="p">,</span> <span class="s1">&#39;intersection&#39;</span><span class="p">)</span>
             <span class="c1"># Remove the child field names from the only option.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">only</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_class</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span><span class="p">])</span>
-        <span class="n">excludes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">exclude</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">excludes</span><span class="p">:</span>
-            <span class="c1"># Apply the exclude option to nested fields.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__apply_nested_option</span><span class="p">(</span><span class="s1">&#39;exclude&#39;</span><span class="p">,</span> <span class="n">excludes</span><span class="p">,</span> <span class="s1">&#39;union&#39;</span><span class="p">)</span>
+                <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">only</span><span class="p">],</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">:</span>
+            <span class="c1"># Apply the exclude option to nested fields.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__apply_nested_option</span><span class="p">(</span><span class="s1">&#39;exclude&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">,</span> <span class="s1">&#39;union&#39;</span><span class="p">)</span>
             <span class="c1"># Remove the parent field names from the exclude option.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_class</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span> <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">field</span><span class="p">])</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">exclude</span><span class="p">:</span>
-            <span class="c1"># Remove the parent field names from the meta exclude option.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">exclude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_class</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">exclude</span> <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">field</span><span class="p">])</span>
+                <span class="p">[</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span> <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">field</span><span class="p">],</span>
+            <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__apply_nested_option</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option_name</span><span class="p">,</span> <span class="n">field_names</span><span class="p">,</span> <span class="n">set_operation</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Apply nested options to nested fields&quot;&quot;&quot;</span>
@@ -801,7 +814,7 @@
                 <span class="k">if</span> <span class="n">set_operation</span> <span class="o">==</span> <span class="s1">&#39;union&#39;</span><span class="p">:</span>
                     <span class="n">new_options</span> <span class="o">|=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_class</span><span class="p">(</span><span class="n">original_options</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">set_operation</span> <span class="o">==</span> <span class="s1">&#39;intersection&#39;</span><span class="p">:</span>
-                        <span class="n">new_options</span> <span class="o">&amp;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_class</span><span class="p">(</span><span class="n">original_options</span><span class="p">)</span>
+                    <span class="n">new_options</span> <span class="o">&amp;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_class</span><span class="p">(</span><span class="n">original_options</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">declared_fields</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">option_name</span><span class="p">,</span> <span class="n">new_options</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_update_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -823,9 +836,7 @@
             <span class="n">field_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">declared_fields</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
         <span class="c1"># If &quot;exclude&quot; option or param is specified, remove those fields</span>
-        <span class="n">excludes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opts</span><span class="o">.</span><span class="n">exclude</span><span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">excludes</span><span class="p">:</span>
-            <span class="n">field_names</span> <span class="o">=</span> <span class="n">field_names</span> <span class="o">-</span> <span class="n">excludes</span>
+        <span class="n">field_names</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__filter_fields</span><span class="p">(</span><span class="n">field_names</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="n">many</span><span class="p">)</span>
         <span class="c1"># Set parents</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__set_field_attrs</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
@@ -868,23 +879,14 @@
 
 <span class="sd">        :param set field_names: Field names to include in the final</span>
 <span class="sd">            return dictionary.</span>
+<span class="sd">        :param object|Mapping|list obj The object to base filtered fields on.</span>
 <span class="sd">        :returns: An dict of field_name:field_obj pairs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">and</span> <span class="n">many</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>  <span class="c1"># Homogeneous collection</span>
-                <span class="c1"># Prefer getitem over iter to prevent breaking serialization</span>
-                <span class="c1"># of objects for which iter will modify position in the collection</span>
-                <span class="c1"># e.g. Pymongo cursors</span>
-                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__getitem__&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;__getitem__&#39;</span><span class="p">)):</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">obj_prototype</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                        <span class="n">obj_prototype</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">obj_prototype</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">StopIteration</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>  <span class="c1"># Nothing to serialize</span>
+            <span class="k">try</span><span class="p">:</span>  <span class="c1"># list</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># Nothing to serialize</span>
                 <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">declared_fields</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">field_names</span><span class="p">)</span>
-            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj_prototype</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict_class</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">field_names</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">declared_fields</span><span class="p">:</span>
@@ -1048,33 +1050,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../blue_sky.strategies.html">blue_sky.strategies package</a></li>

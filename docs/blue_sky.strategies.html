@@ -78,7 +78,7 @@
 <dl class="class">
 <dt id="blue_sky.strategies.mock_analyze.MockAnalyze">
 <em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_analyze.</code><code class="descname">MockAnalyze</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_analyze.html#MockAnalyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_analyze.MockAnalyze" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></a></p>
 <dl class="method">
 <dt id="blue_sky.strategies.mock_analyze.MockAnalyze.get_input">
 <code class="descname">get_input</code><span class="sig-paren">(</span><em>self</em>, <em>observation</em>, <em>storage_directory</em>, <em>task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_analyze.html#MockAnalyze.get_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_analyze.MockAnalyze.get_input" title="Permalink to this definition">¶</a></dt>
@@ -87,17 +87,41 @@
 <dl class="method">
 <dt id="blue_sky.strategies.mock_analyze.MockAnalyze.must_wait">
 <code class="descname">must_wait</code><span class="sig-paren">(</span><em>self</em>, <em>enqueued_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_analyze.html#MockAnalyze.must_wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_analyze.MockAnalyze.must_wait" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Hold processing of a <a class="reference internal" href="blue_sky.models.html#blue_sky.models.observation.Observation" title="blue_sky.models.observation.Observation"><code class="xref py py-class docutils literal"><span class="pre">Observation</span></code></a>
+unless the associated <a class="reference internal" href="blue_sky.models.html#blue_sky.models.calibration.Calibration" title="blue_sky.models.calibration.Calibration"><code class="xref py py-class docutils literal"><span class="pre">Calibration</span></code></a>
+is done processing.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>enqueued_object (Model): <a class="reference internal" href="blue_sky.models.html#blue_sky.models.observation.Observation" title="blue_sky.models.observation.Observation"><code class="xref py py-class docutils literal"><span class="pre">Observation</span></code></a> or <a class="reference internal" href="blue_sky.models.html#blue_sky.models.calibration.Calibration" title="blue_sky.models.calibration.Calibration"><code class="xref py py-class docutils literal"><span class="pre">Calibration</span></code></a> associated with Observations</dd>
+<dt>Returns:</dt>
+<dd>boolean: whether to pause the progression of the Observation through the workflow.</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="blue_sky.strategies.mock_analyze.MockAnalyze.on_finishing">
 <code class="descname">on_finishing</code><span class="sig-paren">(</span><em>self</em>, <em>observation</em>, <em>results</em>, <em>task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_analyze.html#MockAnalyze.on_finishing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_analyze.MockAnalyze.on_finishing" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Change the <a class="reference internal" href="glossary.html#term-object-state"><span class="xref std std-term">object state</span></a> from processing to QC.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>observation (Observation): the enqueued object
+results (dict): unused
+task (Task): unused</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="blue_sky.strategies.mock_analyze.MockAnalyze.transform_objects_for_queue">
 <code class="descname">transform_objects_for_queue</code><span class="sig-paren">(</span><em>self</em>, <em>enqueued_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_analyze.html#MockAnalyze.transform_objects_for_queue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_analyze.MockAnalyze.transform_objects_for_queue" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>If an incoming object is an Observation, pass it along.
+If it is a Calibration, find the associated Observations.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>enqueued_object (Model): <a class="reference internal" href="blue_sky.models.html#blue_sky.models.observation.Observation" title="blue_sky.models.observation.Observation"><code class="xref py py-class docutils literal"><span class="pre">Observation</span></code></a> or <a class="reference internal" href="blue_sky.models.html#blue_sky.models.calibration.Calibration" title="blue_sky.models.calibration.Calibration"><code class="xref py py-class docutils literal"><span class="pre">Calibration</span></code></a> associated with Observations</dd>
+<dt>Returns:</dt>
+<dd>list of Observation: either the incoming enqueued object or derived from an enqueued calibration object.</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -107,7 +131,7 @@
 <dl class="class">
 <dt id="blue_sky.strategies.mock_calibrate.MockCalibrate">
 <em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_calibrate.</code><code class="descname">MockCalibrate</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_calibrate.html#MockCalibrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_calibrate.MockCalibrate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></a></p>
 <dl class="method">
 <dt id="blue_sky.strategies.mock_calibrate.MockCalibrate.can_transition">
 <code class="descname">can_transition</code><span class="sig-paren">(</span><em>self</em>, <em>calibration</em>, <em>from_node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_calibrate.html#MockCalibrate.can_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_calibrate.MockCalibrate.can_transition" title="Permalink to this definition">¶</a></dt>
@@ -131,7 +155,7 @@
 <dl class="class">
 <dt id="blue_sky.strategies.mock_complete_group.MockCompleteGroup">
 <em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_complete_group.</code><code class="descname">MockCompleteGroup</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_complete_group.html#MockCompleteGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_complete_group.MockCompleteGroup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></a></p>
 <dl class="method">
 <dt id="blue_sky.strategies.mock_complete_group.MockCompleteGroup.get_input">
 <code class="descname">get_input</code><span class="sig-paren">(</span><em>self</em>, <em>group</em>, <em>storage_directory</em>, <em>task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_complete_group.html#MockCompleteGroup.get_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_complete_group.MockCompleteGroup.get_input" title="Permalink to this definition">¶</a></dt>
@@ -150,12 +174,36 @@
 </dd></dl>
 
 </div>
+<div class="section" id="module-blue_sky.strategies.mock_execution_strategy">
+<span id="blue-sky-strategies-mock-execution-strategy-module"></span><h2>blue_sky.strategies.mock_execution_strategy module<a class="headerlink" href="#module-blue_sky.strategies.mock_execution_strategy" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy">
+<em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_execution_strategy.</code><code class="descname">MockExecutionStrategy</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_execution_strategy.html#MockExecutionStrategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.execution_strategy.ExecutionStrategy" title="workflow_engine.strategies.execution_strategy.ExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.strategies.execution_strategy.ExecutionStrategy</span></code></a></p>
+<dl class="method">
+<dt id="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy.get_input_file">
+<code class="descname">get_input_file</code><span class="sig-paren">(</span><em>self</em>, <em>task</em>, <em>create_dir=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_execution_strategy.html#MockExecutionStrategy.get_input_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy.get_input_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy.get_output_file">
+<code class="descname">get_output_file</code><span class="sig-paren">(</span><em>self</em>, <em>task_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_execution_strategy.html#MockExecutionStrategy.get_output_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy.get_output_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy.on_finishing">
+<code class="descname">on_finishing</code><span class="sig-paren">(</span><em>self</em>, <em>observation_object</em>, <em>results</em>, <em>task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_execution_strategy.html#MockExecutionStrategy.on_finishing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy.on_finishing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-blue_sky.strategies.mock_group_assignment">
 <span id="blue-sky-strategies-mock-group-assignment-module"></span><h2>blue_sky.strategies.mock_group_assignment module<a class="headerlink" href="#module-blue_sky.strategies.mock_group_assignment" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="blue_sky.strategies.mock_group_assignment.MockGroupAssignment">
 <em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_group_assignment.</code><code class="descname">MockGroupAssignment</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_group_assignment.html#MockGroupAssignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_group_assignment.MockGroupAssignment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></a></p>
 <dl class="method">
 <dt id="blue_sky.strategies.mock_group_assignment.MockGroupAssignment.get_input">
 <code class="descname">get_input</code><span class="sig-paren">(</span><em>self</em>, <em>observation</em>, <em>storage_directory</em>, <em>task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_group_assignment.html#MockGroupAssignment.get_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_group_assignment.MockGroupAssignment.get_input" title="Permalink to this definition">¶</a></dt>
@@ -227,7 +275,7 @@
 <dl class="class">
 <dt id="blue_sky.strategies.mock_preprocess.MockPreprocess">
 <em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_preprocess.</code><code class="descname">MockPreprocess</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_preprocess.html#MockPreprocess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_preprocess.MockPreprocess" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></a></p>
 <dl class="method">
 <dt id="blue_sky.strategies.mock_preprocess.MockPreprocess.can_transition">
 <code class="descname">can_transition</code><span class="sig-paren">(</span><em>self</em>, <em>enqueued_object</em>, <em>from_node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_preprocess.html#MockPreprocess.can_transition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_preprocess.MockPreprocess.can_transition" title="Permalink to this definition">¶</a></dt>
@@ -256,7 +304,7 @@
 <dl class="class">
 <dt id="blue_sky.strategies.mock_process_grouped_observations.MockProcessGroupedObservations">
 <em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_process_grouped_observations.</code><code class="descname">MockProcessGroupedObservations</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_process_grouped_observations.html#MockProcessGroupedObservations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_process_grouped_observations.MockProcessGroupedObservations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></a></p>
 <dl class="method">
 <dt id="blue_sky.strategies.mock_process_grouped_observations.MockProcessGroupedObservations.get_input">
 <code class="descname">get_input</code><span class="sig-paren">(</span><em>self</em>, <em>observation</em>, <em>storage_directory</em>, <em>task</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_process_grouped_observations.html#MockProcessGroupedObservations.get_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_process_grouped_observations.MockProcessGroupedObservations.get_input" title="Permalink to this definition">¶</a></dt>
@@ -280,7 +328,7 @@
 <dl class="class">
 <dt id="blue_sky.strategies.mock_q_c.MockQC">
 <em class="property">class </em><code class="descclassname">blue_sky.strategies.mock_q_c.</code><code class="descname">MockQC</code><a class="reference internal" href="_modules/blue_sky/strategies/mock_q_c.html#MockQC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_q_c.MockQC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy</span></code></a></p>
 <dl class="method">
 <dt id="blue_sky.strategies.mock_q_c.MockQC.check_input_state">
 <code class="descname">check_input_state</code><span class="sig-paren">(</span><em>self</em>, <em>observation_object</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/blue_sky/strategies/mock_q_c.html#MockQC.check_input_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#blue_sky.strategies.mock_q_c.MockQC.check_input_state" title="Permalink to this definition">¶</a></dt>
@@ -337,33 +385,31 @@
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">blue_sky.strategies package</a></li>

@@ -70,44 +70,157 @@
             
   <div class="section" id="customization">
 <h1>Customization<a class="headerlink" href="#customization" title="Permalink to this headline">¶</a></h1>
-<p>This guide is a resource for using the Blue Sky Workflow Engine package.
-It is maintained by the <a class="reference external" href="http://www.alleninstitute.org/">Allen Institute for Brain Science</a>.</p>
-<p>The Blue Sky Workflow Engine is designed for creating new workflows
-to manage and orchestrate projects.</p>
+<p>This guide is a resource for extending the Blue Sky Workflow Engine package
+in the context of creating a production workflow.</p>
 <div class="section" id="blue-sky-reference-application">
 <h2>Blue Sky Reference Application<a class="headerlink" href="#blue-sky-reference-application" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>Stash Repository</li>
-<li>Docker-compose up</li>
-<li>Enqueuing an object</li>
-</ul>
-</div></blockquote>
+<p>The blue sky reference app is a small project that serves several purposes.
+It contains the unit and integration tests for the workflow engine as well
+as code analysis (linting and coverage), as well as documentation. It also
+provides a small working application that illustrates many of the ways
+the workflow engine’s components can be extended without the real-world
+complexity of a production application.</p>
+<p>The reference application may be found in the
+<cite>AllenInstitute/blue_sky_reference &lt;https://github.com/AllenInstitute/blue_sky_reference&gt;</cite>
+github repository.</p>
 </div>
 <div class="section" id="creating-a-model">
 <h2>Creating a Model<a class="headerlink" href="#creating-a-model" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>Django model</li>
-</ul>
-</div></blockquote>
+<p>Application models inherit from Django’s <code class="xref py py-class docutils literal"><span class="pre">model.Model</span></code>.</p>
+<p>The <a class="reference internal" href="workflow_engine.mixins.html#module-workflow_engine.mixins" title="workflow_engine.mixins"><code class="xref py py-class docutils literal"><span class="pre">workflow_engine.mixins</span></code></a> package contains reusable code that
+many models will need.</p>
+<p>Models that are to be passed to a <a class="reference internal" href="glossary.html#term-strategy"><span class="xref std std-term">Strategy</span></a> as an <span class="xref std std-term">enqueueable object</span>
+should mix in <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.enqueueable.Enqueueable" title="workflow_engine.mixins.enqueueable.Enqueueable"><code class="xref py py-class docutils literal"><span class="pre">Enqueueable</span></code></a></p>
+<p>Models can mixin <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.stateful.Stateful" title="workflow_engine.mixins.stateful.Stateful"><code class="xref py py-class docutils literal"><span class="pre">Stateful</span></code></a> in order to
+make use of the <a class="reference external" href="https://github.com/viewflow/django-fsm">django_fsm</a> <a class="reference internal" href="glossary.html#term-finite-state-machine"><span class="xref std std-term">finite state machine</span></a> package to
+track an <a class="reference internal" href="glossary.html#term-object-state"><span class="xref std std-term">object state</span></a> distinct from the <a class="reference internal" href="glossary.html#term-workflow-state"><span class="xref std std-term">workflow state</span></a>.</p>
+<p>Models that may be archived should use the archivable mixin,
+this will also provide a model manager that will filter out archived
+instances by default.</p>
+<p>Models that will have <a class="reference internal" href="glossary.html#term-well-known-file"><span class="xref std std-term">well known file</span></a> or <a class="reference internal" href="glossary.html#term-configuration"><span class="xref std std-term">configuration</span></a> objects
+attached should mixin <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.has_well_known_files.HasWellKnownFiles" title="workflow_engine.mixins.has_well_known_files.HasWellKnownFiles"><code class="xref py py-class docutils literal"><span class="pre">HasWellKnownFiles</span></code></a>
+or <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.configurable.Configurable" title="workflow_engine.mixins.configurable.Configurable"><code class="xref py py-class docutils literal"><span class="pre">Configurable</span></code></a></p>
+<p>Models with human-readable names and descriptions
+should mixin <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.nameable.Nameable" title="workflow_engine.mixins.nameable.Nameable"><code class="xref py py-class docutils literal"><span class="pre">Nameable</span></code></a></p>
+<p>Some of the mixins such as <a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable" title="workflow_engine.mixins.runnable.Runnable"><code class="xref py py-class docutils literal"><span class="pre">Runnable</span></code></a>
+are intended for internal workflow_engine models.</p>
+</div>
+<div class="section" id="creating-strategies">
+<h2>Creating Strategies<a class="headerlink" href="#creating-strategies" title="Permalink to this headline">¶</a></h2>
+<p>A workflow <a class="reference internal" href="glossary.html#term-strategy"><span class="xref std std-term">strategy</span></a> is a translation layer from a database query and
+an operation performed in a workflow node. There are four main types of strategies.</p>
+<p>An <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.execution_strategy.ExecutionStrategy" title="workflow_engine.strategies.execution_strategy.ExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">ExecutionStrategy</span></code></a>
+is used to create input and parse output JSON files to pass to
+modules that are run as tasks on a compute cluster.
+Override <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.execution_strategy.ExecutionStrategy.get_input" title="workflow_engine.strategies.execution_strategy.ExecutionStrategy.get_input"><code class="xref py py-func docutils literal"><span class="pre">get_input()</span></code></a>
+to create the input JSON file,
+and <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.base_strategy.BaseStrategy.on_finishing" title="workflow_engine.strategies.base_strategy.BaseStrategy.on_finishing"><code class="xref py py-func docutils literal"><span class="pre">on_finishing()</span></code></a>
+to process the output JSON file.</p>
+<p>The input file is generated and the output file is checked by the workflow engine,
+but when it is necessary to avoid touching the filesystem,
+override <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.execution_strategy.ExecutionStrategy.get_input_file" title="workflow_engine.strategies.execution_strategy.ExecutionStrategy.get_input_file"><code class="xref py py-func docutils literal"><span class="pre">get_input_file()</span></code></a>
+and <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.execution_strategy.ExecutionStrategy.get_output_file" title="workflow_engine.strategies.execution_strategy.ExecutionStrategy.get_output_file"><code class="xref py py-func docutils literal"><span class="pre">get_output_file()</span></code></a>
+to return None. This feature can be used during testing or to implement
+message-only communication with the worklow worker process.
+See <a class="reference internal" href="blue_sky.strategies.html#blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy" title="blue_sky.strategies.mock_execution_strategy.MockExecutionStrategy"><code class="xref py py-class docutils literal"><span class="pre">MockExecutionStrategy</span></code></a>
+for an example of this technique.</p>
+<p>The mixin <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.input_config_mixin.InputConfigMixin" title="workflow_engine.strategies.input_config_mixin.InputConfigMixin"><code class="xref py py-class docutils literal"><span class="pre">InputConfigMixin</span></code></a>
+can be used to read an initial input JSON from
+a <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.configuration.Configuration" title="workflow_engine.models.configuration.Configuration"><code class="xref py py-class docutils literal"><span class="pre">Configuration</span></code></a></p>
+<p>To change the type of <a class="reference internal" href="glossary.html#term-enqueued-object"><span class="xref std std-term">enqueued object</span></a> from one <a class="reference internal" href="glossary.html#term-workflow-node"><span class="xref std std-term">workflow node</span></a>
+to the next, override
+<a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.base_strategy.BaseStrategy.transform_objects_for_queue" title="workflow_engine.strategies.base_strategy.BaseStrategy.transform_objects_for_queue"><code class="xref py py-func docutils literal"><span class="pre">transform_objects_for_queue()</span></code></a>
+This can be used flexibly to implement workflow nodes that collect workflow nodes
+into an associated group. Or it may be used to hold enqueued objects until an
+associated object has finished processing in a different branch of the workflow.
+<a class="reference internal" href="blue_sky.strategies.html#blue_sky.strategies.mock_analyze.MockAnalyze.transform_objects_for_queue" title="blue_sky.strategies.mock_analyze.MockAnalyze.transform_objects_for_queue"><code class="xref py py-func docutils literal"><span class="pre">blue_sky.strategies.mock_analyze.MockAnalyze.transform_objects_for_queue()</span></code></a>
+is a demonstration of this technique.</p>
+<p>If the enqueued object to be tracked as a job in the workflow differs from the enqueued
+object sent as a task to the compute cluster,
+overriding <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.base_strategy.BaseStrategy.get_task_objects_for_queue" title="workflow_engine.strategies.base_strategy.BaseStrategy.get_task_objects_for_queue"><code class="xref py py-func docutils literal"><span class="pre">get_task_objects_for_queue()</span></code></a>
+can control the mapping. Note that the workflow has more flexibility for handling jobs
+than tasks, so the default of one task per job is recommended.
+The use of <a class="reference internal" href="blue_sky.models.html#blue_sky.models.observation_group.ObservationGroup" title="blue_sky.models.observation_group.ObservationGroup"><code class="xref py py-class docutils literal"><span class="pre">ObservationGroup</span></code></a>
+and <a class="reference internal" href="blue_sky.models.html#blue_sky.models.group_assignment.GroupAssignment" title="blue_sky.models.group_assignment.GroupAssignment"><code class="xref py py-class docutils literal"><span class="pre">GroupAssignment</span></code></a>
+in the <a class="reference internal" href="blue_sky.strategies.html#blue_sky.strategies.mock_process_grouped_observations.MockProcessGroupedObservations" title="blue_sky.strategies.mock_process_grouped_observations.MockProcessGroupedObservations"><code class="xref py py-class docutils literal"><span class="pre">MockProcessGroupedObservations</span></code></a>
+strategy is an example of how to process a group of jobs rather than using multiple tasks per job.</p>
+<p>A <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.wait_strategy.WaitStrategy" title="workflow_engine.strategies.wait_strategy.WaitStrategy"><code class="xref py py-class docutils literal"><span class="pre">WaitStrategy</span></code></a> can be used
+to temporarily suspend the progression of an <a class="reference internal" href="glossary.html#term-enqueued-object"><span class="xref std std-term">enqueued object</span></a> through a
+<a class="reference internal" href="glossary.html#term-workflow"><span class="xref std std-term">workflow</span></a>. This model is deprecated because the same functionality can
+be implemented by overriding <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.base_strategy.BaseStrategy.must_wait" title="workflow_engine.strategies.base_strategy.BaseStrategy.must_wait"><code class="xref py py-func docutils literal"><span class="pre">must_wait()</span></code></a>
+to return True. This may be used to wait for a manual update (often an update to
+the <a class="reference internal" href="glossary.html#term-object-state"><span class="xref std std-term">object state</span></a> of a model that uses the
+<a class="reference internal" href="workflow_engine.mixins.html#workflow_engine.mixins.stateful.Stateful" title="workflow_engine.mixins.stateful.Stateful"><code class="xref py py-class docutils literal"><span class="pre">Stateful</span></code></a> mixin).
+It may also be used to wait for an automatic trigger, such as a transition in
+the <a class="reference internal" href="glossary.html#term-workflow-state"><span class="xref std std-term">workflow state</span></a> and/or <a class="reference internal" href="glossary.html#term-object-state"><span class="xref std std-term">object state</span></a> of an associated object.
+<a class="reference internal" href="blue_sky.strategies.html#blue_sky.strategies.mock_analyze.MockAnalyze.must_wait" title="blue_sky.strategies.mock_analyze.MockAnalyze.must_wait"><code class="xref py py-func docutils literal"><span class="pre">blue_sky.strategies.mock_analyze.MockAnalyze.must_wait()</span></code></a> is an
+illustration of this technique.</p>
+<p>An <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.ingest_strategy.IngestStrategy" title="workflow_engine.strategies.ingest_strategy.IngestStrategy"><code class="xref py py-class docutils literal"><span class="pre">IngestStrategy</span></code></a> may be
+used to receive celery messages from outside the workflow. It is intended to
+create new databased objects using Django models and then enqueueing them at
+the start of a <a class="reference internal" href="glossary.html#term-workflow"><span class="xref std std-term">workflow</span></a>.
+Override <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.ingest_strategy.IngestStrategy.create_enqueued_object" title="workflow_engine.strategies.ingest_strategy.IngestStrategy.create_enqueued_object"><code class="xref py py-func docutils literal"><span class="pre">create_enqueued_object()</span></code></a>
+to parse the ingest message and update the database.
+Override <a class="reference internal" href="workflow_engine.strategies.html#workflow_engine.strategies.ingest_strategy.IngestStrategy.generate_response" title="workflow_engine.strategies.ingest_strategy.IngestStrategy.generate_response"><code class="xref py py-func docutils literal"><span class="pre">generate_response()</span></code></a>
+to serialize the body of a response message to return to the ingest message sender.
+<a class="reference internal" href="blue_sky.strategies.html#blue_sky.strategies.mock_ingest.MockIngest" title="blue_sky.strategies.mock_ingest.MockIngest"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.strategies.mock_ingest.MockIngest</span></code></a> is an illustration of an
+ingest strategy. Note that an ingest strategy is only one technique for
+creating model objects. For development or other reasons, a Django management command,
+a <a class="reference external" href="https://django-extensions.readthedocs.io/en/latest/shell_plus.html">Django shell_plus</a>
+script or notebook,
+a custom <a class="reference external" href="https://docs.djangoproject.com/en/2.2/topics/http/views/">Django view</a>
+or an <a class="reference external" href="https://docs.djangoproject.com/en/2.2/ref/contrib/admin/actions/">admin action</a> could all create an object
+and then enqueue it.</p>
 </div>
 <div class="section" id="creating-a-workflow">
 <h2>Creating a Workflow<a class="headerlink" href="#creating-a-workflow" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>Django strategy</li>
-<li>Workflow YAML</li>
-</ul>
-</div></blockquote>
+<p>A <a class="reference internal" href="glossary.html#term-workflow"><span class="xref std std-term">workflow</span></a> is built up from a set of <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.workflow_node.WorkflowNode" title="workflow_engine.models.workflow_node.WorkflowNode"><code class="xref py py-class docutils literal"><span class="pre">WorkflowNode</span></code></a>
+objects connected by :class`~workflow_engine.models.workflow_edge.WorkflowEdge`
+connections in the form of a <a class="reference internal" href="glossary.html#term-directed-acyclic-graph"><span class="xref std std-term">directed acyclic graph</span></a> (DAG). Note that the
+workflow engine does not currently implement checks for cycles, but the workflow
+can be inspected visually in the workflow list view of the admin console.</p>
+<p>Each <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.workflow_node.WorkflowNode" title="workflow_engine.models.workflow_node.WorkflowNode"><code class="xref py py-class docutils literal"><span class="pre">WorkflowNode</span></code></a> is associated
+with a <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.job_queue.JobQueue" title="workflow_engine.models.job_queue.JobQueue"><code class="xref py py-class docutils literal"><span class="pre">JobQueue</span></code></a> which in turn is
+associated with a <a class="reference internal" href="glossary.html#term-strategy"><span class="xref std std-term">strategy</span></a>
+and an <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.executable.Executable" title="workflow_engine.models.executable.Executable"><code class="xref py py-class docutils literal"><span class="pre">Executable</span></code></a>.</p>
+<p>The <a class="reference internal" href="workflow_engine.html#workflow_engine.workflow_controller.WorkflowController" title="workflow_engine.workflow_controller.WorkflowController"><code class="xref py py-class docutils literal"><span class="pre">WorkflowController</span></code></a> takes
+<span class="xref std std-term">enqueued objects</span> off the job queues in batches. An enqueued_object in
+a particular job queue is represented by a <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.job.Job" title="workflow_engine.models.job.Job"><code class="xref py py-class docutils literal"><span class="pre">Job</span></code></a>
+object, which is processed through a strategy to create and process input parameters
+and output parameters and update the enqueued object state.
+One or more <a class="reference internal" href="workflow_engine.models.html#workflow_engine.models.task.Task" title="workflow_engine.models.task.Task"><code class="xref py py-class docutils literal"><span class="pre">Task</span></code></a> objects and the executable
+are then used to create a script to submit to the remote worker on a compute cluster
+or other remote system.</p>
+<p>A workflow may be defined in a <a class="reference external" href="https://yaml.org/">YAML</a> syntax that can be
+parsed by the <a class="reference internal" href="workflow_engine.html#workflow_engine.workflow_config.WorkflowConfig" title="workflow_engine.workflow_config.WorkflowConfig"><code class="xref py py-class docutils literal"><span class="pre">WorkflowConfig</span></code></a>.
+The syntax is described in more detail on the <a class="reference internal" href="workflows.html#workflows"><span class="std std-ref">Workflows</span></a> page.</p>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">workflow_engine.management.commands.import_workflows</span></code>
+<a class="reference external" href="https://docs.djangoproject.com/en/2.2/howto/custom-management-commands/">custom Django management command</a>
+may be used to read in a workflow_configuration.yml.
+There is an example in the config direcory of the reference application:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">management</span><span class="o">.</span><span class="n">manage</span> <span class="n">import_workflows</span> <span class="n">blue_sky</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">workflow_config</span><span class="o">.</span><span class="n">yml</span>
+</pre></div>
+</div>
+<p>Note that the $DJANGO_SETTINGS_MODULE must be properly set for this command to find the database.</p>
 </div>
 <div class="section" id="customizing-the-admin-ui">
 <h2>Customizing the Admin UI<a class="headerlink" href="#customizing-the-admin-ui" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>Django Admin Plugin</li>
-</ul>
-</div></blockquote>
+<p>Some activities are easier to implement as a standard web list view or detail view.
+For this the`Django Admin Plugin &lt;<a class="reference external" href="https://docs.djangoproject.com/en/2.2/ref/contrib/admin/">https://docs.djangoproject.com/en/2.2/ref/contrib/admin/</a>&gt;`_
+is useful.  The workflow engine has several customized admin classes, incluging the
+<a class="reference internal" href="workflow_engine.admin.html#workflow_engine.admin.job_admin.JobAdmin" title="workflow_engine.admin.job_admin.JobAdmin"><code class="xref py py-class docutils literal"><span class="pre">JobAdmin</span></code></a> and <a class="reference internal" href="workflow_engine.admin.html#workflow_engine.admin.job_admin.JobAdmin" title="workflow_engine.admin.job_admin.JobAdmin"><code class="xref py py-class docutils literal"><span class="pre">JobAdmin</span></code></a>.
+The <a class="reference internal" href="workflow_engine.admin.html#workflow_engine.admin.workflow_admin.WorkflowAdmin" title="workflow_engine.admin.workflow_admin.WorkflowAdmin"><code class="xref py py-class docutils literal"><span class="pre">WorkflowAdmin</span></code></a> includes a user interface view
+that draws the graph of active workflows.</p>
+<p>The admin console may be used to hand-edit workflows during development.
+It is possible to create executables, job_queues, workflow nodes, connect them with
+edges and attach them to workflows using the admin views.</p>
+<p>It is also possible to filter workflow objects and run actions such as killing or
+starting a job using the admin console. Default functionality includew sorting and paging.</p>
+<p>The reference application has exmaples of how to customize the behavior and
+available actions of the admin console for application models.
+<a class="reference internal" href="blue_sky.admin.html#blue_sky.admin.observation_group_admin.ObservationGroupAdmin" title="blue_sky.admin.observation_group_admin.ObservationGroupAdmin"><code class="xref py py-class docutils literal"><span class="pre">blue_sky.admin.observation_group_admin.ObservationGroupAdmin</span></code></a> shows
+how simple it is to specify which columns to display, how to add a filter
+and how to add an action in a few lines of code.</p>
 </div>
 </div>
 
@@ -125,33 +238,31 @@ to manage and orchestrate projects.</p>
 <li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>

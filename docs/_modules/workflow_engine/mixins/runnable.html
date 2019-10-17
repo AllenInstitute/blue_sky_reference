@@ -91,12 +91,6 @@
 
     <span class="n">_log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;workflow_engine.mixins.runnable&#39;</span><span class="p">)</span>
 
-    <span class="n">run_state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
-        <span class="s1">&#39;workflow_engine.RunState&#39;</span><span class="p">,</span>
-        <span class="n">on_delete</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">CASCADE</span>
-    <span class="p">)</span>
-    <span class="sd">&#39;&#39;&#39;deprecated for running state&#39;&#39;&#39;</span>
-
     <span class="n">running_state</span> <span class="o">=</span> <span class="n">FSMField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">STATE</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span>
     <span class="sd">&#39;&#39;&#39;runnable objects automatically get a database field added&#39;&#39;&#39;</span>
 
@@ -136,9 +130,16 @@
             <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">PROCESS_KILLED</span><span class="p">,</span>
         <span class="p">]</span></div>
 
-<div class="viewcode-block" id="Runnable.get_run_state_id_for"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.get_run_state_id_for">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_run_state_id_for</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">RunState</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">id</span></div>
+<div class="viewcode-block" id="Runnable.in_failed_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.in_failed_state">[docs]</a>    <span class="k">def</span> <span class="nf">in_failed_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">run_state_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED</span> <span class="ow">or</span>
+                <span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">PROCESS_KILLED</span> <span class="ow">or</span>
+                <span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED_EXECUTION</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runnable.get_color_class"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.get_color_class">[docs]</a>    <span class="k">def</span> <span class="nf">get_color_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;color_&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">color</span></div>
 
 <div class="viewcode-block" id="Runnable.is_failed_type_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.is_failed_type_state">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">is_failed_type_state</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">job_state_name</span><span class="p">):</span>
@@ -154,6 +155,21 @@
             <span class="n">job_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">RUNNING</span> <span class="ow">or</span>
             <span class="n">job_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">QUEUED</span> <span class="ow">or</span>
             <span class="n">job_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FINISHED_EXECUTION</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runnable.can_rerun"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.can_rerun">[docs]</a>    <span class="k">def</span> <span class="nf">can_rerun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">run_state_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">PENDING</span> <span class="ow">or</span>
+                <span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED</span> <span class="ow">or</span>
+                <span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">SUCCESS</span> <span class="ow">or</span>
+                <span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">PROCESS_KILLED</span> <span class="ow">or</span>
+                <span class="n">run_state_name</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED_EXECUTION</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runnable.in_pending_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.in_pending_state">[docs]</a>    <span class="k">def</span> <span class="nf">in_pending_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">running_state</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Runnable.in_success_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.in_success_state">[docs]</a>    <span class="k">def</span> <span class="nf">in_success_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">running_state</span> <span class="o">==</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Runnable.get_start_run_time"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.get_start_run_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_start_run_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
@@ -199,8 +215,6 @@
 
 
 <div class="viewcode-block" id="Runnable.set_pending_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_pending_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_pending_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_pending_state</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reset_pending</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset_pending</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -215,8 +229,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Runnable.set_finished_execution_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_finished_execution_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_finished_execution_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_finished_execution_state</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">finish</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span> <span class="o">!=</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED_EXECUTION</span><span class="p">:</span>
@@ -232,9 +244,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Runnable.set_queued_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_queued_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_queued_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pbs_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_queued_state</span><span class="p">()</span>
-
+<div class="viewcode-block" id="Runnable.set_queued_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_queued_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_queued_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">submit_to_queue</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">submit_to_queue</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span> <span class="o">!=</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED_EXECUTION</span><span class="p">:</span>
@@ -256,8 +266,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Runnable.set_failed_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_failed_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_failed_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_failed_state</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span> <span class="o">!=</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED_EXECUTION</span><span class="p">:</span>
@@ -273,8 +281,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Runnable.set_failed_execution_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_failed_execution_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_failed_execution_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_failed_execution_state</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fail_execution</span><span class="p">):</span>
             <span class="n">Runnable</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s2">&quot;transition to FAILED_EXECUTION from </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -292,8 +298,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Runnable.set_running_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_running_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_running_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_running_state</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_running</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">start_running</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span> <span class="o">!=</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED_EXECUTION</span><span class="p">:</span>
@@ -311,8 +315,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Runnable.set_success_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_success_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_success_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_success_state</span><span class="p">()</span>
-
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">succeed</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">succeed</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_state</span> <span class="o">!=</span> <span class="n">Runnable</span><span class="o">.</span><span class="n">STATE</span><span class="o">.</span><span class="n">FAILED_EXECUTION</span><span class="p">:</span>
@@ -328,7 +330,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Runnable.set_process_killed_state"><a class="viewcode-back" href="../../../workflow_engine.mixins.html#workflow_engine.mixins.runnable.Runnable.set_process_killed_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_process_killed_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="o">.</span><span class="n">get_process_killed_state</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">can_proceed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kill_process</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">kill_process</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -413,7 +414,6 @@
         <span class="sd">&#39;&#39;&#39;Force transition into an offline state&#39;&#39;&#39;</span>
         <span class="k">pass</span></div></div>
 
-<span class="kn">from</span> <span class="nn">workflow_engine.models</span> <span class="k">import</span> <span class="n">RunState</span>
 </pre></div>
 
           </div>
@@ -429,33 +429,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.strategies.html">blue_sky.strategies package</a></li>

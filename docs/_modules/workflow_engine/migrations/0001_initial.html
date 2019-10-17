@@ -75,6 +75,28 @@
 <span class="kn">import</span> <span class="nn">django.db.models.deletion</span>
 
 
+<div class="viewcode-block" id="populate_database"><a class="viewcode-back" href="../../../workflow_engine.migrations.html#workflow_engine.migrations.0001_initial.populate_database">[docs]</a><span class="k">def</span> <span class="nf">populate_database</span><span class="p">(</span><span class="n">apps</span><span class="p">,</span> <span class="n">schema_editor</span><span class="p">):</span>
+    <span class="n">RunState</span> <span class="o">=</span> <span class="n">apps</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span>
+        <span class="s1">&#39;workflow_engine&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;RunState&#39;</span>
+    <span class="p">)</span>
+
+    <span class="n">run_states</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;PENDING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;QUEUED&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;RUNNING&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;FINISHED_EXECUTION&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;FAILED_EXECUTION&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;FAILED&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;SUCCESS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;PROCESS_KILLED&#39;</span>
+    <span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">run_state_name</span> <span class="ow">in</span> <span class="n">run_states</span><span class="p">:</span>
+        <span class="n">run_state</span> <span class="o">=</span> <span class="n">RunState</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">run_state_name</span><span class="p">)</span>
+        <span class="n">run_state</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+
 <div class="viewcode-block" id="Migration"><a class="viewcode-back" href="../../../workflow_engine.migrations.html#workflow_engine.migrations.0001_initial.Migration">[docs]</a><span class="k">class</span> <span class="nc">Migration</span><span class="p">(</span><span class="n">migrations</span><span class="o">.</span><span class="n">Migration</span><span class="p">):</span>
 
     <span class="n">initial</span> <span class="o">=</span> <span class="kc">True</span>
@@ -247,6 +269,10 @@
             <span class="n">name</span><span class="o">=</span><span class="s1">&#39;well_known_file&#39;</span><span class="p">,</span>
             <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">on_delete</span><span class="o">=</span><span class="n">django</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">deletion</span><span class="o">.</span><span class="n">CASCADE</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s1">&#39;workflow_engine.WellKnownFile&#39;</span><span class="p">),</span>
         <span class="p">),</span>
+        <span class="n">migrations</span><span class="o">.</span><span class="n">RunPython</span><span class="p">(</span>
+            <span class="n">populate_database</span><span class="p">,</span>
+            <span class="n">reverse_code</span><span class="o">=</span><span class="n">migrations</span><span class="o">.</span><span class="n">RunPython</span><span class="o">.</span><span class="n">noop</span>
+        <span class="p">)</span>
     <span class="p">]</span></div>
 </pre></div>
 
@@ -263,33 +289,31 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../workflows.html">Workflows</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../strategies.html">Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../messaging.html">Blue Sky Messaging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../develop.html">Developers Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../workflow_engine.html">Source Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.admin.html">workflow_engine.admin package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.management.html">workflow_engine.management package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.models.html">workflow_engine.models package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.serializers.html">workflow_engine.serializers package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.views.html">workflow_engine.views package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_engine.worker.html">workflow_engine.worker package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../workflow_engine.worker.qsub.html">workflow_engine.worker.qsub package</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../workflow_client.html">Client Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.ingest.html">workflow_client.ingest package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.nb_utils.html">workflow_client.nb_utils package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../workflow_client.tasks.html">workflow_client.tasks package</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../blue_sky.html">Demo App Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.admin.html">blue_sky.admin package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.celery.html">blue_sky.celery package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.migrations.html">blue_sky.migrations package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.models.html">blue_sky.models package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../blue_sky.strategies.html">blue_sky.strategies package</a></li>
