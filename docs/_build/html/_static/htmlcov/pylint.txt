@@ -1,0 +1,887 @@
+************* Module workflow_engine.log_holder
+/blue_sky_workflow_engine/workflow_engine/log_holder.py:38:0: R0205: Class 'LogHolder' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/log_holder.py:38:0: R0902: Too many instance attributes (10/7) (too-many-instance-attributes)
+/blue_sky_workflow_engine/workflow_engine/log_holder.py:38:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+/blue_sky_workflow_engine/workflow_engine/log_holder.py:36:0: W0611: Unused FileHolder imported from workflow_engine.file_holder (unused-import)
+************* Module workflow_engine.blue_sky_state_machine
+/blue_sky_workflow_engine/workflow_engine/blue_sky_state_machine.py:44:0: R1707: Disallow trailing comma tuple (trailing-comma-tuple)
+/blue_sky_workflow_engine/workflow_engine/blue_sky_state_machine.py:45:0: R1707: Disallow trailing comma tuple (trailing-comma-tuple)
+/blue_sky_workflow_engine/workflow_engine/blue_sky_state_machine.py:43:4: W0231: __init__ method from base class 'FailedExecutionException' is not called (super-init-not-called)
+/blue_sky_workflow_engine/workflow_engine/blue_sky_state_machine.py:61:8: E1137: 'self.transitions' does not support item assignment (unsupported-assignment-operation)
+/blue_sky_workflow_engine/workflow_engine/blue_sky_state_machine.py:63:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/blue_sky_state_machine.py:72:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.import_class
+/blue_sky_workflow_engine/workflow_engine/import_class.py:46:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/import_class.py:49:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/import_class.py:49:8: W1505: Using deprecated method warn() (deprecated-method)
+************* Module workflow_engine.file_holder
+/blue_sky_workflow_engine/workflow_engine/file_holder.py:68:0: W1401: Anomalous backslash in string: '\g'. String constant might be missing an r prefix. (anomalous-backslash-in-string)
+/blue_sky_workflow_engine/workflow_engine/file_holder.py:72:0: W1401: Anomalous backslash in string: '\g'. String constant might be missing an r prefix. (anomalous-backslash-in-string)
+/blue_sky_workflow_engine/workflow_engine/file_holder.py:76:0: W1401: Anomalous backslash in string: '\g'. String constant might be missing an r prefix. (anomalous-backslash-in-string)
+/blue_sky_workflow_engine/workflow_engine/file_holder.py:80:0: W1401: Anomalous backslash in string: '\g'. String constant might be missing an r prefix. (anomalous-backslash-in-string)
+/blue_sky_workflow_engine/workflow_engine/file_holder.py:84:0: W1401: Anomalous backslash in string: '\g'. String constant might be missing an r prefix. (anomalous-backslash-in-string)
+/blue_sky_workflow_engine/workflow_engine/file_holder.py:47:0: R0205: Class 'FileHolder' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/file_holder.py:38:0: W0611: Unused timezone imported from django.utils (unused-import)
+************* Module workflow_engine.urls
+/blue_sky_workflow_engine/workflow_engine/urls.py:36:0: W0611: Unused url imported from django.conf.urls (unused-import)
+/blue_sky_workflow_engine/workflow_engine/urls.py:37:0: W0611: Unused path imported from django.urls (unused-import)
+/blue_sky_workflow_engine/workflow_engine/urls.py:38:0: W0611: Unused auth imported from django.contrib (unused-import)
+************* Module workflow_engine.workflow_config
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:220:2: W0511: TODO: check for uniqueness (fixme)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:271:2: W0511: TODO: deprecated (fixme)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:46:4: R0913: Too many arguments (6/5) (too-many-arguments)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:67:4: R0914: Too many local variables (18/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:93:12: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:67:4: R0912: Too many branches (22/12) (too-many-branches)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:166:4: R0914: Too many local variables (23/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:222:16: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/workflow_config.py:284:20: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+************* Module workflow_engine.provenance
+/blue_sky_workflow_engine/workflow_engine/provenance.py:8:0: R0205: Class 'Provenance' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/provenance.py:38:16: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/provenance.py:44:14: W0613: Unused argument 'blue_sky_configuration_file' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/provenance.py:5:0: W0611: Unused import logging (unused-import)
+************* Module workflow_engine.workflow_controller
+/blue_sky_workflow_engine/workflow_engine/workflow_controller.py:98:2: W0511: TODO: this is the signal from an out-of-band job (fixme)
+/blue_sky_workflow_engine/workflow_engine/workflow_controller.py:49:0: R0205: Class 'WorkflowController' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/workflow_controller.py:147:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/workflow_controller.py:171:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/workflow_controller.py:270:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/workflow_controller.py:286:8: R1705: Unnecessary "else" after "return" (no-else-return)
+/blue_sky_workflow_engine/workflow_engine/workflow_controller.py:383:4: R0913: Too many arguments (6/5) (too-many-arguments)
+************* Module workflow_engine.state_machine_yaml
+/blue_sky_workflow_engine/workflow_engine/state_machine_yaml.py:12:2: W0511: TODO: clean this up - enum? (fixme)
+************* Module workflow_engine.wsgi
+/blue_sky_workflow_engine/workflow_engine/wsgi.py:1:16: W0613: Unused argument 'env' (unused-argument)
+************* Module workflow_engine.ui_server
+/blue_sky_workflow_engine/workflow_engine/ui_server.py:7:0: R0205: Class 'DjangoApplication' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/ui_server.py:11:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.workflow_status
+/blue_sky_workflow_engine/workflow_engine/workflow_status.py:81:0: R0205: Class 'WorkflowStatus' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/workflow_status.py:97:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/workflow_status.py:173:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.workflow_json_serializer
+/blue_sky_workflow_engine/workflow_engine/workflow_json_serializer.py:12:0: R0205: Class 'WorkflowJsonSerializer' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/workflow_json_serializer.py:14:4: R0914: Too many local variables (16/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/workflow_json_serializer.py:87:20: W0106: Expression "WorkflowEdge.objects.get_or_create(workflow=workflows[k], source=nodes[e[0]], sink=nodes[e[1]])[0]" is assigned to nothing (expression-not-assigned)
+************* Module workflow_engine.views.shared
+/blue_sky_workflow_engine/workflow_engine/views/shared.py:61:19: W0622: Redefining built-in 'input' (redefined-builtin)
+/blue_sky_workflow_engine/workflow_engine/views/shared.py:68:7: R1714: Consider merging these comparisons with "in" to "sort in (column_name, '-' + column_name)" (consider-using-in)
+************* Module workflow_engine.views.home_view
+/blue_sky_workflow_engine/workflow_engine/views/home_view.py:76:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/views/home_view.py:39:0: W0611: Unused reverse imported from django.urls (unused-import)
+************* Module workflow_engine.views.executable_view
+/blue_sky_workflow_engine/workflow_engine/views/executable_view.py:116:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/executable_view.py:117:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/executable_view.py:111:8: W0621: Redefining name 'executables' from outer scope (line 99) (redefined-outer-name)
+/blue_sky_workflow_engine/workflow_engine/views/executable_view.py:115:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/executable_view.py:125:24: W0621: Redefining name 'context' from outer scope (line 46) (redefined-outer-name)
+************* Module workflow_engine.views.task_view
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:168:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:169:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:192:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:193:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:224:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:225:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:259:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:260:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:111:19: W0621: Redefining name 'context' from outer scope (line 48) (redefined-outer-name)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:167:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:191:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:223:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:258:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/task_view.py:253:23: W0703: Catching too general exception Exception (broad-except)
+************* Module workflow_engine.views.log_view
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:90:0: W0311: Bad indentation. Found 7 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:91:0: W0311: Bad indentation. Found 7 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:54:0: R0914: Too many local variables (20/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:80:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:61:4: W0612: Unused variable 'include_input_file' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:62:4: W0612: Unused variable 'include_output_file' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:63:4: W0612: Unused variable 'include_executable_file' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:64:4: W0612: Unused variable 'include_log_file' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:65:4: W0612: Unused variable 'include_command' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:66:4: W0612: Unused variable 'error_message' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:67:4: W0612: Unused variable 'contained_error' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:107:45: W0621: Redefining name 'context' from outer scope (line 50) (redefined-outer-name)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:120:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:118:8: E1111: Assigning result of a function call, where the function has no return (assignment-from-no-return)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:127:40: W0621: Redefining name 'context' from outer scope (line 50) (redefined-outer-name)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:127:0: R0914: Too many local variables (16/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:206:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:127:0: R0912: Too many branches (17/12) (too-many-branches)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:127:0: R0915: Too many statements (58/50) (too-many-statements)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:220:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/log_view.py:223:11: R1714: Consider merging these comparisons with "in" to "extension in ('.py', '.rb', '.cpp', '.sh')" (consider-using-in)
+************* Module workflow_engine.views.job_queue_view
+/blue_sky_workflow_engine/workflow_engine/views/job_queue_view.py:71:24: W0621: Redefining name 'context' from outer scope (line 46) (redefined-outer-name)
+************* Module workflow_engine.views.monitor_view
+/blue_sky_workflow_engine/workflow_engine/views/monitor_view.py:7:0: R0901: Too many ancestors (9/7) (too-many-ancestors)
+************* Module workflow_engine.views.job_view
+/blue_sky_workflow_engine/workflow_engine/views/job_view.py:126:18: W0621: Redefining name 'context' from outer scope (line 59) (redefined-outer-name)
+/blue_sky_workflow_engine/workflow_engine/views/job_view.py:136:4: W0612: Unused variable 'r' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/job_view.py:143:4: W0612: Unused variable 'r' (unused-variable)
+************* Module workflow_engine.views.workflow_view
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:278:2: W0511: TODO: get some kind of resonse here (fixme)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:423:2: W0511: TODO: count via the database (fixme)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:82:8: W0621: Redefining name 'workflows' from outer scope (line 71) (redefined-outer-name)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:108:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:118:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:121:12: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:238:4: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:243:4: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:294:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:430:21: W0613: Unused argument 'workflow_name' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:462:11: R5102: Instead of HttpResponse(content_type='application/json') use JsonResponse() (http-response-with-content-type-json)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:472:0: R0914: Too many local variables (18/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:481:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:486:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/views/workflow_view.py:502:4: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
+************* Module workflow_engine.views.decorators
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:64:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:65:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:92:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:93:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:126:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:127:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:162:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:163:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:164:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:165:0: W0311: Bad indentation. Found 20 spaces, expected 16 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:63:19: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:91:19: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:125:19: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/decorators.py:161:19: W0703: Catching too general exception Exception (broad-except)
+************* Module workflow_engine.views.ingest_view
+/blue_sky_workflow_engine/workflow_engine/views/ingest_view.py:40:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/ingest_view.py:41:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/ingest_view.py:9:50: W0622: Redefining built-in 'format' (redefined-builtin)
+/blue_sky_workflow_engine/workflow_engine/views/ingest_view.py:39:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/ingest_view.py:29:12: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+************* Module workflow_engine.views.record_view
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:103:0: W0311: Bad indentation. Found 16 spaces, expected 12 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:104:0: W0311: Bad indentation. Found 16 spaces, expected 12 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:106:0: W0311: Bad indentation. Found 16 spaces, expected 12 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:107:0: W0311: Bad indentation. Found 16 spaces, expected 12 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:323:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:324:0: W0311: Bad indentation. Found 12 spaces, expected 8 (bad-indentation)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:164:2: W0511: TODO: replace w/ workflow config (fixme)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:231:2: W0511: TODO: make this a workflow_controller method (fixme)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:102:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:105:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:105:15: W0705: Catching previously caught exception type Exception (duplicate-except)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:94:16: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:53:4: R0912: Too many branches (14/12) (too-many-branches)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:204:0: R0914: Too many local variables (18/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:260:0: R0914: Too many local variables (16/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:322:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:284:13: R1714: Consider merging these comparisons with "in" to "record_type not in ('executable', 'job_queue', 'workflow_show')" (consider-using-in)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:266:4: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:266:4: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:266:4: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:260:0: R0912: Too many branches (21/12) (too-many-branches)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:260:0: R0915: Too many statements (55/50) (too-many-statements)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:333:0: R0914: Too many local variables (31/15) (too-many-locals)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:342:8: W0612: Unused variable 'message' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:349:12: W0612: Unused variable 'pbs_processors' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:350:12: W0612: Unused variable 'pbs_walltimes' (unused-variable)
+/blue_sky_workflow_engine/workflow_engine/views/record_view.py:333:0: R0915: Too many statements (81/50) (too-many-statements)
+************* Module workflow_engine.views.job_grid
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:14:0: R0205: Class 'JobGrid' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:14:0: R0902: Too many instance attributes (11/7) (too-many-instance-attributes)
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:87:12: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:66:8: R1702: Too many nested blocks (6/5) (too-many-nested-blocks)
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:155:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:158:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:56:8: W0201: Attribute 'job_df' defined outside __init__ (attribute-defined-outside-init)
+/blue_sky_workflow_engine/workflow_engine/views/job_grid.py:94:8: W0201: Attribute 'sorted_nodes_df' defined outside __init__ (attribute-defined-outside-init)
+************* Module workflow_engine.models.job_queue
+/blue_sky_workflow_engine/workflow_engine/models/job_queue.py:60:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+************* Module workflow_engine.models.datafix
+/blue_sky_workflow_engine/workflow_engine/models/datafix.py:142:2: W0511: TODO: deprecate - hardcoded development (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/datafix.py:60:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/datafix.py:99:20: E1120: No value for argument 'module' in staticmethod call (no-value-for-parameter)
+/blue_sky_workflow_engine/workflow_engine/models/datafix.py:120:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/models/datafix.py:140:12: W0122: Use of exec (exec-used)
+/blue_sky_workflow_engine/workflow_engine/models/datafix.py:138:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.models.workflow
+/blue_sky_workflow_engine/workflow_engine/models/workflow.py:48:2: W0511: TODO: deprecate, different graph model (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/workflow.py:54:2: W0511: TODO: move this to the view (fixme)
+************* Module workflow_engine.models.executable
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:96:2: W0511: TODO: factor into a spark_moab helper class (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:103:8: R1705: Unnecessary "elif" after "return" (no-else-return)
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:107:12: E1101: Instance of 'Executable' has no 'set_error_message' member (no-member)
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:113:12: E1101: Instance of 'Executable' has no 'fail_task' member (no-member)
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:124:27: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:131:12: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:135:27: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/models/executable.py:140:27: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+************* Module workflow_engine.models.well_known_file
+/blue_sky_workflow_engine/workflow_engine/models/well_known_file.py:134:2: W0511: TODO: replace with wkf.filerecord_set.all() (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/well_known_file.py:78:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/well_known_file.py:105:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/well_known_file.py:144:8: W0702: No exception type(s) specified (bare-except)
+************* Module workflow_engine.models.configuration
+/blue_sky_workflow_engine/workflow_engine/models/configuration.py:68:4: W0105: String statement has no effect (pointless-string-statement)
+************* Module workflow_engine.models.job
+/blue_sky_workflow_engine/workflow_engine/models/job.py:137:2: W0511: TODO: deprecate/remove - reuse tasks doesn't do this anymore (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/job.py:145:2: W0511: TODO: deprecate (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/job.py:149:2: W0511: TODO: deprecate (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/job.py:84:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/job.py:96:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/job.py:128:16: R1714: Consider merging these comparisons with "in" to "run_state_name in ('PENDING', 'FAILED', 'SUCCESS', 'PROCESS_KILLED', 'FAILED_EXECUTION')" (consider-using-in)
+/blue_sky_workflow_engine/workflow_engine/models/job.py:161:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+************* Module workflow_engine.models.task
+/blue_sky_workflow_engine/workflow_engine/models/task.py:119:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/task.py:144:8: W0104: Statement seems to have no effect (pointless-statement)
+/blue_sky_workflow_engine/workflow_engine/models/task.py:168:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/models/task.py:175:16: R1714: Consider merging these comparisons with "in" to "run_state_name in ('FAILED', 'PROCESS_KILLED', 'FAILED_EXECUTION')" (consider-using-in)
+/blue_sky_workflow_engine/workflow_engine/models/task.py:181:16: R1714: Consider merging these comparisons with "in" to "run_state_name in ('PENDING', 'FAILED', 'SUCCESS', 'PROCESS_KILLED', 'FAILED_EXECUTION')" (consider-using-in)
+/blue_sky_workflow_engine/workflow_engine/models/task.py:287:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/models/task.py:50:0: R0904: Too many public methods (34/20) (too-many-public-methods)
+************* Module workflow_engine.models.workflow_node
+/blue_sky_workflow_engine/workflow_engine/models/workflow_node.py:112:2: W0511: TODO: this interacts poorly w/ unique restriction. (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/workflow_node.py:136:2: W0511: TODO: priority order? (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/workflow_node.py:46:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+/blue_sky_workflow_engine/workflow_engine/models/workflow_node.py:174:4: R0913: Too many arguments (6/5) (too-many-arguments)
+/blue_sky_workflow_engine/workflow_engine/models/workflow_node.py:229:8: W0702: No exception type(s) specified (bare-except)
+************* Module workflow_engine.models.enqueued_proxy
+/blue_sky_workflow_engine/workflow_engine/models/enqueued_proxy.py:13:2: W0511: TODO: database routers might be a better answer (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/enqueued_proxy.py:17:2: W0511: TODO: not sure if this will cause a loop, (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/enqueued_proxy.py:16:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+/blue_sky_workflow_engine/workflow_engine/models/enqueued_proxy.py:24:0: R0901: Too many ancestors (9/7) (too-many-ancestors)
+************* Module workflow_engine.models.run_state
+/blue_sky_workflow_engine/workflow_engine/models/run_state.py:54:2: W0511: TODO: make class method (fixme)
+/blue_sky_workflow_engine/workflow_engine/models/run_state.py:50:12: R1714: Consider merging these comparisons with "in" to 'job_state_name in (cls.get_failed_execution_state().name, cls.get_failed_state().name, cls.get_process_killed_state().name)' (consider-using-in)
+/blue_sky_workflow_engine/workflow_engine/models/run_state.py:58:12: R1714: Consider merging these comparisons with "in" to 'job_state_name in (cls.get_pending_state().name, cls.get_running_state().name, cls.get_queued_state().name, cls.get_finished_execution_state().name)' (consider-using-in)
+************* Module workflow_engine.strategies.base_strategy
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:163:2: W0511: TODO: the data flow in constructing this path is overly complex (fixme)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:234:2: W0511: TODO: deprecate (fixme)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:244:2: W0511: TODO: deprecate (fixme)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:44:0: R0205: Class 'BaseStrategy' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:93:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:86:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:111:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:116:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:123:29: W0613: Unused argument 'enqueued_object' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:123:46: W0613: Unused argument 'workflow_node' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:123:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:131:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:135:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:138:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:143:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:156:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:181:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:197:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:211:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:205:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:223:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:235:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:245:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/base_strategy.py:44:0: R0904: Too many public methods (26/20) (too-many-public-methods)
+************* Module workflow_engine.strategies.execution_strategy
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:273:2: W0511: TODO separate concerns of skip task, circus, pbs (fixme)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:286:2: W0511: TODO: this needs to be made asynchronous for process isolation (fixme)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:384:2: W0511: TODO: this seems too rigid (fixme)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:61:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:85:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:100:4: R1711: Useless return at end of function or method (useless-return)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:100:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:206:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:227:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:228:12: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:253:15: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:259:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:360:27: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:361:53: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:366:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:373:4: R0913: Too many arguments (6/5) (too-many-arguments)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:375:26: W0613: Unused argument 'enqueued_object' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:376:26: W0613: Unused argument 'storage_directory' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:377:26: W0613: Unused argument 'task' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/execution_strategy.py:373:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.strategies.ingest_strategy
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:46:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:56:37: W0613: Unused argument 'dictionary' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:56:49: W0613: Unused argument 'tags' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:56:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:59:32: W0613: Unused argument 'enqueued_object' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:59:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:79:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:88:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:91:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:108:8: E1128: Assigning result of a function call, where the function returns None (assignment-from-none)
+/blue_sky_workflow_engine/workflow_engine/strategies/ingest_strategy.py:39:0: W0611: Unused import traceback (unused-import)
+************* Module workflow_engine.strategies.wait_strategy
+/blue_sky_workflow_engine/workflow_engine/strategies/wait_strategy.py:27:2: W0511: TODO: execution strategy should inherit from wait strategy (fixme)
+/blue_sky_workflow_engine/workflow_engine/strategies/wait_strategy.py:21:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/wait_strategy.py:40:15: W0703: Catching too general exception Exception (broad-except)
+************* Module workflow_engine.strategies.input_config_mixin
+/blue_sky_workflow_engine/workflow_engine/strategies/input_config_mixin.py:1:0: R0205: Class 'InputConfigMixin' inherits from object, can be safely removed from bases in python3 (useless-object-inheritance)
+/blue_sky_workflow_engine/workflow_engine/strategies/input_config_mixin.py:2:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/strategies/input_config_mixin.py:1:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+************* Module workflow_engine.admin.job_admin
+/blue_sky_workflow_engine/workflow_engine/admin/job_admin.py:123:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/admin/job_admin.py:116:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/job_admin.py:126:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/job_admin.py:134:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/job_admin.py:153:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/admin/job_admin.py:142:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/job_admin.py:158:4: W0221: Parameters differ from overridden 'lookup_allowed' method (arguments-differ)
+************* Module workflow_engine.admin.job_queue_admin
+/blue_sky_workflow_engine/workflow_engine/admin/job_queue_admin.py:31:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/job_queue_admin.py:40:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.admin.task_admin
+/blue_sky_workflow_engine/workflow_engine/admin/task_admin.py:41:4: W0221: Parameters differ from overridden 'change_view' method (arguments-differ)
+/blue_sky_workflow_engine/workflow_engine/admin/task_admin.py:63:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/admin/task_admin.py:50:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/task_admin.py:69:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/task_admin.py:81:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/admin/task_admin.py:77:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/task_admin.py:89:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.admin.well_known_file_admin
+/blue_sky_workflow_engine/workflow_engine/admin/well_known_file_admin.py:31:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/admin/well_known_file_admin.py:28:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/well_known_file_admin.py:39:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/admin/well_known_file_admin.py:36:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/well_known_file_admin.py:44:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.admin.workflow_node_admin
+/blue_sky_workflow_engine/workflow_engine/admin/workflow_node_admin.py:7:12: E1101: Class 'WorkflowNode' has no 'sources' member (no-member)
+/blue_sky_workflow_engine/workflow_engine/admin/workflow_node_admin.py:53:4: R0201: Method could be a function (no-self-use)
+/blue_sky_workflow_engine/workflow_engine/admin/workflow_node_admin.py:56:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.admin.configuration_admin
+/blue_sky_workflow_engine/workflow_engine/admin/configuration_admin.py:34:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/admin/configuration_admin.py:26:4: R0201: Method could be a function (no-self-use)
+************* Module workflow_engine.serializers.ingest_serializer
+/blue_sky_workflow_engine/workflow_engine/serializers/ingest_serializer.py:1:0: W0611: Unused JsonResponse imported from django.http (unused-import)
+************* Module workflow_engine.celery
+/blue_sky_workflow_engine/workflow_engine/celery/__init__.py:34:0: W0702: No exception type(s) specified (bare-except)
+************* Module workflow_engine.celery.ingest_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/ingest_tasks.py:101:2: W0511: TODO: use Celery router to call directly (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/ingest_tasks.py:53:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/ingest_tasks.py:53:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/ingest_tasks.py:108:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/ingest_tasks.py:93:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/ingest_tasks.py:70:16: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.celery.moab_beat
+/blue_sky_workflow_engine/workflow_engine/celery/moab_beat.py:58:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_beat.py:63:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_beat.py:55:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_beat.py:78:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_beat.py:78:0: W0613: Unused argument 'kwargs' (unused-argument)
+************* Module workflow_engine.celery.moab_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:133:2: W0511: TODO: change name to something like process task state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:65:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:65:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:123:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:87:12: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:122:22: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:71:21: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_tasks.py:142:19: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.celery.result_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:181:2: W0511: TODO: this message is coming in wrong order for local (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:59:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:59:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:72:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:73:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:90:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:83:20: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:109:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:104:8: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:98:31: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:134:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:135:8: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:117:29: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:154:19: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:185:8: E1205: Too many arguments for logging format string (logging-too-many-args)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:185:8: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/celery/result_tasks.py:171:19: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.celery.signatures
+/blue_sky_workflow_engine/workflow_engine/celery/signatures.py:140:2: W0511: TODO: unimplemented? (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/signatures.py:40:0: R0903: Too few public methods (0/2) (too-few-public-methods)
+************* Module workflow_engine.celery.local_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/local_tasks.py:113:2: W0511: TODO: change name to something like process task state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/local_tasks.py:58:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/local_tasks.py:58:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/local_tasks.py:79:17: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/local_tasks.py:107:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/local_tasks.py:84:0: R1711: Useless return at end of function or method (useless-return)
+/blue_sky_workflow_engine/workflow_engine/celery/local_tasks.py:84:23: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.celery.pbs_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:62:2: W0511: TODO: run_state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:71:2: W0511: Todo need to use moab id and task id in all cases (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:135:2: W0511: TODO: change name to something like process task state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:47:0: W0404: Reimport 'process_pbs_id_signature' (imported line 47) (reimported)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:65:4: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:74:8: W0108: Lambda may not be necessary (unnecessary-lambda)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:76:8: W0108: Lambda may not be necessary (unnecessary-lambda)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:78:8: W0108: Lambda may not be necessary (unnecessary-lambda)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:80:8: W0108: Lambda may not be necessary (unnecessary-lambda)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:90:4: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:85:22: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:127:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:126:18: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:102:21: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:144:19: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/pbs_tasks.py:37:0: W0611: Unused settings imported from django.conf (unused-import)
+************* Module workflow_engine.celery.monitor_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/monitor_tasks.py:80:2: W0511: TODO: move into utilities class (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/monitor_tasks.py:88:2: W0511: TODO move into utilities class (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/monitor_tasks.py:131:2: W0511: TODO: move this into payload (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/monitor_tasks.py:71:21: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/monitor_tasks.py:160:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/monitor_tasks.py:193:4: W0702: No exception type(s) specified (bare-except)
+************* Module workflow_engine.celery.mock_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:68:2: W0511: TODO: check the start time and use that to (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:73:2: W0511: TODO: run_state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:124:2: W0511: TODO: change name to something like process task state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:57:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:57:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:76:4: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:82:17: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:118:4: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:90:0: R1711: Useless return at end of function or method (useless-return)
+/blue_sky_workflow_engine/workflow_engine/celery/mock_tasks.py:91:21: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.celery.moab_status_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:75:2: W0511: TODO: run_state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:82:2: W0511: Todo need to use moab id and task id in all cases (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:64:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:64:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:78:4: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:96:26: W0640: Cell variable sig defined in loop (cell-var-from-loop)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:114:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:120:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:124:8: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/celery/moab_status_tasks.py:108:22: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.celery.error_handler
+/blue_sky_workflow_engine/workflow_engine/celery/error_handler.py:17:29: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/error_handler.py:19:4: W0612: Unused variable 'exc' (unused-variable)
+************* Module workflow_engine.celery.circus_status_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/circus_status_tasks.py:75:2: W0511: TODO: run_state (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/circus_status_tasks.py:52:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/circus_status_tasks.py:52:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/circus_status_tasks.py:92:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/circus_status_tasks.py:86:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/circus_status_tasks.py:90:8: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/celery/circus_status_tasks.py:82:17: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.celery.workflow_tasks
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:64:2: W0511: TODO: move this somewhere more general (fixme)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:60:35: W0613: Unused argument 'logger' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:60:0: W0613: Unused argument 'kwargs' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:65:21: W0613: Unused argument 'msg' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:89:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:87:8: E1120: No value for argument 'e' in function call (no-value-for-parameter)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:80:15: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:104:14: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:113:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:109:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:111:8: E1120: No value for argument 'e' in function call (no-value-for-parameter)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:114:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:121:14: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:126:23: W0613: Unused argument 'self' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:142:11: W0703: Catching too general exception Exception (broad-except)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:141:8: E1120: No value for argument 'e' in function call (no-value-for-parameter)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:143:8: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/celery/workflow_tasks.py:152:13: W0613: Unused argument 'self' (unused-argument)
+************* Module workflow_engine.worker.server_command
+/blue_sky_workflow_engine/workflow_engine/worker/server_command.py:25:4: W1201: Specify string format arguments as logging function parameters (logging-not-lazy)
+/blue_sky_workflow_engine/workflow_engine/worker/server_command.py:32:4: W0612: Unused variable 'stdin' (unused-variable)
+************* Module workflow_engine.worker.qsub.qsub_api
+/blue_sky_workflow_engine/workflow_engine/worker/qsub/qsub_api.py:42:20: E1137: 'qstat_dict' does not support item assignment (unsupported-assignment-operation)
+/blue_sky_workflow_engine/workflow_engine/worker/qsub/qsub_api.py:43:20: E1137: 'qstat_dict' does not support item assignment (unsupported-assignment-operation)
+/blue_sky_workflow_engine/workflow_engine/worker/qsub/qsub_api.py:46:20: E1137: 'qstat_dict' does not support item assignment (unsupported-assignment-operation)
+/blue_sky_workflow_engine/workflow_engine/worker/qsub/qsub_api.py:49:20: E1137: 'qstat_dict' does not support item assignment (unsupported-assignment-operation)
+/blue_sky_workflow_engine/workflow_engine/worker/qsub/qsub_api.py:53:20: E1137: 'qstat_dict' does not support item assignment (unsupported-assignment-operation)
+/blue_sky_workflow_engine/workflow_engine/worker/qsub/qsub_api.py:72:27: W0613: Unused argument 'state_dicts' (unused-argument)
+************* Module workflow_engine.mixins.archivable
+/blue_sky_workflow_engine/workflow_engine/mixins/archivable.py:3:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+************* Module workflow_engine.mixins.runnable
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:13:4: R0903: Too few public methods (0/2) (too-few-public-methods)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:77:12: R1714: Consider merging these comparisons with "in" to 'job_state_name in (Runnable.STATE.FAILED_EXECUTION, Runnable.STATE.FAILED, Runnable.STATE.PROCESS_KILLED)' (consider-using-in)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:84:12: R1714: Consider merging these comparisons with "in" to 'job_state_name in (Runnable.STATE.PENDING, Runnable.STATE.RUNNING, Runnable.STATE.QUEUED, Runnable.STATE.FINISHED_EXECUTION)' (consider-using-in)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:126:8: W0702: No exception type(s) specified (bare-except)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:156:20: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:155:16: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:171:20: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:170:16: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:163:31: W0613: Unused argument 'pbs_id' (unused-argument)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:190:16: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:189:12: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:201:31: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:201:12: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:206:16: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:205:12: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:220:20: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:219:16: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:237:16: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:236:12: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:251:16: W1202: Use % formatting in logging functions and pass the % parameters as arguments (logging-format-interpolation)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:250:12: W1505: Using deprecated method warn() (deprecated-method)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:265:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:274:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:283:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:292:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:301:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:310:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:319:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:328:8: W0107: Unnecessary pass statement (unnecessary-pass)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:9:0: R0904: Too many public methods (25/20) (too-many-public-methods)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.mixins -> workflow_engine.mixins.runnable -> workflow_engine.models -> workflow_engine.models.workflow) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.models -> workflow_engine.models.well_known_file) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.mixins -> workflow_engine.mixins.runnable -> workflow_engine.models -> workflow_engine.models.job_queue) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.mixins -> workflow_engine.mixins.runnable -> workflow_engine.models -> workflow_engine.models.file_record) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.mixins -> workflow_engine.mixins.runnable -> workflow_engine.models -> workflow_engine.models.executable) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.mixins -> workflow_engine.mixins.runnable -> workflow_engine.models -> workflow_engine.models.job) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.models -> workflow_engine.models.task) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.mixins -> workflow_engine.mixins.runnable -> workflow_engine.models -> workflow_engine.models.workflow_node) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0401: Cyclic import (workflow_engine.mixins -> workflow_engine.mixins.runnable -> workflow_engine.models -> workflow_engine.models.workflow_edge) (cyclic-import)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.views.grid_view:38
+==workflow_engine.views.home_view:39
+from workflow_engine.views import shared, HEADER_PAGES
+import django
+import sys
+import workflow_engine
+
+context = {
+    'pages': HEADER_PAGES,
+}
+
+ZERO = 0
+ONE = 1
+TWO = 2
+MILLISECONDS_IN_SECOND = 1000
+
+def get_python_version():
+    info = sys.version_info
+    return str(info.major) + '.' + str(info.minor) + '.' + str(info.micro)
+
+def index(request):
+    context['selected_page'] = 'index'
+    context['base_path'] = settings.BASE_FILE_PATH
+    context['workflow_version']  = workflow_engine.__version__
+    context['python_version']  = get_python_version()
+    context['django_version']  = django.get_version()
+    context['database_host'] = settings.DATABASES['default']['HOST']
+    context['database_name'] = settings.DATABASES['default']['NAME']
+    context['database_port'] = settings.DATABASES['default']['PORT']
+    context['results_per_page']  = settings.RESULTS_PER_PAGE
+
+    context['flower_monitor_url'] = settings.FLOWER_MONITOR_URL
+    context['rabbit_monitor_url'] = settings.RABBIT_MONITOR_URL
+    context['message_queue_host']  = settings.MESSAGE_QUEUE_HOST (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.celery.local_tasks:109
+==workflow_engine.celery.mock_tasks:120
+    return None
+
+
+# TODO: change name to something like process task state
+# Not sure if we still need name
+# Do need a UI task like this
+@celery.shared_task(bind=True)
+def run_task(self, name, args):
+    raise Exception("Removed/Unimplemented")
+
+
+@celery.shared_task(bind=True, trail=True)
+def kill_task(self, task_id):
+    raise Exception("Removed/Unimplemented")
+
+# circular imports
+from workflow_engine.models import Task (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.celery.monitor_tasks:100
+==workflow_engine.views.workflow_view:441
+    counts.extend([{
+        'node': str(n),
+        'state': 'BATCH_SIZE',
+        'count': n.batch_size
+    } for n in wns ])
+
+    counts_df = pd.DataFrame.from_records(counts)
+
+    totals = counts_df.groupby(by='node')['count'].sum()
+
+    summary = {
+        'run_states': counts_df.to_dict('records'),
+        'totals': totals.to_dict()
+    }
+
+    return summary
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.celery.moab_tasks:135
+==workflow_engine.celery.pbs_tasks:137
+@celery.shared_task(bind=True)
+def run_task(self, name, args):
+    raise Exception("Removed/Unimplemented")
+
+
+@celery.shared_task(bind=True, trail=True)
+def kill_moab_task(self, task_id):
+    try:
+        the_task = Task.objects.get(id=task_id)
+        delete_moab_task(the_task.pbs_id)
+    except ObjectDoesNotExist as e:
+        _log.warning("Cannot kill task %s, does not exist. %s",
+                     task_id,
+                     str(e))
+
+# circular imports (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.celery.moab_status_tasks:68
+==workflow_engine.celery.pbs_tasks:55
+def query_running_task_dicts():
+    tasks = Task.objects.filter(
+        run_state__name__in=['QUEUED', 'RUNNING'])
+
+    task_dicts = [{
+        'task_id': t.id,
+        'workflow_state': t.run_state.name,  # TODO: run_state
+        'moab_id': t.pbs_id } for t in tasks if t.pbs_task()]
+
+    _log.info('task dicts: ' + str(task_dicts))
+
+    return task_dicts
+
+# Todo need to use moab id and task id in all cases (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.celery.moab_status_tasks:59
+==workflow_engine.celery.mock_tasks:52
+app.conf.imports = ()
+
+
+@celery.signals.after_setup_task_logger.connect
+def after_setup_celery_task_logger(logger, **kwargs):
+    """ This function sets the 'celery.task' logger handler and formatter """
+    logging.config.dictConfig(settings.LOGGING)
+
+
+def query_running_task_dicts():
+    tasks = Task.objects.filter(
+        run_state__name__in=['QUEUED', 'RUNNING'])
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 3 files
+==workflow_engine.celery.moab_status_tasks:72
+==workflow_engine.celery.mock_tasks:70
+==workflow_engine.celery.pbs_tasks:59
+    task_dicts = [{
+        'task_id': t.id,
+        'workflow_state': t.run_state.name,  # TODO: run_state
+        'moab_id': t.pbs_id } for t in tasks if t.pbs_task()]
+
+    _log.info('task dicts: ' + str(task_dicts))
+
+    return task_dicts
+
+# Todo need to use moab id and task id in all cases (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.views.executable_view:114
+==workflow_engine.views.record_view:321
+    except Exception as e:
+            success = False
+            message = str(e)
+
+    result['success'] = success
+    result['message'] = message
+    result['payload'] = payload
+
+    return JsonResponse(result)
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.views.executable_view:40
+==workflow_engine.views.job_queue_view:40
+    ONE
+)
+from workflow_engine.views import shared, HEADER_PAGES
+
+
+context = {
+    'pages': HEADER_PAGES,
+}
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.admin.job_admin:125
+==workflow_engine.admin.task_admin:68
+    def workflow_link(self, job_object):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse("admin:workflow_engine_workflow_change",
+                    args=(job_object.workflow_node.workflow.pk,)),
+            str(job_object.workflow_node.workflow)))
+
+    workflow_link.short_description = "Workflow"
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.strategies.execution_strategy:235
+==workflow_engine.strategies.wait_strategy:30
+    def run_task(self, task):
+        try:
+            enqueued_object = task.enqueued_task_object
+
+            if self.must_wait(enqueued_object):
+                task.set_queued_state()
+            else:
+                self.prep_task(task) (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.models.job:125
+==workflow_engine.models.task:178
+    def can_rerun(self):
+        run_state_name = self.run_state.name
+        return (run_state_name == 'PENDING' or
+                run_state_name == 'FAILED' or
+                run_state_name == 'SUCCESS' or
+                run_state_name == 'PROCESS_KILLED' or
+                run_state_name == 'FAILED_EXECUTION')
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.celery.monitor_tasks:90
+==workflow_engine.views.workflow_view:431
+        archived=False)
+
+    counts = [{
+        'node': node,
+        'state': run_state,
+        'count':  count_node_jobs_in_state(node, run_state) }
+        for (node, run_state) in it.product(
+            (str(n) for n in wns), (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.celery.moab_tasks:69
+==workflow_engine.celery.pbs_tasks:100
+@celery.shared_task(bind=True, trail=True)
+def submit_moab_task(self, task_id):
+    _log.info('Submitting task %d', task_id)
+
+    try:
+        the_task = Task.objects.get(id=task_id)
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.admin.job_queue_admin:23
+==workflow_engine.admin.workflow_admin:23
+    list_filter = ['archived']
+    actions = []
+    inlines = []
+
+    def get_queryset(self, request):
+        return self.model.all_objects.get_queryset()
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.admin.job_admin:133
+==workflow_engine.admin.task_admin:88
+    def workflow_node_link(self, job_object):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse("admin:workflow_engine_workflownode_change",
+                    args=(job_object.workflow_node.pk,)),
+            str(job_object.workflow_node)))
+
+    workflow_node_link.short_description = "Workflow Node" (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 3 files
+==workflow_engine.admin.job_admin:125
+==workflow_engine.admin.job_queue_admin:39
+==workflow_engine.admin.task_admin:68
+    def workflow_link(self, job_object):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse("admin:workflow_engine_workflow_change",
+                    args=(job_object.workflow_node.workflow.pk,)),
+            str(job_object.workflow_node.workflow)))
+
+    workflow_link.short_description = "Workflow" (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.models.configuration:16
+==workflow_engine.models.task:51
+        ContentType,
+        default=None,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    '''Generic relation type'''
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 3 files
+==workflow_engine.views.decorators:124
+==workflow_engine.views.decorators:90
+==workflow_engine.views.record_view:104
+            except Exception as e:
+                    result['success'] = False
+                    result['message'] = str(e) + ' - ' + str(traceback.format_exc())
+
+            return JsonResponse(result)
+
+        return wrapper (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 5 files
+==workflow_engine.views.decorators:104
+==workflow_engine.views.decorators:138
+==workflow_engine.views.decorators:48
+==workflow_engine.views.decorators:76
+==workflow_engine.views.record_view:52
+    def wrapper(request):
+        result = {
+            'success': True,
+            'message': '',
+            'payload': {}
+            }
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 5 files
+==workflow_engine.views.decorators:105
+==workflow_engine.views.decorators:139
+==workflow_engine.views.decorators:49
+==workflow_engine.views.decorators:77
+==workflow_engine.views.ingest_view:9
+            result = {
+                'success': True,
+                'message': '',
+                'payload': {}
+                }
+
+            try: (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 7 files
+==workflow_engine.celery.monitor_tasks:124
+==workflow_engine.views.decorators:105
+==workflow_engine.views.decorators:139
+==workflow_engine.views.decorators:49
+==workflow_engine.views.decorators:77
+==workflow_engine.views.ingest_view:9
+==workflow_engine.views.record_view:53
+        result = {
+            'success': True,
+            'message': '',
+            'payload': {}
+            }
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.views.ingest_view:9
+==workflow_engine.views.record_view:53
+        result = {
+            'success': True,
+            'message': '',
+            'payload': {}
+            }
+ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.admin.configuration_admin:28
+==workflow_engine.admin.well_known_file_admin:45
+            clz = attachable_object._meta.db_table
+            return mark_safe('<a href="{}">{}</a>'.format(
+                reverse("admin:{}_change".format(clz),
+                        args=(attachable_object.id,)),
+                str(attachable_object))) (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 2 files
+==workflow_engine.admin.configuration_admin:15
+==workflow_engine.admin.well_known_file_admin:18
+        'created_at',
+        'updated_at'
+        )
+    list_select_related = []
+    list_filter = [ (duplicate-code)
+/blue_sky_workflow_engine/workflow_engine/mixins/runnable.py:1:0: R0801: Similar lines in 3 files
+==workflow_engine.models.configuration:16
+==workflow_engine.models.job_queue:47
+==workflow_engine.models.task:51
+        ContentType,
+        default=None,
+        null=True,
+        on_delete=models.CASCADE
+    ) (duplicate-code)
+
+-----------------------------------
+Your code has been rated at 8.67/10
+

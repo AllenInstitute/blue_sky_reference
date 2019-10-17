@@ -1,0 +1,286 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Developers Guide &#8212; Blue Sky Workflow Engine  documentation</title>
+    <link rel="stylesheet" href="_static/aibs_sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Authors" href="authors.html" />
+    <link rel="prev" title="Blue Sky Messaging" href="messaging.html" /> 
+  </head>
+  <body>
+<link href="http://www.brain-map.org/assets/stylesheets/portal.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="http://www.brain-map.org/assets/javascripts/portal.js" type="text/javascript"></script>
+<script src="http://www.brain-map.org/assets/javascripts/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var _pSupressBrowserFlashWarning = true;
+    var _pTabId = "pHome";
+    var _pMoreProjectsId = "pMoreProjects";
+    var _pImagePath = "http://www.brain-map.org/assets/images/";
+    var _pSiteWarnings = function() {
+        this.show_warning() = {};
+    }
+</script>
+<script type="text/javascript">
+    function initialize() {
+        /*** do your stuff, then initialize the portal plugin ***/
+        _pPortalOnLoad();
+    }
+</script>
+<style>
+  #header_content > a {
+  display: inline-block;
+  width: 250px;
+  height: 75px;
+  background-image:url("/_static/external_assets/images/Brain_Atlas_Logotype_SDK.png") !important;
+  background-size: 235px 37px;
+  background-position: 0px 20px;
+  background-repeat: no-repeat;
+  }
+</style>
+
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalHeader.js"></script>
+<link rel="stylesheet" type="text/css" href="/_static/external_assets/stylesheets/common_layout.css" />
+
+
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="developers-guide">
+<h1>Developers Guide<a class="headerlink" href="#developers-guide" title="Permalink to this headline">¶</a></h1>
+<p>This guide is a resource for using the Blue Sky Workflow Engine package.
+It is maintained by the <a class="reference external" href="http://www.alleninstitute.org/">Allen Institute for Brain Science</a>.</p>
+<p>The Blue Sky Workflow Engine uses a Celery Task Queue with a RabbitMQ broker to
+manage job submissions to a Portable Batch System (PBS) job scheduler.
+It organizes job queues using a workflow graph and a Django PostgreSQL database model to
+store information about the equeued objects. The Django Admin plugin provides user interface features.</p>
+<p>Support features include
+a <a class="reference external" href="https://docs.pytest.org/en/latest/">PyTest</a> test suite,
+code coverage with <a class="reference external" href="https://pytest-cov.readthedocs.io/en/latest/">pytest-cover</a>,
+linting using <a class="reference external" href="https://prospector.readthedocs.io/en/master/">prospector</a>,
+<a class="reference external" href="http://www.sphinx-doc.org/en/master/">Sphinx</a> documentation,
+<a class="reference external" href="https://python-packaging.readthedocs.io/en/latest/">Pip packaging</a>,
+and a Docker build.</p>
+<div class="section" id="celery-task-queue-and-rabbitmq-broker">
+<h2>Celery Task Queue and RabbitMQ Broker<a class="headerlink" href="#celery-task-queue-and-rabbitmq-broker" title="Permalink to this headline">¶</a></h2>
+<p>The workflow engine is largely based on the integration of a Celery (over RabbitMQ)
+messaging system with a Django data model and admin plugin.
+As much as possible, the workflow engine is modeled after examples in the documentation.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://www.celeryproject.org/">Celery</a></li>
+<li><a class="reference external" href="https://www.rabbitmq.com/">RabbitMQ</a></li>
+<li><a class="reference external" href="http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html">Using Celery with Django</a></li>
+<li><a class="reference external" href="http://docs.celeryproject.org/en/latest/userguide/routing.html">Celery Routing</a></li>
+<li><a class="reference external" href="http://docs.celeryproject.org/en/latest/userguide/canvas.html#chains">Celery Workflows with Canvas chains</a></li>
+</ul>
+</div></blockquote>
+<p>(note: the workflow engine no longer makes significant use of chains)</p>
+<dl class="docutils">
+<dt>Monitoring Tools:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="http://flower.readthedocs.io/en/latest/">Flower Monitor</a></li>
+<li><a class="reference external" href="https://www.rabbitmq.com/management.html">RabbitMQ Management</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="django-web-framework-and-admin-plugin">
+<h2>Django Web Framework and Admin Plugin<a class="headerlink" href="#django-web-framework-and-admin-plugin" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://www.djangoproject.com/">Django</a></li>
+<li><a class="reference external" href="https://docs.djangoproject.com/en/2.0/ref/contrib/admin/actions/">Admin Plugin</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="settings">
+<h2>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<p>The primary location of settings are in two files specified by environment variables:</p>
+<p>$DJANGO_SETTINGS_MODULE - examples of these are found in blue_sky/settings.py
+$BLUE_SKY_SETTINGS - examples of these are found in config/blue_sky_settings.yml</p>
+<p>The <a class="reference external" href="https://docs.djangoproject.com/en/2.2/topics/settings/">Django settings module</a>
+is well documented, but most current deployments have a fairly similar form to the examples provided.</p>
+<p>blue_sky_settings.yml uses Celery <a class="reference external" href="https://docs.celeryproject.org/en/latest/userguide/configuration.html#new-lowercase-settings">lowercase settings</a>
+The examples provided give the endpoint of the message broker as well as timeout settings
+for broker connection (including in processes that only send but do not handle messages).</p>
+</div>
+<div class="section" id="environments">
+<h2>Environments<a class="headerlink" href="#environments" title="Permalink to this headline">¶</a></h2>
+<p>The workflow in production mode requires several Python environments.
+Generally <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Anaconda</a>
+is used to set these environments up, but venv or creative $PYTHONPATH management
+might also work. The <a class="reference external" href="https://circus.readthedocs.io/en/latest/">circus</a> process
+manager required a Python 2.7 environment at the time it was implemented.
+All other processes may share a Python 3.7 environment with dependencies installed
+from the workflow engine’s requirements.txt file. Executables can run in their own
+anaconda environment, which is set in the PBS template.  The response messages
+are sent back from the compute cluster using an environment installed on that system.</p>
+<p>Note: It is possible to share the primary and response environments, but they must be installed
+and accessed while mounted on the same directory path or the anaconda “source activate” script
+will get confused.</p>
+</div>
+<div class="section" id="users-and-permissions">
+<h2>Users and Permissions<a class="headerlink" href="#users-and-permissions" title="Permalink to this headline">¶</a></h2>
+<p>Note that when writing input.json and data files to a SAN, the directory must
+have setgid set properly or an equivalent setting.</p>
+<p>Note that when running in a docker environment, the blue_sky_user must be
+set to use the production user id.</p>
+<p>The Jupyter notebook, the Django admin console, the Moab endpoint, and the
+message broker and the database all have credentials that need to be set and managed.
+This requires further documentation.</p>
+</div>
+<div class="section" id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
+<p>Logging is primarily configured using the
+Python <a class="reference external" href="https://docs.python.org/3.7/howto/logging.html">logging package</a>.
+For each Django-aware process, the logging dict is present in setup.LOGGING
+in the <a class="reference external" href="https://docs.djangoproject.com/en/2.2/topics/settings/">Django settings module</a>.
+It is suggested that the log levels be adjusted for different contexts (dev, production, etc).</p>
+<p>In order to have each worker process log to a different file, the $DEBUG_LOG
+environment variable is substituted into the setup.LOGGING dict.
+The <code class="xref py py-class docutils literal"><span class="pre">workflow_engine.process.process_manager</span></code> module sets this variable
+as it starts the processes.</p>
+<p>Celery tasks have some specific logging configuration quirks.
+In order to use the standard logging system, the logger needs to be configured
+in the after_setup_logger signal handler
+as described in the <a class="reference external" href="https://docs.celeryproject.org/en/latest/userguide/tasks.html#logging">celery logging documentation</a>.
+The handler is imported from <a class="reference internal" href="workflow_engine.celery.html#workflow_engine.celery.setup_logging_handler.configure_logging_from_settings" title="workflow_engine.celery.setup_logging_handler.configure_logging_from_settings"><code class="xref py py-func docutils literal"><span class="pre">workflow_engine.celery.setup_logging_handler.configure_logging_from_settings()</span></code></a>.
+The Django processes (all of them)
+that use <a class="reference internal" href="workflow_engine.html#workflow_engine.client_settings.configure_worker_app" title="workflow_engine.client_settings.configure_worker_app"><code class="xref py py-func docutils literal"><span class="pre">workflow_engine.client_settings.configure_worker_app()</span></code></a>
+will do this automatically using celery’s <a class="reference external" href="https://docs.celeryproject.org/en/latest/userguide/configuration.html#example-configuration-file">app.conf.imports</a>
+configuration setting.</p>
+</div>
+<div class="section" id="builds">
+<h2>Builds<a class="headerlink" href="#builds" title="Permalink to this headline">¶</a></h2>
+<p>There is no current continuous build configured.
+Most operations can be run through the Makefile.
+Some operations are handled by scripts and a Makefile in the blue_sky/docker subdirectory.
+This includes anaconda environment deployment, which is currently incomplete.</p>
+</div>
+<div class="section" id="development-deployment">
+<h2>Development Deployment<a class="headerlink" href="#development-deployment" title="Permalink to this headline">¶</a></h2>
+<p>There is a docker-compose file in blue_sky/config.  It can be started with:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">up</span> <span class="o">-</span><span class="n">d</span>
+<span class="n">docker</span><span class="o">-</span><span class="n">compose</span> <span class="n">exec</span> <span class="o">-</span><span class="n">u</span> <span class="n">blue_sky_user</span> <span class="n">blue_sky</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+
+<span class="n">source</span> <span class="n">activate</span> <span class="o">/</span><span class="n">conda_envs</span><span class="o">/</span><span class="n">py_37</span>
+<span class="n">export</span> <span class="n">DEBUG_LOG</span><span class="o">=</span><span class="n">dbg</span><span class="o">.</span><span class="n">log</span>
+
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">management</span><span class="o">.</span><span class="n">manage</span> <span class="n">showmigrations</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">management</span><span class="o">.</span><span class="n">manage</span> <span class="n">migrate</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">management</span><span class="o">.</span><span class="n">manage</span> <span class="n">createsuperuser</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">management</span><span class="o">.</span><span class="n">manage</span> <span class="n">collectstatic</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">management</span><span class="o">.</span><span class="n">manage</span> <span class="n">import_workflows</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">blue_sky_user</span><span class="o">/</span><span class="n">work</span><span class="o">/</span><span class="n">workflow_config</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">workflow_engine</span><span class="o">.</span><span class="n">management</span><span class="o">.</span><span class="n">manage</span> <span class="n">help</span>
+
+<span class="n">restart_workers</span><span class="o">.</span><span class="n">sh</span> <span class="n">blue_sky</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">blue_sky_user</span><span class="o">/</span><span class="n">work</span>
+</pre></div>
+</div>
+<p>At this point you can navigate to <a class="reference external" href="http://localhost:9001/">http://localhost:9001/</a> with a web browser.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="customizing.html">Customization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflows.html">Workflows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strategies.html">Strategies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configurations.html">Configuration Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="messaging.html">Blue Sky Messaging</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developers Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workflow_engine.html">Source Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.admin.html">workflow_engine.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.celery.html">workflow_engine.celery package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.ingest.html">workflow_engine.ingest package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.management.html">workflow_engine.management package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.migrations.html">workflow_engine.migrations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.mixins.html">workflow_engine.mixins package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.models.html">workflow_engine.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.process.html">workflow_engine.process package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="workflow_engine.process.workers.html">workflow_engine.process.workers package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="workflow_engine.process.workers.moab.html">workflow_engine.process.workers.moab package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.strategies.html">workflow_engine.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="workflow_engine.views.html">workflow_engine.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blue_sky.html">Demo App Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.admin.html">blue_sky.admin package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.migrations.html">blue_sky.migrations package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.models.html">blue_sky.models package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.strategies.html">blue_sky.strategies package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blue_sky.views.html">blue_sky.views package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/AllenInstitute/BlueSkyWorkflowEngine">Github Profile</a></li>
+</ul>
+
+<h3> Questions </h3>
+<p class="questions">
+  Send any questions using the <a href="http://alleninstitute.org/contact_us/index.html">Send Us a Message</a> link below, 
+  or submit your question to <a href="http://stackoverflow.com/">StackOverflow</a> using with the 'allen-sdk' tag.
+</p>
+
+<p class="questions">
+  If you encounter any problems using the AllenSDK, please create an issue on <a href="http://github.com/alleninstitute/allensdk/issues/">Github's issue tracker</a>.
+</p>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+
+    <div class="footer" role="contentinfo">
+    </div>
+<script type="text/javascript" src="http://www.brain-map.org/external_assets/javascripts/portalFooter.js"></script>
+
+
+  </body>
+</html>

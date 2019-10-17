@@ -1,0 +1,38 @@
+blue\_sky\.migrations package
+=============================
+
+Submodules
+----------
+
+blue\_sky\.migrations\.0001\_initial module
+-------------------------------------------
+
+.. automodule:: blue_sky.migrations.0001_initial
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+blue\_sky\.migrations\.0002\_auto\_20190717\_1429 module
+--------------------------------------------------------
+
+.. automodule:: blue_sky.migrations.0002_auto_20190717_1429
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+blue\_sky\.migrations\.0003\_calibration\_observation\_association module
+-------------------------------------------------------------------------
+
+.. automodule:: blue_sky.migrations.0003_calibration_observation_association
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: blue_sky.migrations
+    :members:
+    :undoc-members:
+    :show-inheritance:
