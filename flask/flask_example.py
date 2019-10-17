@@ -1,6 +1,6 @@
 from flask import Flask
 from celery import Celery
-from workflow_engine.tasks.circus_signatures import submit_task_signature
+from workflow_engine.signatures import submit_task_signature
 
 app = Flask(__name__)
 app.config['CELERY_BROKER_URL'] = 'amqp://blue_sky_user:blue_sky_user@message_queue:5672'

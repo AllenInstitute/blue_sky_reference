@@ -55,7 +55,7 @@ from tests.celery_fixtures import (
 
 
 # celery_includes issue workaround
-from workflow_engine.celery.result_tasks import (
+from workflow_engine.process.workers.result_tasks import (
     process_running,             # noqa # pylint: disable=unused-import
     process_finished_execution,  # noqa # pylint: disable=unused-import
     process_failed_execution     # noqa # pylint: disable=unused-import
@@ -67,7 +67,9 @@ _log = logging.getLogger('test.workflow.test_result_worker')
 
 @pytest.fixture
 def celery_includes():
-    return celery_includes_helper(['workflow_engine.celery.result_tasks'])
+    return celery_includes_helper([
+        'workflow_engine.process.workers.result_tasks'
+    ])
 
 
 @pytest.fixture

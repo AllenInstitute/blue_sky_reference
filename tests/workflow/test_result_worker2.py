@@ -39,7 +39,7 @@ from celery.contrib.pytest import celery_app, celery_worker
 import time
 from django.test.utils import override_settings
 from workflow_engine.client_settings import configure_worker_app
-from workflow_engine.celery.result_tasks import (
+from workflow_engine.process.workers.result_tasks import (
     process_finished_execution,
     process_failed_execution,
     process_running

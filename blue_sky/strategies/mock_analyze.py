@@ -16,6 +16,16 @@ class MockAnalyze(MockExecutionStrategy):
     }
 
     def must_wait(self, enqueued_object):
+        '''Hold processing of a :class:`~blue_sky.models.observation.Observation`
+        unless the associated :class:`~blue_sky.models.calibration.Calibration`
+        is done processing.
+
+        Args:
+            enqueued_object (Model): :class:`~blue_sky.models.observation.Observation` or :class:`~blue_sky.models.calibration.Calibration` associated with Observations
+
+        Returns:
+            boolean: whether to pause the progression of the Observation through the workflow.
+        '''
         if (enqueued_object.__class__ is Calibration or
             enqueued_object.__class__ is Observation and
             (enqueued_object.calibration is not None) and
@@ -26,6 +36,15 @@ class MockAnalyze(MockExecutionStrategy):
             return False
 
     def transform_objects_for_queue(self, enqueued_object):
+        '''If an incoming object is an Observation, pass it along.
+        If it is a Calibration, find the associated Observations.
+
+        Args:
+            enqueued_object (Model): :class:`~blue_sky.models.observation.Observation` or :class:`~blue_sky.models.calibration.Calibration` associated with Observations
+
+        Returns:
+            list of Observation: either the incoming enqueued object or derived from an enqueued calibration object.
+        '''
         if enqueued_object.__class__ is Calibration:
             return list(
                 enqueued_object.observation_set.filter(
@@ -57,6 +76,13 @@ class MockAnalyze(MockExecutionStrategy):
         return inp 
 
     def on_finishing(self, observation, results, task):
+        '''Change the :term:`object state` from processing to QC.
+
+        Args:
+            observation (Observation): the enqueued object
+            results (dict): unused
+            task (Task): unused
+        '''
         #self.check_key(results, 'arg2')
 
         if can_proceed(observation.stop_processing):

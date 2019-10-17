@@ -80,9 +80,9 @@ def use_celery_app_trap():
 def celery_includes():
     return [
         #'tests.workflow.test_messaging',
-        #'workflow_engine.celery.moab_tasks',
-        'workflow_engine.celery.workflow_tasks',
-        'workflow_engine.celery.result_tasks',
+        #'workflow_engine.process.workers.moab.moab_tasks',
+        'workflow_engine.process.workers.workflow_tasks',
+        'workflow_engine.process.workers.result_tasks',
         'tests.workflow.celery_signal_handlers'
     ]
 

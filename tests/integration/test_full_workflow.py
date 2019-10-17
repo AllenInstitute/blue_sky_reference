@@ -98,10 +98,10 @@ def celery_worker_parameters():
 @pytest.fixture
 def celery_includes():
     return celery_includes_helper([
-        'workflow_engine.celery.workflow_tasks',
-        'workflow_engine.celery.mock_tasks',
-        'workflow_engine.celery.result_tasks',
-        'workflow_engine.celery.ingest_tasks',
+        'workflow_engine.process.workers.workflow_tasks',
+        'workflow_engine.process.workers.mock_tasks',
+        'workflow_engine.process.workers.result_tasks',
+        'workflow_engine.process.workers.ingest_tasks',
     ])
 
 

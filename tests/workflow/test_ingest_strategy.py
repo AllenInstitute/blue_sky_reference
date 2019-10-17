@@ -43,7 +43,7 @@ from tests.workflow.workflow_fixtures import (
     running_task_5,  # noqa # pylint: disable=unused-import
     mock_executable  # noqa # pylint: disable=unused-import
 )
-from workflow_engine.celery.ingest_tasks import (
+from workflow_engine.process.workers.ingest_tasks import (
     ingest_task  # noqa # pylint: disable=unused-import
 )
 
@@ -59,7 +59,9 @@ from tests.celery_fixtures import (
 
 @pytest.fixture
 def celery_includes():
-    return celery_includes_helper(['workflow_engine.celery.ingest_tasks'])
+    return celery_includes_helper([
+        'workflow_engine.process.workers.ingest_tasks'
+    ])
 
 
 @pytest.fixture

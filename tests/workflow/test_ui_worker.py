@@ -57,7 +57,9 @@ from tests.celery_fixtures import (
 
 @pytest.fixture
 def celery_includes():
-    return celery_includes_helper(['workflow_engine.celery.workflow_tasks'])
+    return celery_includes_helper([
+        'workflow_engine.process.workers.workflow_tasks'
+    ])
 
 
 @pytest.fixture

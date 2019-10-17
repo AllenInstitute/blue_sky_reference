@@ -19,6 +19,7 @@ Welcome to the Blue Sky Workflow Engine
    workflows
    strategies
    configurations
+   messaging
    develop
    authors
    glossary

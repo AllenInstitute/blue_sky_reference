@@ -34,11 +34,6 @@ PBS_CONDA_HOME='/shared/utils.x86_64/python-2.7'
 PBS_PYTHONPATH='/data/aibstemp/timf/example_data/at_em_imaging_workflow:/data/aibstemp/timf/example_data/blue_sky_workflow_engine'
 PBS_CONDA_ENV='/allen/aibs/pipeline/image_processing/volume_assembly/conda_envs/blue_sky/py36'
 
-MESSAGE_QUEUE_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
-MESSAGE_QUEUE_USER = 'blue_sky_user'
-MESSAGE_QUEUE_PASSWORD = 'blue_sky_user'
-MESSAGE_QUEUE_PORT = 9008
-MESSAGE_QUEUE_VHOST = '/'
 UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 #UI_HOST = 'localhost'
 UI_PORT = 9001
@@ -56,21 +51,6 @@ MOAB_AUTH = 'user:pass'
 MOAB_GROUP = 'lab_b'
 MOAB_TIMEOUT = 180
 
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_rabbitmq.core.RabbitmqChannelLayer",
-        "CONFIG": {
-            "host": (
-                "amqp://" + 
-                MESSAGE_QUEUE_USER + ":" +
-                MESSAGE_QUEUE_PASSWORD + "@" +
-                MESSAGE_QUEUE_HOST + ":" + str(MESSAGE_QUEUE_PORT) +
-                "/asgi"
-            )
-        }
-    }
-}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 

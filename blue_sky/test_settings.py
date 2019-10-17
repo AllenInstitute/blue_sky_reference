@@ -24,10 +24,6 @@ BASE_FILE_PATH = 'example_data'
 
 CELERY_RESULT_BACKEND = 'django-db'
 
-MESSAGE_QUEUE_HOST = 'message_queue'
-MESSAGE_QUEUE_USER = 'blue_sky_user'
-MESSAGE_QUEUE_PASSWORD = 'blue_sky_user'
-MESSAGE_QUEUE_PORT = 5672
 UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
 UI_PORT = 9002
 FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(9003)
