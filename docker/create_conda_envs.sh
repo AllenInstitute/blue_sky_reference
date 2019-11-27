@@ -33,7 +33,6 @@ yes | ${PIP_INSTALL} -r /source/blue_sky_workflow_engine/test_requirements.txt
 yes | ${PIP_INSTALL} -r /source/${APP_NAME}/requirements.txt
 yes | ${PIP_INSTALL} -r /source/${APP_NAME}/test_requirements.txt
 yes | ${PIP_INSTALL} -r /source/blue_sky_workflow_engine/nb_requirements.txt
-yes | ${PIP_INSTALL} -r /source/blue_sky_workflow_engine/semantic_requirements.txt
 
 #conda create -q --yes --prefix=${NB} --clone ${PY_37}
 #source activate ${NB} && (yes | ${PIP_INSTALL} -r /blue_sky_workflow_engine/nb_requirements.txt)
