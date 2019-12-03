@@ -1,5 +1,5 @@
 import pytest
-from workflow_engine.process.workers.moab.moab_api import (
+from workflow_engine.process.workers.moab_api import (
     workflow_state_dataframe,
     query_moab_state,
     combine_workflow_moab_states
@@ -64,7 +64,7 @@ def test_workflow_state_dataframe(task_status_dict_queued):
 
 def test_query_moab_state(task_status_dict_queued,
                           moab_dict):
-    with patch('workflow_engine.process.workers.moab.moab_api.moab_query',
+    with patch('workflow_engine.process.workers.moab_api.moab_query',
                Mock(return_value=moab_dict)) as mq:
         df = query_moab_state(task_status_dict_queued)
 
