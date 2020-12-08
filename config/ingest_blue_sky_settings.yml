@@ -1,4 +1,4 @@
-broker_url: pyamqp://blue_sky_user:blue_sky_user@ibs-timf-ux1:5672/
+broker_url: pyamqp://blue_sky_user:blue_sky_user@localhost:5672/
 result_backend: rpc://
 result_persistent: true
 task_serializer: json
