@@ -28,5 +28,4 @@ unset DJANGO_SETTINGS_MODULE
 
 source activate /conda_envs/py_36
 
-/bin/bash -c "source activate /conda_envs/py_36; python -m workflow_engine.process.process_manager blue_sky /home/blue_sky_user/work&"
-
+/bin/bash -c "source activate /conda_envs/py_36; python -m workflow_engine.process.process_manager --app_name $1 --workdir $2 --log_dir $3 --python_path $4 &"
