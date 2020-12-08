@@ -148,14 +148,6 @@ def test_send_ingest(
     client = Client()
     client.force_login(usr)
 
-    #response = client.get('/admin/workflow_engine/executable/')
-
-    #assert response.status_code == 200
-
-#     submit_response = circus_signatures.submit_mock_signature.clone((5,)).delay()
-#     o = submit_response.wait(10)
-#     _log.info(o)
-
     ingest_response = signatures.ingest_signature.delay(
         'test_workflow',
         {
@@ -168,6 +160,7 @@ def test_send_ingest(
 
     outpt = ingest_response.wait(10)
 
+    assert outpt is not None
     assert 'observation_id' in outpt and outpt['observation_id'] > 0
 
     _log.info(outpt)
@@ -176,7 +169,6 @@ def test_send_ingest(
     _log.info(combined_celery_app.control.inspect().registered_tasks())
     _log.info(combined_celery_app.control.inspect().active_queues())
 
-    assert outpt is not None
 
     assert Job.objects.order_by('id').last().running_state == 'SUCCESS'
 #     assert outpt == 'None'

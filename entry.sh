@@ -22,6 +22,6 @@ printf "blue_sky_user\nt@a.org\nblue_sky_user\n" | python -m manage createsuperu
 echo "reading workflows from workflow config yaml: " ${WORKFLOW_CONFIG_YAML}
 DEBUG_LOG=${BASE_DIR}/logs/import_workflows.log python -m manage import_workflows ${WORKFLOW_CONFIG_YAML}
 
-/bin/bash restart_workers.sh
+#/bin/bash restart_workers.sh
 
 while true; do sleep 3600; done

@@ -26,10 +26,7 @@ rm celerybeat.pid
 
 unset DJANGO_SETTINGS_MODULE
 
-source activate base
+source activate /conda_envs/py_36
 
-#echo 'STARTING CIRCUSD'
-#/bin/bash -c 'source activate circus; cd /blue_sky_workflow_engine/circus; /opt/conda/envs/circus/bin/circusd --daemon circus.ini'
-
-/bin/bash -c "source activate circus; python -m workflow_client.process_manager&"
+/bin/bash -c "source activate /conda_envs/py_36; python -m workflow_engine.process.process_manager blue_sky /home/blue_sky_user/work&"
 

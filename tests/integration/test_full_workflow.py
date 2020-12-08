@@ -151,6 +151,8 @@ def test_send_ingest(
     client = Client()
     client.force_login(usr)
 
+    print('here')
+
     ingest_responses = group(
         signatures.ingest_signature.clone((
             'mock_workflow',

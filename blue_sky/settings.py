@@ -20,8 +20,9 @@ JOB_GRID_CLASS=None
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
 #BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
-BASE_FILE_PATH='/data/aibstemp/timf/blue_sky_data'
-BASE_FILE_PATH='/allen/programs/celltypes/production/wijem/workflow_data/em_blue_sky_desktop'
+#BASE_FILE_PATH='/data/aibstemp/timf/blue_sky_data'
+#BASE_FILE_PATH='/allen/programs/celltypes/production/wijem/workflow_data/em_blue_sky_desktop'
+BASE_FILE_PATH='/home/blue_sky_user/work'
 
 NOTEBOOK_ARGUMENTS = [
     '--ip', '0.0.0.0',
@@ -81,7 +82,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.stticfiles',
+    'django.contrib.staticfiles',
     'workflow_engine',
     'django_celery_results',
     'blue_sky',
