@@ -8,7 +8,7 @@ class MockWait(WaitStrategy):
         # Use this to check if the reference set is available
         # return true if the state is correc
 
-        if Observation.STATE.OBSERVATION_DONE != obs.object_state:
+        if Observation.STATE.OBSERVATION_QC_PASSED != obs.object_state:
             return True
 
         return False
