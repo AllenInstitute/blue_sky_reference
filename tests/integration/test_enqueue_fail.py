@@ -2,7 +2,7 @@
 # license plus a third clause that prohibits redistribution for commercial
 # purposes without further permission.
 #
-# Copyright 2019. Allen Institute. All rights reserved.
+# Copyright 2020. Allen Institute. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -71,7 +71,7 @@ import logging
 from workflow_engine.simple_router import SimpleRouter
 
 
-_log = logging.getLogger('tests.integration.test_two_nodes')
+_log = logging.getLogger('tests.integration.test_enqueue_fail')
 
 
 @pytest.fixture
@@ -111,9 +111,12 @@ def combined_celery_app(celery_app):
 
     return celery_app
 
+def raise_exception(workflow_name, enqueued_object, start_node_name=None):
+    raise Exception('exception')
 
 @pytest.mark.django_db(transaction=True)
-def test_send_ingest(
+@patch('workflow_engine.workflow_controller.WorkflowController.start_workflow', raise_exception)
+def test_ingest_fail(
     combined_celery_app,
     celery_worker):
     yaml_text = TEST_CONFIG_YAML_TWO_NODES
@@ -162,55 +165,12 @@ def test_send_ingest(
 
     assert outpt is not None
     assert 'observation_id' in outpt and outpt['observation_id'] > 0
+    assert 'status' in outpt and outpt['status'] == 'ENQUEUE_FAIL'
+    assert 'message' in outpt and outpt['message'] == 'object created, but workflow failed'
 
     _log.info(outpt)
 
-    # _log.info(combined_celery_app.control.inspect().stats())
     _log.info(combined_celery_app.control.inspect().registered_tasks())
     _log.info(combined_celery_app.control.inspect().active_queues())
 
-
-    assert Job.objects.order_by('id').last().running_state == 'SUCCESS'
-#     assert outpt == 'None'
-#  
-#     assert False
-
-
-@pytest.mark.django_db(transaction=True)
-def xtest_create_job(
-        #mock_enqueue_next_queue,
-        combined_celery_app,
-        celery_worker,
-        workflow_node_1,
-        obs):
-    #mock_enqueue_next_queue.delay = Mock()
-
-    workflow_node_id = workflow_node_1.id
-    priority = 50
-
-    try:
-        shutil.rmtree(
-            'example_data/1/jobs/job_1/tasks/task_1/input_1.json',
-            ignore_errors=True)
-    except Exception as e:
-        _log.error(str(e))
-
-    result = signatures.create_job_signature.delay(
-        workflow_node_id,
-        obs.id,
-        priority)
-
-    created_job_id = result.wait(10)
-
-    #_mock_submit_job.delay.assert_called_once()
-    assert not result.failed()
-    assert created_job_id == -1
-
-    #raise Exception(created_job_id)
-
-    #updated_task = Task.objects.get(
-    #    job_id=created_job_id)
-    #assert (updated_task.run_state.id == 
-    #    RunState.objects.get(name='SUCCESS').id)
-    #menqn.delay.assert_called_once_with(workflow_node_1.id)
-
+    assert Job.objects.count() == 0

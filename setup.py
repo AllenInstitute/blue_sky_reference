@@ -44,7 +44,7 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 setup(
-    name='blue_sky_reference',
+    name='blue_sky',
     version='%s%s' % (VERSION, RELEASE),
     packages=prepend_find_packages('blue_sky'),
     package_data={'': ['*.conf', '*.cfg', '*.json', '*.env', '*.sh', '*.txt', 'Makefile'] },
