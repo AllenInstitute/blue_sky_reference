@@ -1,5 +1,5 @@
 from .mock_execution_strategy import MockExecutionStrategy
-from blue_sky.models import Observation
+from blue_sky.models import Observation, ObservationGroup
 from django_fsm import can_proceed
 import logging
 import copy
@@ -18,7 +18,7 @@ class MockProcessGroupedObservations(MockExecutionStrategy):
             observations = grp.observations.filter(
                 object_state=Observation.STATE.OBSERVATION_GROUPED)
 
-            if observations.count() == 10:
+            if observations.count() == ObservationGroup.GROUP_SIZE:
                 objects = objects | set(observations)
 
         return list(objects) 
