@@ -31,10 +31,18 @@ class MockQC(MockExecutionStrategy):
 
         return inp 
 
+    def is_even(self, observation_object):
+        return (observation_object.arg1 % 2 == 0)
+
     def set_output_state(self, observation_object):
-        if can_proceed(observation_object.pass_qc):
+        if self.is_even(observation_object):
+            observation_object.fail_qc()
+            observation_object.save()
+
+        elif can_proceed(observation_object.pass_qc):
             observation_object.pass_qc()
             observation_object.save()
+
         else:
             if (observation_object.object_state ==
                 observation_object.__class__.STATE.OBSERVATION_QC_PASSED):
@@ -46,5 +54,4 @@ class MockQC(MockExecutionStrategy):
 
 
     def on_finishing(self, observation_object, results, task):
-        #self.check_key(results, 'arg2')
         self.set_output_state(observation_object)

@@ -43,6 +43,13 @@ workflows:
               executable: "mock"
               batch_size: 100
 
+            - key: "mock_wait"
+              label: "Mock Wait"
+              class: "blue_sky.strategies.mock_wait.MockWait"
+              enqueued_class: "blue_sky.models.observation.Observation"
+              executable: "mock"
+              batch_size: 100
+
             - key: "mock_calibrate"
               label: "Mock Calibrate"
               class: "blue_sky.strategies.mock_calibrate.MockCalibrate"
@@ -76,6 +83,7 @@ workflows:
             - [ "mock_preprocess", [ "mock_analyze" ] ]
             - [ "mock_calibrate", [ "mock_analyze" ] ]
             - [ "mock_analyze", [ "mock_qc" ] ]
-            - [ "mock_qc", [ "group_assign" ] ]
+            - [ "mock_qc", [ "mock_wait" ] ]
+            - [ "mock_wait", [ "group_assign" ] ]
             - [ "group_assign", [ "process_grouped" ] ]
             - [ "process_grouped", [ "complete_group" ] ]
