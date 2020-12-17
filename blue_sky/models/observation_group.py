@@ -9,6 +9,8 @@ class ObservationGroup(Enqueueable, Stateful, models.Model):
         :height: 300px
     '''
 
+    GROUP_SIZE = 2
+
     class STATE:
         GROUP_INCOMPLETE = "INCOMPLETE"
         GROUP_COMPLETE = "COMPLETE"

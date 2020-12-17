@@ -12,9 +12,9 @@ class MockGroupAssignment(MockExecutionStrategy):
     _base_input_dict = {}
 
     def transform_objects_for_queue(self, observation):
-        tens = int(observation.arg1) // 10
+        group_index = int(observation.arg1) // ObservationGroup.GROUP_SIZE
 
-        group_label = 'Group {}'.format(tens)
+        group_label = 'Group {}'.format(group_index)
 
         group, _ = ObservationGroup.objects.get_or_create(
             label=group_label,
