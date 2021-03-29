@@ -15,7 +15,7 @@ Pip packaging and a Docker build.
 Celery Task Queue and RabbitMQ Broker
 -------------------------------------
 
- * `Celery <http://www.celeryproject.org/>`_
+ * `Celery <http://docs.celeryproject.org/>`_
  * `RabbitMQ <https://www.rabbitmq.com/>`_
 
  * `Using Celery with Django <http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html>`_

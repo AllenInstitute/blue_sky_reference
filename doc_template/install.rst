@@ -50,20 +50,16 @@ Installation with Docker (Optional)
 `Docker <http://www.docker.com/>`_ is an open-source technology
 for building and deploying applications with a consistent environment
 including required dependencies.
-The AllenSDK is not distributed as a Docker image, but
-example Dockerfiles are available.
+Blue Sky workflow engine is not distributed as a Docker image,
+but example Dockerfiles are available.
 
  #. Ensure you have Docker installed.
 
- #. Use Docker to build one the image.
+ #. Use Docker to build the image::
  
-     Docker::
-
-         cd $WORKING_DIR
-         cd blue_sky_reference/docker
-         docker build --tag alleninstitute/blue_sky:demo .
- 
-     Other docker configurations are also available under docker directory in the source repository.
+     cd $WORKING_DIR
+     cd blue_sky_reference/docker
+     docker build --tag alleninstitute/blue_sky:demo .
  
  #. Run tests in the docker image::
  
@@ -143,7 +139,7 @@ example Dockerfiles are available.
  #. To kill the server::
 
      # in the docker container
-     pkill -9 -f pyhton
+     pkill -9 -f python
 
  #. To restart the server run the full restart_workers.sh command again.
 
