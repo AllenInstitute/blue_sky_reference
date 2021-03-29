@@ -1,6 +1,6 @@
 # DOCKER-VERSION 1.11.1
 #
-# docker build --tag alleninstitute/allensdk .
+# docker build --tag alleninstitute/allensdk:demo .
 # docker run -it alleninstitute/allensdk /bin/bash
 #
 FROM continuumio/miniconda3:4.5.11
@@ -14,11 +14,10 @@ RUN apt-get update; \
     mkdir -p /var/www/static; \
     rm -rf /var/lib/apt/lists/*
 
-ARG BLUE_SKY_USERID=17842
 ARG BLUE_SKY_USERNAME=blue_sky_user
 
 RUN \
- useradd -u ${BLUE_SKY_USERID} ${BLUE_SKY_USERNAME}; \
+ useradd ${BLUE_SKY_USERNAME}; \
  chsh -s /bin/bash ${BLUE_SKY_USERNAME}; \
  mkdir -p /home/${BLUE_SKY_USERNAME}/work/logs; \
  mkdir -p /blue_green/logs; \

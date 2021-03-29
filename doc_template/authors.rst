@@ -3,4 +3,4 @@ Authors
 
 Tim Fliss `@tfliss <http://github.com/tfliss>`_
 
-Nathan Sjoquist `@nathans <http://github.com/nathans>`_
+Nathan Sjoquist `@nathans <http://github.com/ns706>`_

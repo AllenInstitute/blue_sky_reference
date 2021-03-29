@@ -1,5 +1,5 @@
 import pytest
-from mock import Mock, patch, mock_open
+from mock import Mock, patch, mock_open, call
 from workflow_engine.mixins import Runnable
 from workflow_engine.models import (
     Job,
@@ -119,10 +119,10 @@ def test_finish_task(
             ex_strat.finish_task(task_with_storage_directory)
 
     mock_chmod.assert_called()
-    mock_isfile.assert_called_once_with(
-        '/path/to/storage/mock_enqueued_object'
-        '/10/jobs/job_789/tasks/task_123456/output_123456.json'
-    )
+    mock_isfile.assert_has_calls([
+        call('/path/to/storage/mock_enqueued_object'
+        '/10/jobs/job_789/tasks/task_123456/output_123456.json')
+    ])
     mock_celery_task.delay.assert_called_once_with(789)
 
 

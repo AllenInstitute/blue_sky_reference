@@ -5,13 +5,13 @@ services:
     image: nginx:1.15.3
     volumes:
     - "./nginx.conf:/etc/nginx/nginx.conf:ro"
-    - "/local1/git/blue_sky/config/static:/var/www/static"
+    - "../../blue_sky_reference/config/static:/var/www/static:shared"
     ports:
     - "9001:80"
     - "9002:81"
     depends_on:
     - blue_sky
-  devdb2:
+  db:
     restart: on-failure:3
     image: postgres:9.4.14
     volumes:
@@ -24,6 +24,7 @@ services:
     environment:
     - POSTGRES_USER=postgres
     - POSTGRES_PASSWORD=postgres
+    - BLUE_SKY_HOSTNAME=${BLUE_SKY_HOSTNAME}
   message_queue:
     restart: on-failure:3
     image: rabbitmq:3-management
@@ -37,7 +38,6 @@ services:
     - "9008:5672"
     - "9000:15672"
   blue_sky:
-    #image: alleninstitute/at_em_imaging_workflow:timf
     image: alleninstitute/blue_sky:demo
     environment:
     - PYTHONPATH=/blue_sky:/blue_sky_workflow_engine:/blue_sky_workflow_engine/circus
@@ -49,17 +49,12 @@ services:
     - "8000"
     - "5557"
     - "8888"
-    #ports:
-    #- "9999:9999"
-    #- "8080:8080"
     depends_on:
-    - devdb2
+    - db
     - message_queue
     volumes:
-    - "/local1/git/em_2020/blue_sky/config/data:/data:shared"
-    #- "/allen:/allen:shared"
-    - "/local1/git/em_2020/blue_sky_workflow_engine:/blue_sky_workflow_engine"
-    - "/local1/git/em_2020/blue_sky:/blue_sky"
-    - "/local1/git/em_2020:/source:shared"
-    - "/local1/git/em_2020/blue_sky/config/static:/var/www/static"
-    #- "/local1/conda_envs/0.121.0:/conda_envs"
+    - "../../blue_sky_reference/config/data:/data:shared"
+    - "../../blue_sky_workflow_engine:/blue_sky_workflow_engine"
+    - "../../blue_sky_reference:/blue_sky"
+    - "../..:/source:shared"
+    - "../../blue_sky_reference/config/static:/var/www/static:shared"

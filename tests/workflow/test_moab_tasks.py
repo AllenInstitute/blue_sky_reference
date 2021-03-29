@@ -101,30 +101,3 @@ def moab_status_celery_app(celery_app):
     configure_worker_app(celery_app, 'blue_sky', 'moab_status')
 
     return celery_app
-
-@pytest.mark.django_db(transaction=True)
-@patch('workflow_engine.nb_utils.moab_api.moab_query')
-def test_check_moab_status(
-    mock_moab_query,
-    moab_status_celery_app,
-    celery_worker,
-    task_5,
-    moab_dict):
-    mock_moab_query.return_value=moab_dict
-
-    os.environ['MOAB_AUTH'] = 'moab_user:moab_password'
-
-    task_5.pbs_id = 'Moab.' + str(task_5.id + _MOAB_ID_OFFSET)
-    task_5.set_queued_state(quiet=True)
-
-    result = check_moab_status_signature.clone(
-        delivery_mode='persistent').delay()
-
-    #r = result.wait(10)
-
-    # see: http://docs.celeryproject.org/en/latest/reference/celery.result.html
-    #result.wait(timeout=10)
-    #print(r)
-    #assert set(r) == {1, 2, 3, 4}
-
-    #mock_moab_query.assert_called()

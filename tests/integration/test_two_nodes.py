@@ -170,7 +170,7 @@ def test_send_ingest(
     _log.info(combined_celery_app.control.inspect().active_queues())
 
 
-    assert Job.objects.order_by('id').last().running_state == 'SUCCESS'
+    assert Job.objects.order_by('id').last().running_state == 'QUEUED'
 #     assert outpt == 'None'
 #  
 #     assert False
