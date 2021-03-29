@@ -11,7 +11,7 @@ cd $WORKING_DIR
 
 git clone https://github.com/AllenInstitute/blue_sky_workflow_engine.git
 git clone https://github.com/AllenInstitute/blue_sky_reference.git
-conda create --name blue_sky python=3.7
+conda create --name blue_sky python=3.6
 export PYTHONPATH=$WORKING_DIR/blue_sky_reference:$WORKING_DIR/blue_sky_workflow_engine
 
 cd blue_sky_workflow_engine

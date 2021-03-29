@@ -4,7 +4,7 @@ Install Guide
 This guide is a resource for using the Blue Sky Workflow Engine package.
 It is maintained by the `Allen Institute for Brain Science <http://www.alleninstitute.org/>`_.
 
-The package was developed and tested with Python 3.7 installed.
+The package was developed and tested with Python 3.6 installed.
 Behavior may be inconsistent with other Python versions.
 
 Using Conda and Pip from Git
@@ -20,7 +20,7 @@ It is included with the Anaconda distribution.
 
     git clone https://github.com/AllenInstitute/blue_sky_workflow_engine.git
     git clone https://github.com/AllenInstitute/blue_sky_reference.git
-    conda create --name blue_sky python=3.7
+    conda create --name blue_sky python=3.6
     export PYTHONPATH=$WORKING_DIR/blue_sky_reference:$WORKING_DIR/blue_sky_workflow_engine
 
     cd blue_sky_workflow_engine
