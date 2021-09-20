@@ -118,7 +118,7 @@ def test_finish_task(
             mock_open(read_data='{ "data": "whatever" }')):
             ex_strat.finish_task(task_with_storage_directory)
 
-    mock_chmod.assert_called()
+    mock_chmod.assert_not_called()
     mock_isfile.assert_has_calls([
         call('/path/to/storage/mock_enqueued_object'
         '/10/jobs/job_789/tasks/task_123456/output_123456.json')
@@ -214,13 +214,15 @@ def test_get_input_file(
     ex_strat,
     task_with_storage_directory):
 
-    infile = ex_strat.get_input_file(task_with_storage_directory)
+
+    with patch('os.path.exists', Mock(return_value=True)):
+        infile = ex_strat.get_input_file(task_with_storage_directory)
 
     assert infile == (
         '/path/to/storage/mock_enqueued_object'
         '/10/jobs/job_789/tasks/task_123456/input_123456.json'
     )
-    mock_chmod.assert_called()
+    mock_chmod.assert_not_called()
 
 @patch('os.chmod')
 def test_get_pbs_file(
@@ -228,13 +230,14 @@ def test_get_pbs_file(
     ex_strat,
     task_with_storage_directory):
 
-    pbs_file = ex_strat.get_pbs_file(task_with_storage_directory)
+    with patch('os.path.exists', Mock(return_value=True)):
+        pbs_file = ex_strat.get_pbs_file(task_with_storage_directory)
 
     assert pbs_file == (
         '/path/to/storage/mock_enqueued_object'
         '/10/jobs/job_789/tasks/task_123456/pbs_123456.pbs'
     )
-    mock_chmod.assert_called()
+    mock_chmod.assert_not_called()
 
 
 @patch('os.chmod')
