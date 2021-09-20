@@ -13,16 +13,20 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 APP_PACKAGE = 'blue_sky'
+UI_HOST = 'localhost'   # change to the hostname of your web server
+UI_PORT = 9001
+DATABASE_HOST = 'db' # change to database host if not running in docker
 
 JOB_GRID_CLASS=None
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#BASE_FILE_PATH = '/allen/programs/celltypes/workgroups/em-connectomics/timf'
-#BASE_FILE_PATH='/data/aibstemp/timf/blue_sky'
-BASE_FILE_PATH='/data/aibstemp/timf/blue_sky_data'
-BASE_FILE_PATH='/allen/programs/celltypes/production/wijem/workflow_data/em_blue_sky_desktop'
 
+
+# THIS PATH IS FOR DOCKERIZED USE, REPLACE FOR NON-DOCKER USE
+BASE_FILE_PATH='/home/blue_sky_user/work'
+
+# /blue_sky/notebooks IS FOR DOCKERIZED USE, REPLACE FOR NON-DOCKER USE
 NOTEBOOK_ARGUMENTS = [
     '--ip', '0.0.0.0',
     '--port', '8888',
@@ -30,23 +34,23 @@ NOTEBOOK_ARGUMENTS = [
     '/blue_sky/notebooks'
 ]
 
-PBS_CONDA_HOME='/shared/utils.x86_64/python-2.7'
-PBS_PYTHONPATH='/data/aibstemp/timf/example_data/at_em_imaging_workflow:/data/aibstemp/timf/example_data/blue_sky_workflow_engine'
-PBS_CONDA_ENV='/allen/aibs/pipeline/image_processing/volume_assembly/conda_envs/blue_sky/py36'
+# REPLACE THESE WITH THE PATHS ACCESSIBLE FROM PBS HPC CLUSTER
+PBS_CONDA_HOME=''
+PBS_PYTHONPATH=''
+PBS_CONDA_ENV=''
 
-UI_HOST = 'ibs-timf-ux1.corp.alleninstitute.org'
-#UI_HOST = 'localhost'
-UI_PORT = 9001
 FLOWER_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/flower/'
 RABBIT_MONITOR_URL='http://' + UI_HOST + ":" + str(UI_PORT) + '/rabbitmq/'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
 STANBOL_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/stanbol/'
 
+# /blue_sky/config IS FOR DOCKERIZED USE, REPLACE FOR NON-DOCKER USE
 CONFIG_DIR = '/blue_sky/config'
 BLUE_SKY_SETTINGS = '/blue_sky/config/blue_sky_settings.yml'
 WORKFLOW_CONFIG_YAML = CONFIG_DIR + '/workflow_config.yml'
 
-MOAB_ENDPOINT = 'http://qmaster2.corp.alleninstitute.org:8080/mws/rest'
+MOAB_HOST = 'http://qmaster2.corp.alleninstitute.org:8080'
+MOAB_ENDPOINT = MOAB_HOST + '/mws/rest'
 MOAB_AUTH = 'user:pass'
 MOAB_GROUP = 'lab_b'
 MOAB_TIMEOUT = 180
@@ -81,7 +85,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.stticfiles',
+    'django.contrib.staticfiles',
     'workflow_engine',
     'django_celery_results',
     'blue_sky',
@@ -126,7 +130,7 @@ DATABASES = {
         'NAME': 'blue_sky',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'ibs-timf-ux1',
+        'HOST': DATABASE_HOST,
         'PORT': 5432,
     }
 }
@@ -194,27 +198,27 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console', 'file'],
-            'level': 'WARN',
+            'level': 'ERROR',
             'propagate': True,
         },
         'blue_sky': {
             'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True,
         },
         'workflow_engine': {
             'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True,
         },
         'celery': {
             'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True,
         },
         'celery.task': {
             'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'level': 'ERROR',
             'propagate': True,
         }
     }
