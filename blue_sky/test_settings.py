@@ -33,6 +33,10 @@ ADMIN_URL='http://' + UI_HOST + ':' + str(9002) + '/admin'
 NOTEBOOK_URL='http://' + UI_HOST + ':' + str(UI_PORT) + '/nb/'
 JOB_GRID_CLASS=None
 
+SLURM_ENDPOINT = 'http://slurm.corp.alleninstitute.org/api/slurm/v0.0.36'
+SLURM_AUTH = 'TeStUsEr:TeStToKeN'
+SLURM_TIMEOUT = 180
+
 MOAB_ENDPOINT = 'http://qmaster2.corp.alleninstitute.org:8080/mws/rest'
 MOAB_AUTH = 'user:pass'
 MOAB_GROUP = 'lab_b'
