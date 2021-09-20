@@ -30,7 +30,6 @@ class MockProcessGroupedObservations(MockExecutionStrategy):
 
         return inp
 
-    # TODO: should work on group assignment?
     def on_finishing(self, observation, results, task):
         if can_proceed(observation.done):
             observation.done()

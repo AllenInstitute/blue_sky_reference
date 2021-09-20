@@ -23,7 +23,6 @@ class DemoJobGrid(EnqueueableJobGrid):
     '''ordered list of columns from the annotated job dataframe to send.
     '''
 
-    # TODO: get this from a workflow configuration object or request.
     def xget_node_order(self):
         '''Override with a specific list of job queue names.
         These will be used in order as the columns of the job grid.
@@ -36,7 +35,6 @@ class DemoJobGrid(EnqueueableJobGrid):
             # TBD: currently renamed to use default
         ]
 
-    # TODO: maybe limit this based on request
     def get_model_classes(self):
         '''Models to be queried for display in the grid.
         Override to provide a specific list of model classes.
@@ -87,7 +85,7 @@ class DemoJobGrid(EnqueueableJobGrid):
         calibration_row_df.assign(z_index=calibration_row_df['id'])
         calibration_row_df.columns = [
             'enqueued_object_id',
-            'z_index',              # TODO: change to row
+            'z_index',
             "object_state"
         ]
         calibration_row_df['enqueued_object_type'] = 'calibration'

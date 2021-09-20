@@ -40,7 +40,6 @@ import logging
 class MockIngest(IngestStrategy):
     _log = logging.getLogger('blue_sky.strategies.mock_ingest')
 
-    # TODO, query from datbase using class name
     def get_workflow_name(self):
         return 'mock_workflow'
 

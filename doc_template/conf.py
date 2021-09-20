@@ -304,7 +304,6 @@ skip_autodoc_names = [ 'DEFAULTS' ]
 numpydoc_show_class_members = False
 
 def skip_autodoc(app, what, name, obj, skip, options):
-    #TODO: also check obj/module name, documentation isn't great though,
     # see: http://sphinx-doc.org/ext/autodoc.html
     skip_explicit = name in skip_autodoc_names
     
